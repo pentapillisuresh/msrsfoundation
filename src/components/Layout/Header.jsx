@@ -52,7 +52,7 @@ const Header = () => {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/about' },
-    { name: 'Csr Projects', path: '/csr-projects' },
+    { name: 'CSR Projects', path: '/csr-projects' },
     { name: 'Contact', path: '/contact' },
   ];
 
