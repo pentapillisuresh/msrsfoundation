@@ -10,10 +10,13 @@ module.exports = {
         accent: '#4A5C46',
         dark: '#2C3E2B',
       },
+
       fontFamily: {
-        'poppins': ['Poppins', 'sans-serif'],
-        'inter': ['Inter', 'sans-serif'],
+        sans: ['"Mulish"', 'sans-serif'],
+    heading: ['"Mulish"', 'sans-serif'],
+     inter: ['"Inter"', 'sans-serif'],
       },
+
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.6s ease-out',
@@ -22,6 +25,7 @@ module.exports = {
         'zoom-in': 'zoomIn 0.5s ease-out',
         'float': 'float 3s ease-in-out infinite',
       },
+
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },

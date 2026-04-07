@@ -32,10 +32,10 @@ const CSRProjects = () => {
                       <h4 className="font-semibold text-secondary mb-1">Target Beneficiaries</h4>
                       <p className="text-gray-700">{project.beneficiaries}</p>
                     </div>
-                    <div>
-                      <h4 className="font-semibold text-secondary mb-1">Budget Required</h4>
+                    {/* <div>
+                      <h4 className="font-semibold text-secondary mb-1">Project Investment</h4>
                       <p className="text-gray-700">{project.budget}</p>
-                    </div>
+                    </div> */}
                     <div>
                       <h4 className="font-semibold text-secondary mb-1">Impact Metrics</h4>
                       <p className="text-gray-700">{project.impactMetrics}</p>

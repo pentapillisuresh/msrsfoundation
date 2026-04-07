@@ -48,7 +48,7 @@ const Header = () => {
     };
   }, []);
 
-  // Navigation items with proper title casing (first letter capital, remaining small)
+  // Navigation items with proper title casing
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/about' },
@@ -58,7 +58,7 @@ const Header = () => {
 
   return (
     <>
-      <style jsx>{`
+      <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
         
         .font-heading {
@@ -127,7 +127,7 @@ const Header = () => {
                 </NavLink>
               ))}
 
-              {/* GET INVOLVED DROPDOWN */}
+              {/* GET INVOLVED DROPDOWN - Navigates to separate pages */}
               <div
                 className="relative h-full flex items-center"
                 onMouseEnter={handleDropdownEnter}
@@ -141,43 +141,43 @@ const Header = () => {
                 </button>
 
                 {dropdownOpen && (
-                  <div className="absolute top-full left-0 mt-2 w-96 bg-white rounded-xl shadow-2xl py-2 border border-gray-100 overflow-hidden z-50">
+                  <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-xl shadow-2xl py-2 border border-gray-100 overflow-hidden z-50 animate-fadeInUp">
                     <Link 
-                      to="/get-involved#individual" 
-                      className="flex items-start gap-3 px-5 py-3 hover:bg-primary transition-all duration-300 group"
+                      to="/get-involved/individual"
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-primary/50 transition-all duration-300 group"
                       onClick={() => setDropdownOpen(false)}
                     >
-                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center group-hover:bg-white transition-colors">
                         <FiHeart className="text-secondary text-sm" />
                       </div>
                       <div className="flex-1">
-                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors">Individual Support</div>
+                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors text-sm">Individual Support</div>
                         <div className="font-body text-xs text-gray-500">Make a personal contribution</div>
                       </div>
                     </Link>
                     <Link 
-                      to="/get-involved#corporate" 
-                      className="flex items-start gap-3 px-5 py-3 hover:bg-primary transition-all duration-300 group"
+                      to="/get-involved/corporate"
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-primary/50 transition-all duration-300 group"
                       onClick={() => setDropdownOpen(false)}
                     >
-                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center group-hover:bg-white transition-colors">
                         <FiBriefcase className="text-secondary text-sm" />
                       </div>
                       <div className="flex-1">
-                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors">Corporate Partnership</div>
+                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors text-sm">Corporate Partnership</div>
                         <div className="font-body text-xs text-gray-500">Collaborate for CSR initiatives</div>
                       </div>
                     </Link>
                     <Link 
-                      to="/get-involved#volunteer" 
-                      className="flex items-start gap-3 px-5 py-3 hover:bg-primary transition-all duration-300 group"
+                      to="/get-involved/volunteer"
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-primary/50 transition-all duration-300 group"
                       onClick={() => setDropdownOpen(false)}
                     >
-                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center group-hover:bg-white transition-colors">
                         <FiUsers className="text-secondary text-sm" />
                       </div>
                       <div className="flex-1">
-                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors">Volunteer & Internship</div>
+                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors text-sm">Volunteer & Internship</div>
                         <div className="font-body text-xs text-gray-500">Join our mission</div>
                       </div>
                     </Link>
@@ -199,82 +199,82 @@ const Header = () => {
                 </button>
 
                 {exploreOpen && (
-                  <div className="absolute top-full left-0 mt-2 w-96 bg-white rounded-xl shadow-2xl py-2 border border-gray-100 overflow-hidden z-50">
+                  <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-xl shadow-2xl py-2 border border-gray-100 overflow-hidden z-50 animate-fadeInUp">
                     <Link 
                       to="/events" 
-                      className="flex items-start gap-3 px-5 py-2.5 hover:bg-primary transition-all duration-300 group"
+                      className="flex items-center gap-3 px-4 py-2.5 hover:bg-primary/50 transition-all duration-300 group"
                       onClick={() => setExploreOpen(false)}
                     >
-                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center group-hover:bg-white transition-colors">
                         <FiCalendar className="text-secondary text-sm" />
                       </div>
                       <div className="flex-1">
-                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors">Events & Initiatives</div>
+                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors text-sm">Events & Initiatives</div>
                         <div className="font-body text-xs text-gray-500">Upcoming events and campaigns</div>
                       </div>
                     </Link>
                     <Link 
                       to="/knowledge-hub" 
-                      className="flex items-start gap-3 px-5 py-2.5 hover:bg-primary transition-all duration-300 group"
+                      className="flex items-center gap-3 px-4 py-2.5 hover:bg-primary/50 transition-all duration-300 group"
                       onClick={() => setExploreOpen(false)}
                     >
-                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center group-hover:bg-white transition-colors">
                         <FiBookOpen className="text-secondary text-sm" />
                       </div>
                       <div className="flex-1">
-                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors">Knowledge Hub</div>
+                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors text-sm">Knowledge Hub</div>
                         <div className="font-body text-xs text-gray-500">Reports, research & case studies</div>
                       </div>
                     </Link>
                     <Link 
                       to="/board-management" 
-                      className="flex items-start gap-3 px-5 py-2.5 hover:bg-primary transition-all duration-300 group"
+                      className="flex items-center gap-3 px-4 py-2.5 hover:bg-primary/50 transition-all duration-300 group"
                       onClick={() => setExploreOpen(false)}
                     >
-                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center group-hover:bg-white transition-colors">
                         <FiTrendingUp className="text-secondary text-sm" />
                       </div>
                       <div className="flex-1">
-                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors">Board & Management</div>
+                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors text-sm">Board & Management</div>
                         <div className="font-body text-xs text-gray-500">Our leadership team</div>
                       </div>
                     </Link>
                     <Link 
                       to="/digital-media" 
-                      className="flex items-start gap-3 px-5 py-2.5 hover:bg-primary transition-all duration-300 group"
+                      className="flex items-center gap-3 px-4 py-2.5 hover:bg-primary/50 transition-all duration-300 group"
                       onClick={() => setExploreOpen(false)}
                     >
-                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center group-hover:bg-white transition-colors">
                         <FiVideo className="text-secondary text-sm" />
                       </div>
                       <div className="flex-1">
-                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors">Digital Media</div>
+                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors text-sm">Digital Media</div>
                         <div className="font-body text-xs text-gray-500">Videos, photos & social media</div>
                       </div>
                     </Link>
                     <Link 
                       to="/certificates" 
-                      className="flex items-start gap-3 px-5 py-2.5 hover:bg-primary transition-all duration-300 group"
+                      className="flex items-center gap-3 px-4 py-2.5 hover:bg-primary/50 transition-all duration-300 group"
                       onClick={() => setExploreOpen(false)}
                     >
-                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center group-hover:bg-white transition-colors">
                         <FiAward className="text-secondary text-sm" />
                       </div>
                       <div className="flex-1">
-                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors">Statutory Certificates</div>
+                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors text-sm">Statutory Certificates</div>
                         <div className="font-body text-xs text-gray-500">Government approvals & registrations</div>
                       </div>
                     </Link>
                     <Link 
                       to="/compliance" 
-                      className="flex items-start gap-3 px-5 py-2.5 hover:bg-primary transition-all duration-300 group"
+                      className="flex items-center gap-3 px-4 py-2.5 hover:bg-primary/50 transition-all duration-300 group"
                       onClick={() => setExploreOpen(false)}
                     >
-                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center group-hover:bg-white transition-colors">
                         <FiShield className="text-secondary text-sm" />
                       </div>
                       <div className="flex-1">
-                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors">Compliance & Governance</div>
+                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors text-sm">Compliance & Governance</div>
                         <div className="font-body text-xs text-gray-500">Legal & regulatory compliance</div>
                       </div>
                     </Link>
@@ -283,7 +283,7 @@ const Header = () => {
               </div>
             </nav>
 
-            {/* CTA BUTTONS - Fixed alignment for Login button */}
+            {/* CTA BUTTONS */}
             <div className="hidden md:flex items-center space-x-3">
               <Link 
                 to="/donate"
@@ -306,10 +306,10 @@ const Header = () => {
                 className={`px-4 py-1.5 rounded-full font-body font-semibold text-xs tracking-wide transition-all duration-300 hover:shadow-md hover:scale-105 active:scale-95 ${
                   !scrolled 
                     ? 'bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 border border-white/30' 
-                    : 'bg-primary/80 text-gray-800 hover:bg-primary border border-gray-200'
+                    : 'bg-secondary text-white hover:bg-primary border border-gray-200'
                 }`}
               >
-                Login
+                LOGIN
               </Link>
             </div>
 
@@ -354,28 +354,28 @@ const Header = () => {
                   </NavLink>
                 ))}
 
-                {/* GET INVOLVED - Mobile */}
+                {/* GET INVOLVED - Mobile with separate page navigation */}
                 <div className="pt-3">
                   <div className="font-body font-bold text-secondary mb-2 px-4 flex items-center gap-2">
                     <FiHeart className="text-sm" /> Get Involved
                   </div>
                   <div className="ml-4 space-y-2 border-l-2 border-secondary/30 pl-4">
                     <Link 
-                      to="/get-involved#individual" 
+                      to="/get-involved/individual"
                       onClick={() => setIsOpen(false)}
                       className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-800 hover:bg-primary transition-all duration-300 font-body text-sm"
                     >
                       <FiHeart className="text-secondary text-sm" /> Individual Support
                     </Link>
                     <Link 
-                      to="/get-involved#corporate" 
+                      to="/get-involved/corporate"
                       onClick={() => setIsOpen(false)}
                       className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-800 hover:bg-primary transition-all duration-300 font-body text-sm"
                     >
                       <FiBriefcase className="text-secondary text-sm" /> Corporate Partnership
                     </Link>
                     <Link 
-                      to="/get-involved#volunteer" 
+                      to="/get-involved/volunteer"
                       onClick={() => setIsOpen(false)}
                       className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-800 hover:bg-primary transition-all duration-300 font-body text-sm"
                     >
@@ -454,9 +454,9 @@ const Header = () => {
                   <Link 
                     to="/login" 
                     onClick={() => setIsOpen(false)}
-                    className="text-center px-5 py-2.5 rounded-full bg-primary/80 text-gray-800 font-body font-semibold text-sm transition-all duration-300 hover:bg-primary border border-gray-200"
+                    className="text-center px-5 py-2.5 rounded-full bg-secondary text-gray-800 font-body font-semibold text-sm transition-all duration-300 hover:bg-secondary border border-gray-200"
                   >
-                    Login
+                    LOGIN
                   </Link>
                 </div>
               </div>
@@ -464,6 +464,23 @@ const Header = () => {
           </div>
         </div>
       </header>
+
+      {/* Animation keyframes for dropdown */}
+      <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fadeInUp {
+          animation: fadeInUp 0.2s ease-out forwards;
+        }
+      `}</style>
     </>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Header from './components/Layout/Header';
@@ -17,7 +17,11 @@ import StatutoryCertificates from './components/Certificates/StatutoryCertificat
 import GetInTouch from './components/Contact/GetInTouch';
 import DonateNow from './components/Donate/DonateNow';
 import ScheduleMeeting from './components/Schedule/ScheduleMeeting';
-import EventsInitiatives from './components/Events/EventsInitiatives'; // Add this import
+import EventsInitiatives from './components/Events/EventsInitiatives';
+// Import individual Get Involved components
+import IndividualSupport from './components/GetInvolved/IndividualSupport';
+import CorporatePartnership from './components/GetInvolved/CorporatePartnership';
+import VolunteerForm from './components/GetInvolved/VolunteerForm';
 
 function App() {
   useEffect(() => {
@@ -39,14 +43,20 @@ function App() {
           <Route path="/csr-projects" element={<CSRProjects />} />
           <Route path="/compliance" element={<ComplianceGovernance />} />
           <Route path="/board-management" element={<BoardManagement />} />
-          <Route path="/get-involved" element={<GetInvolved />} />
+          
+          {/* Get Involved Routes - Separate Pages */}
+          <Route path="/get-involved/individual" element={<IndividualSupport />} />
+          <Route path="/get-involved/corporate" element={<CorporatePartnership />} />
+          <Route path="/get-involved/volunteer" element={<VolunteerForm />} />
+          <Route path="/get-involved" element={<Navigate to="/get-involved/individual" replace />} />
+          
           <Route path="/knowledge-hub" element={<KnowledgeHub />} />
           <Route path="/digital-media" element={<DigitalMedia />} />
           <Route path="/certificates" element={<StatutoryCertificates />} />
           <Route path="/contact" element={<GetInTouch />} />
           <Route path="/donate" element={<DonateNow />} />
           <Route path="/schedule-meeting" element={<ScheduleMeeting />} />
-          <Route path="/events" element={<EventsInitiatives />} /> {/* Add this route */}
+          <Route path="/events" element={<EventsInitiatives />} />
         </Routes>
       </main>
       <Footer />
