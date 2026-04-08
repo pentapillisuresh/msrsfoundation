@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, EffectFade, Navigation } from 'swiper/modules';
 import 'swiper/css';
@@ -11,6 +11,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 const Hero = () => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
+  const [swiperInstance, setSwiperInstance] = useState(null);
 
   const banners = [
     {
@@ -50,12 +51,25 @@ const Hero = () => {
     },
     {
       id: 6,
-      image: './images/globe.jpg',
+      image: './images/hands.jpg',
       title: 'Trust & CSR Partnership',
       subtitle: 'Collaborating for Sustainable Impact',
       description: 'Join hands with us for meaningful change',
     },
   ];
+
+  // Handle navigation clicks
+  const handlePrev = () => {
+    if (swiperInstance) {
+      swiperInstance.slidePrev();
+    }
+  };
+
+  const handleNext = () => {
+    if (swiperInstance) {
+      swiperInstance.slideNext();
+    }
+  };
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
@@ -314,10 +328,14 @@ const Hero = () => {
           prevEl: prevRef.current,
           nextEl: nextRef.current,
         }}
-        onBeforeInit={(swiper) => {
+        onSwiper={(swiper) => {
+          setSwiperInstance(swiper);
+          // Set navigation buttons after swiper is initialized
           if (swiper.params.navigation) {
             swiper.params.navigation.prevEl = prevRef.current;
             swiper.params.navigation.nextEl = nextRef.current;
+            swiper.navigation.init();
+            swiper.navigation.update();
           }
         }}
         autoplay={{ 
@@ -343,9 +361,6 @@ const Hero = () => {
               <div className="relative z-10 flex items-center justify-center h-full text-center px-6">
                 <div className="max-w-3xl hero-content">
                   
-                  {/* Category Tag */}
-                 
-                  
                   <h1 className="hero-title text-white text-4xl md:text-5xl lg:text-6xl font-bold mb-3 leading-[1.2]">
                     {banner.title}
                   </h1>
@@ -353,10 +368,6 @@ const Hero = () => {
                   <h2 className="hero-subtitle text-white/90 text-xl md:text-2xl lg:text-3xl mb-5 font-medium tracking-wide">
                     {banner.subtitle}
                   </h2>
-
-                  {/* <p className="hero-description text-white/75 text-base md:text-lg mb-7 max-w-2xl mx-auto">
-                    {banner.description}
-                  </p> */}
 
                   <div className="flex flex-wrap gap-4 justify-center">
                     <Link to="/donate" className="btn-primary">
@@ -380,6 +391,7 @@ const Hero = () => {
         ref={prevRef}
         className="custom-swiper-button-prev"
         aria-label="Previous slide"
+        onClick={handlePrev}
       >
         <FiChevronLeft size={22} strokeWidth={2} />
       </button>
@@ -388,6 +400,7 @@ const Hero = () => {
         ref={nextRef}
         className="custom-swiper-button-next"
         aria-label="Next slide"
+        onClick={handleNext}
       >
         <FiChevronRight size={22} strokeWidth={2} />
       </button>
