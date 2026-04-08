@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { FiMenu, FiX, FiChevronDown, FiHeart, FiCalendar, FiUsers, FiBriefcase, FiBookOpen, FiAward, FiShield, FiVideo, FiTrendingUp } from 'react-icons/fi';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { FiMenu, FiX, FiChevronDown, FiHeart, FiCalendar, FiUsers, FiBriefcase, FiBookOpen, FiAward, FiShield, FiVideo, FiTrendingUp, FiFileText } from 'react-icons/fi';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,6 +10,7 @@ const Header = () => {
   
   const dropdownTimeoutRef = useRef(null);
   const exploreTimeoutRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,6 +56,42 @@ const Header = () => {
     { name: 'CSR Projects', path: '/csr-projects' },
     { name: 'Contact', path: '/contact' },
   ];
+
+  const handleStatutoryCertificatesClick = (e) => {
+    e.preventDefault();
+    const storedUser = localStorage.getItem('msrs_verified_user');
+    if (storedUser) {
+      navigate('/certificates');
+    } else {
+      navigate('/certificates', { state: { showVerification: true } });
+    }
+    setExploreOpen(false);
+    setIsOpen(false);
+  };
+
+  const handleComplianceClick = (e) => {
+    e.preventDefault();
+    const storedUser = localStorage.getItem('msrs_verified_user');
+    if (storedUser) {
+      navigate('/compliance');
+    } else {
+      navigate('/compliance', { state: { showVerification: true } });
+    }
+    setExploreOpen(false);
+    setIsOpen(false);
+  };
+
+  const handleAuditReportsClick = (e) => {
+    e.preventDefault();
+    const storedUser = localStorage.getItem('msrs_verified_user');
+    if (storedUser) {
+      navigate('/audit-reports');
+    } else {
+      navigate('/audit-reports', { state: { showVerification: true } });
+    }
+    setExploreOpen(false);
+    setIsOpen(false);
+  };
 
   return (
     <>
@@ -252,10 +289,9 @@ const Header = () => {
                         <div className="font-body text-xs text-gray-500">Videos, photos & social media</div>
                       </div>
                     </Link>
-                    <Link 
-                      to="/certificates" 
-                      className="flex items-center gap-3 px-4 py-2.5 hover:bg-primary/50 transition-all duration-300 group"
-                      onClick={() => setExploreOpen(false)}
+                    <button 
+                      onClick={handleStatutoryCertificatesClick}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-primary/50 transition-all duration-300 group text-left"
                     >
                       <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center group-hover:bg-white transition-colors">
                         <FiAward className="text-secondary text-sm" />
@@ -264,11 +300,10 @@ const Header = () => {
                         <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors text-sm">Statutory Certificates</div>
                         <div className="font-body text-xs text-gray-500">Government approvals & registrations</div>
                       </div>
-                    </Link>
-                    <Link 
-                      to="/compliance" 
-                      className="flex items-center gap-3 px-4 py-2.5 hover:bg-primary/50 transition-all duration-300 group"
-                      onClick={() => setExploreOpen(false)}
+                    </button>
+                    <button 
+                      onClick={handleComplianceClick}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-primary/50 transition-all duration-300 group text-left"
                     >
                       <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center group-hover:bg-white transition-colors">
                         <FiShield className="text-secondary text-sm" />
@@ -277,7 +312,19 @@ const Header = () => {
                         <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors text-sm">Compliance & Governance</div>
                         <div className="font-body text-xs text-gray-500">Legal & regulatory compliance</div>
                       </div>
-                    </Link>
+                    </button>
+                    <button 
+                      onClick={handleAuditReportsClick}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-primary/50 transition-all duration-300 group text-left"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center group-hover:bg-white transition-colors">
+                        <FiFileText className="text-secondary text-sm" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-body font-semibold text-gray-800 group-hover:text-secondary transition-colors text-sm">Audit & Annual Reports</div>
+                        <div className="font-body text-xs text-gray-500">Financial and compliance reports</div>
+                      </div>
+                    </button>
                   </div>
                 )}
               </div>
@@ -302,14 +349,14 @@ const Header = () => {
                 MEETING
               </Link>
               <Link 
-                to="/login"
+                to="/get-involved/volunteer"
                 className={`px-4 py-1.5 rounded-full font-body font-semibold text-xs tracking-wide transition-all duration-300 hover:shadow-md hover:scale-105 active:scale-95 ${
                   !scrolled 
                     ? 'bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 border border-white/30' 
                     : 'bg-secondary text-white hover:bg-primary border border-gray-200'
                 }`}
               >
-                LOGIN
+                VOLUNTEER LOGIN
               </Link>
             </div>
 
@@ -418,20 +465,24 @@ const Header = () => {
                     >
                       <FiVideo className="text-secondary text-sm" /> Digital Media
                     </Link>
-                    <Link 
-                      to="/certificates" 
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-800 hover:bg-primary transition-all duration-300 font-body text-sm"
+                    <button 
+                      onClick={handleStatutoryCertificatesClick}
+                      className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-gray-800 hover:bg-primary transition-all duration-300 font-body text-sm text-left"
                     >
                       <FiAward className="text-secondary text-sm" /> Statutory Certificates
-                    </Link>
-                    <Link 
-                      to="/compliance" 
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-800 hover:bg-primary transition-all duration-300 font-body text-sm"
+                    </button>
+                    <button 
+                      onClick={handleComplianceClick}
+                      className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-gray-800 hover:bg-primary transition-all duration-300 font-body text-sm text-left"
                     >
                       <FiShield className="text-secondary text-sm" /> Compliance & Governance
-                    </Link>
+                    </button>
+                    <button 
+                      onClick={handleAuditReportsClick}
+                      className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-gray-800 hover:bg-primary transition-all duration-300 font-body text-sm text-left"
+                    >
+                      <FiFileText className="text-secondary text-sm" /> Audit & Annual Reports
+                    </button>
                   </div>
                 </div>
 

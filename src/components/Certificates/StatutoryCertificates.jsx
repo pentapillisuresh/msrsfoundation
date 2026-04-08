@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   FiFileText, FiEye, FiCheckCircle, FiArrowRight,
   FiShield, FiAward, FiStar, FiTrendingUp, FiUsers, FiGlobe,
@@ -8,8 +8,11 @@ import {
 import { FaRegFilePdf, FaRegFileAlt, FaCertificate, FaShieldAlt } from 'react-icons/fa';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import VerificationPopup from '../../pages/VerificationPopup';
 
 const StatutoryCertificates = () => {
+  const location = useLocation();
+  
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -19,23 +22,27 @@ const StatutoryCertificates = () => {
     });
   }, []);
 
-  const [selectedCert, setSelectedCert] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    isIndian: true,
-    countryName: '',
-    state: '',
-    district: '',
-    otp: '',
-    isOtpVerified: false,
-    showCertificate: false
-  });
-  const [generatedOtp, setGeneratedOtp] = useState('');
+  const [showVerificationPopup, setShowVerificationPopup] = useState(false);
   const [selectedCertData, setSelectedCertData] = useState(null);
+  const [isVerified, setIsVerified] = useState(false);
+  const [userData, setUserData] = useState(null);
+
+  // Check if user is already verified from localStorage on component mount
+  useEffect(() => {
+    const storedUser = localStorage.getItem('msrs_verified_user');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      setUserData(user);
+      setIsVerified(true);
+      // Don't show popup if already verified
+    } else {
+      // Only check for popup trigger if user is NOT verified
+      if (location.state?.showVerification) {
+        setShowVerificationPopup(true);
+      }
+    }
+  }, [location.state]);
 
   // Indian states and districts data
   const indiaData = {
@@ -80,140 +87,47 @@ const StatutoryCertificates = () => {
     { number: "5+", label: "Tax Benefits", icon: <FiAward />, delay: 400 }
   ];
 
-  const handlePreview = (cert) => {
-    setSelectedCertData(cert);
-    setShowForm(true);
-    setShowModal(false);
-    // Reset form data
-    setFormData({
-      name: '',
-      phone: '',
-      email: '',
-      isIndian: true,
-      countryName: '',
-      state: '',
-      district: '',
-      otp: '',
-      isOtpVerified: false,
-      showCertificate: false
-    });
-    setGeneratedOtp('');
+  const handleViewCertificate = (cert) => {
+    if (isVerified && userData) {
+      // If already verified, show certificate directly
+      setSelectedCertData({ ...cert, userData });
+      setShowModal(true);
+    } else {
+      // Show verification popup first
+      setSelectedCertData(cert);
+      setShowVerificationPopup(true);
+    }
+  };
+
+  const handleVerificationSuccess = (userInfo) => {
+    setUserData(userInfo);
+    setIsVerified(true);
+    setShowVerificationPopup(false);
+    
+    // If we have a selected certificate, show it
+    if (selectedCertData) {
+      setSelectedCertData({ ...selectedCertData, userData: userInfo });
+      setShowModal(true);
+    }
   };
 
   const closeModal = () => {
     setShowModal(false);
-    setSelectedCert(null);
-  };
-
-  const closeForm = () => {
-    setShowForm(false);
     setSelectedCertData(null);
-    setFormData({
-      name: '',
-      phone: '',
-      email: '',
-      isIndian: true,
-      countryName: '',
-      state: '',
-      district: '',
-      otp: '',
-      isOtpVerified: false,
-      showCertificate: false
-    });
-    setGeneratedOtp('');
   };
 
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
+  const closeVerificationPopup = () => {
+    setShowVerificationPopup(false);
+    setSelectedCertData(null);
   };
 
-  const sendOtp = () => {
-    // Validate phone number
-    if (!formData.phone || formData.phone.length < 10) {
-      alert('Please enter a valid 10-digit phone number');
-      return;
-    }
-    
-    // Generate random 6-digit OTP
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    setGeneratedOtp(otp);
-    
-    // In a real application, you would send this OTP via SMS
-    // For demo purposes, we'll show it in an alert
-    alert(`Your OTP is: ${otp}\n(This is a demo - in production, this would be sent via SMS to ${formData.phone})`);
+  // Function to clear user data (for testing - can be removed in production)
+  const clearUserData = () => {
+    localStorage.removeItem('msrs_verified_user');
+    setIsVerified(false);
+    setUserData(null);
+    alert('User data cleared. You will need to verify again.');
   };
-
-  const verifyOtp = () => {
-    if (formData.otp === generatedOtp) {
-      setFormData(prev => ({ ...prev, isOtpVerified: true }));
-      alert('OTP verified successfully!');
-    } else {
-      alert('Invalid OTP. Please try again.');
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // Basic validation
-    if (!formData.name || !formData.phone || !formData.email) {
-      alert('Please fill in all required fields');
-      return;
-    }
-    
-    if (!formData.isIndian && !formData.countryName) {
-      alert('Please enter your country name');
-      return;
-    }
-    
-    if (formData.isIndian && (!formData.state || !formData.district)) {
-      alert('Please select state and district');
-      return;
-    }
-    
-    if (!formData.isOtpVerified) {
-      alert('Please verify your phone number with OTP');
-      return;
-    }
-    
-    // Show certificate
-    setFormData(prev => ({ ...prev, showCertificate: true }));
-  };
-
-  // Prevent right-click and keyboard shortcuts for screenshot
-  useEffect(() => {
-    const preventScreenshot = (e) => {
-      // Prevent right-click
-      if (e.type === 'contextmenu') {
-        e.preventDefault();
-        return false;
-      }
-      // Prevent print screen and save shortcuts
-      if (e.type === 'keydown') {
-        if (e.key === 'PrintScreen' || 
-            (e.ctrlKey && (e.key === 'p' || e.key === 's' || e.key === 'PrintScreen')) ||
-            (e.metaKey && (e.key === 'p' || e.key === 's'))) {
-          e.preventDefault();
-          alert('Screenshots are disabled for certificate security');
-          return false;
-        }
-      }
-    };
-
-    if (formData.showCertificate) {
-      document.addEventListener('contextmenu', preventScreenshot);
-      document.addEventListener('keydown', preventScreenshot);
-    }
-
-    return () => {
-      document.removeEventListener('contextmenu', preventScreenshot);
-      document.removeEventListener('keydown', preventScreenshot);
-    };
-  }, [formData.showCertificate]);
 
   return (
     <div className="pt-24 overflow-x-hidden">
@@ -501,6 +415,12 @@ const StatutoryCertificates = () => {
             <p className="text-[#4A5C46] max-w-2xl mx-auto text-sm">
               Click on View to see the certificate image
             </p>
+            {/* Optional: Show verification status */}
+            {isVerified && (
+              <div className="mt-4 inline-block bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm">
+                ✓ Verified User: {userData?.name}
+              </div>
+            )}
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -527,7 +447,7 @@ const StatutoryCertificates = () => {
                     </div>
                   </div>
                   <button 
-                    onClick={() => handlePreview(cert)}
+                    onClick={() => handleViewCertificate(cert)}
                     className="px-4 py-2 bg-[#667A62] text-white rounded-lg hover:bg-[#4A5C46] transition-all flex items-center gap-2 text-sm font-semibold"
                   >
                     <FiEye size={16} /> View
@@ -614,336 +534,135 @@ const StatutoryCertificates = () => {
         </div>
       </section>
 
-      {/* Verification Form Modal */}
-      {showForm && (
-        <div className="modal-overlay" onClick={closeForm}>
+      {/* Certificate Modal */}
+      {showModal && selectedCertData && (
+        <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content bg-white rounded-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            {!formData.showCertificate ? (
-              <>
-                <div className="bg-gradient-to-r from-[#667A62] to-[#4A5C46] p-5 text-white sticky top-0">
-                  <div className="flex items-center gap-3">
-                    <FaCertificate className="text-2xl" />
-                    <div>
-                      <h3 className="text-lg font-bold">Verify to View Certificate</h3>
-                      <p className="text-xs opacity-90">{selectedCertData?.title}</p>
-                    </div>
+            <div className="bg-gradient-to-r from-[#667A62] to-[#4A5C46] p-4 text-white sticky top-0">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <FaCertificate className="text-2xl" />
+                  <div>
+                    <h3 className="text-lg font-bold">Certificate Image</h3>
+                    <p className="text-xs opacity-90">{selectedCertData?.title}</p>
                   </div>
-                  <button onClick={closeForm} className="absolute top-4 right-4 w-7 h-7 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition">
-                    <FiX size={16} />
-                  </button>
+                </div>
+                <button onClick={closeModal} className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition">
+                  <FiX size={18} />
+                </button>
+              </div>
+            </div>
+            
+            <div className="p-6">
+              {/* Certificate Image with Security Features */}
+              <div className="certificate-watermark disable-select relative bg-gradient-to-br from-amber-50 to-yellow-50 rounded-xl overflow-hidden shadow-2xl border-4 border-[#667A62]">
+                <div className="absolute inset-0 opacity-5 pointer-events-none">
+                  <div className="absolute top-0 left-0 w-32 h-32 border-t-8 border-l-8 border-[#667A62]"></div>
+                  <div className="absolute bottom-0 right-0 w-32 h-32 border-b-8 border-r-8 border-[#667A62]"></div>
                 </div>
                 
-                <form onSubmit={handleSubmit} className="p-6 space-y-5">
-                  {/* Name */}
-                  <div>
-                    <label className="block text-sm font-semibold text-[#2C3E2B] mb-2">Full Name *</label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#667A62] focus:border-transparent"
-                      placeholder="Enter your full name"
-                      required
+                <div className="bg-[#667A62] text-white p-4 text-center">
+                  <h2 className="text-2xl font-bold">MSRS FOUNDATION</h2>
+                  <p className="text-sm opacity-90">Certificate of Verification</p>
+                </div>
+                
+                <div className="p-8 text-center">
+                  <div className="mb-6">
+                    <img 
+                      src="https://cdn-icons-png.flaticon.com/512/1903/1903664.png" 
+                      alt="Seal" 
+                      className="w-20 h-20 mx-auto opacity-80"
                     />
                   </div>
                   
-                  {/* Phone Number */}
-                  <div>
-                    <label className="block text-sm font-semibold text-[#2C3E2B] mb-2">Phone Number *</label>
-                    <div className="flex gap-2">
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#667A62] focus:border-transparent"
-                        placeholder="Enter 10-digit mobile number"
-                        maxLength="10"
-                        required
-                      />
-                      {!formData.isOtpVerified && (
-                        <button
-                          type="button"
-                          onClick={sendOtp}
-                          className="px-4 py-2 bg-[#667A62] text-white rounded-lg hover:bg-[#4A5C46] transition text-sm font-semibold"
-                        >
-                          Send OTP
-                        </button>
-                      )}
-                    </div>
+                  <p className="text-gray-600 mb-4">This is to certify that</p>
+                  
+                  <h3 className="text-2xl font-bold text-[#2C3E2B] mb-2 border-b-2 border-[#667A62] inline-block pb-2">
+                    {selectedCertData.userData?.name || userData?.name || 'Verified User'}
+                  </h3>
+                  
+                  <p className="text-gray-600 mt-6 mb-4">has successfully verified the following document:</p>
+                  
+                  <div className="bg-white rounded-lg p-4 mb-6 shadow-md">
+                    <p className="font-bold text-[#667A62] text-lg">{selectedCertData?.title}</p>
+                    <p className="text-sm text-gray-500">{selectedCertData?.description}</p>
                   </div>
                   
-                  {/* OTP Section */}
-                  {!formData.isOtpVerified && generatedOtp && (
-                    <div>
-                      <label className="block text-sm font-semibold text-[#2C3E2B] mb-2">Enter OTP</label>
-                      <div className="flex gap-2">
-                        <input
-                          type="text"
-                          name="otp"
-                          value={formData.otp}
-                          onChange={handleInputChange}
-                          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#667A62] focus:border-transparent"
-                          placeholder="Enter 6-digit OTP"
-                          maxLength="6"
-                        />
-                        <button
-                          type="button"
-                          onClick={verifyOtp}
-                          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-semibold"
-                        >
-                          Verify OTP
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* OTP Verified Message */}
-                  {formData.isOtpVerified && (
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-2 text-center">
-                      <p className="text-green-600 text-sm font-semibold">✓ Phone number verified successfully!</p>
-                    </div>
-                  )}
-                  
-                  {/* Email */}
-                  <div>
-                    <label className="block text-sm font-semibold text-[#2C3E2B] mb-2">Email Address *</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#667A62] focus:border-transparent"
-                      placeholder="Enter your email address"
-                      required
+                  <div className="my-6 border-2 border-gray-200 rounded-lg overflow-hidden">
+                    <img 
+                      src={selectedCertData?.imageUrl}
+                      alt={selectedCertData?.title}
+                      className="w-full h-auto object-cover"
+                      draggable="false"
+                      onContextMenu={(e) => e.preventDefault()}
                     />
                   </div>
                   
-                  {/* Indian or Non-Indian */}
-                  <div>
-                    <label className="block text-sm font-semibold text-[#2C3E2B] mb-2">Are you an Indian citizen? *</label>
-                    <div className="flex gap-4">
-                      <label className="flex items-center gap-2">
-                        <input
-                          type="radio"
-                          name="isIndian"
-                          value="true"
-                          checked={formData.isIndian === true}
-                          onChange={() => setFormData(prev => ({ ...prev, isIndian: true, countryName: '' }))}
-                          className="w-4 h-4 text-[#667A62]"
-                        />
-                        <span className="text-sm">Yes</span>
-                      </label>
-                      <label className="flex items-center gap-2">
-                        <input
-                          type="radio"
-                          name="isIndian"
-                          value="false"
-                          checked={formData.isIndian === false}
-                          onChange={() => setFormData(prev => ({ ...prev, isIndian: false, state: '', district: '' }))}
-                          className="w-4 h-4 text-[#667A62]"
-                        />
-                        <span className="text-sm">No</span>
-                      </label>
+                  <div className="grid grid-cols-2 gap-4 text-sm text-left mt-6 p-4 bg-gray-50 rounded-lg">
+                    <div>
+                      <span className="text-gray-500">Certificate Number:</span>
+                      <p className="font-semibold text-xs">{Math.random().toString(36).substr(2, 10).toUpperCase()}</p>
+                    </div>
+                    <div>
+                      <span className="text-gray-500">Date of Issue:</span>
+                      <p className="font-semibold">{new Date().toLocaleDateString()}</p>
+                    </div>
+                    <div>
+                      <span className="text-gray-500">Location:</span>
+                      <p className="font-semibold text-sm">
+                        {selectedCertData.userData?.isIndian 
+                          ? `${selectedCertData.userData?.state}, ${selectedCertData.userData?.district}, India`
+                          : selectedCertData.userData?.countryName || 'India'}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="text-gray-500">Email:</span>
+                      <p className="font-semibold text-xs">{selectedCertData.userData?.email || userData?.email}</p>
                     </div>
                   </div>
                   
-                  {/* Country Name for Non-Indian */}
-                  {!formData.isIndian && (
-                    <div>
-                      <label className="block text-sm font-semibold text-[#2C3E2B] mb-2">Country Name *</label>
-                      <input
-                        type="text"
-                        name="countryName"
-                        value={formData.countryName}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#667A62] focus:border-transparent"
-                        placeholder="Enter your country name"
-                        required={!formData.isIndian}
-                      />
+                  <div className="mt-6 flex justify-center">
+                    <div className="w-24 h-24 bg-gray-200 flex items-center justify-center text-xs text-gray-500 rounded">
+                      QR Code
                     </div>
-                  )}
+                  </div>
                   
-                  {/* State and District for Indian */}
-                  {formData.isIndian && (
-                    <>
-                      <div>
-                        <label className="block text-sm font-semibold text-[#2C3E2B] mb-2">State *</label>
-                        <select
-                          name="state"
-                          value={formData.state}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#667A62] focus:border-transparent"
-                          required={formData.isIndian}
-                        >
-                          <option value="">Select State</option>
-                          {Object.keys(indiaData).map(state => (
-                            <option key={state} value={state}>{state}</option>
-                          ))}
-                        </select>
-                      </div>
-                      
-                      {formData.state && (
-                        <div>
-                          <label className="block text-sm font-semibold text-[#2C3E2B] mb-2">District *</label>
-                          <select
-                            name="district"
-                            value={formData.district}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#667A62] focus:border-transparent"
-                            required={formData.isIndian}
-                          >
-                            <option value="">Select District</option>
-                            {indiaData[formData.state]?.map(district => (
-                              <option key={district} value={district}>{district}</option>
-                            ))}
-                          </select>
-                        </div>
-                      )}
-                    </>
-                  )}
-                  
-                  <button
-                    type="submit"
-                    disabled={!formData.isOtpVerified}
-                    className={`w-full py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${
-                      formData.isOtpVerified
-                        ? 'bg-[#667A62] text-white hover:bg-[#4A5C46]'
-                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    }`}
-                  >
-                    <FiCheckCircle size={18} /> View Certificate
-                  </button>
-                </form>
-              </>
-            ) : (
-              <>
-                <div className="bg-gradient-to-r from-[#667A62] to-[#4A5C46] p-4 text-white sticky top-0">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <FaCertificate className="text-2xl" />
-                      <div>
-                        <h3 className="text-lg font-bold">Certificate Image</h3>
-                        <p className="text-xs opacity-90">{selectedCertData?.title}</p>
-                      </div>
-                    </div>
-                    <button onClick={closeForm} className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition">
-                      <FiX size={18} />
-                    </button>
+                  <div className="border-t border-gray-200 pt-4 mt-6">
+                    <p className="text-center text-xs text-gray-400">
+                      This is a digitally verified certificate. For verification, scan the QR code.
+                    </p>
+                    <p className="text-center text-xs text-gray-400 mt-1">
+                      *Screenshots are disabled for security purposes*
+                    </p>
                   </div>
                 </div>
                 
-                <div className="p-6">
-                  {/* Certificate Image with Security Features */}
-                  <div className="certificate-watermark disable-select relative bg-gradient-to-br from-amber-50 to-yellow-50 rounded-xl overflow-hidden shadow-2xl border-4 border-[#667A62]">
-                    {/* Security Pattern */}
-                    <div className="absolute inset-0 opacity-5 pointer-events-none">
-                      <div className="absolute top-0 left-0 w-32 h-32 border-t-8 border-l-8 border-[#667A62]"></div>
-                      <div className="absolute bottom-0 right-0 w-32 h-32 border-b-8 border-r-8 border-[#667A62]"></div>
-                    </div>
-                    
-                    {/* Certificate Header */}
-                    <div className="bg-[#667A62] text-white p-4 text-center">
-                      <h2 className="text-2xl font-bold">MSRS FOUNDATION</h2>
-                      <p className="text-sm opacity-90">Certificate of Verification</p>
-                    </div>
-                    
-                    {/* Certificate Content */}
-                    <div className="p-8 text-center">
-                      <div className="mb-6">
-                        <img 
-                          src="https://cdn-icons-png.flaticon.com/512/1903/1903664.png" 
-                          alt="Seal" 
-                          className="w-20 h-20 mx-auto opacity-80"
-                        />
-                      </div>
-                      
-                      <p className="text-gray-600 mb-4">This is to certify that</p>
-                      
-                      <h3 className="text-2xl font-bold text-[#2C3E2B] mb-2 border-b-2 border-[#667A62] inline-block pb-2">
-                        {formData.name}
-                      </h3>
-                      
-                      <p className="text-gray-600 mt-6 mb-4">has successfully verified the following document:</p>
-                      
-                      <div className="bg-white rounded-lg p-4 mb-6 shadow-md">
-                        <p className="font-bold text-[#667A62] text-lg">{selectedCertData?.title}</p>
-                        <p className="text-sm text-gray-500">{selectedCertData?.description}</p>
-                      </div>
-                      
-                      {/* Certificate Image */}
-                      <div className="my-6 border-2 border-gray-200 rounded-lg overflow-hidden">
-                        <img 
-                          src={selectedCertData?.imageUrl}
-                          alt={selectedCertData?.title}
-                          className="w-full h-auto object-cover"
-                          draggable="false"
-                          onContextMenu={(e) => e.preventDefault()}
-                        />
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-4 text-sm text-left mt-6 p-4 bg-gray-50 rounded-lg">
-                        <div>
-                          <span className="text-gray-500">Certificate Number:</span>
-                          <p className="font-semibold text-xs">{Math.random().toString(36).substr(2, 10).toUpperCase()}</p>
-                        </div>
-                        <div>
-                          <span className="text-gray-500">Date of Issue:</span>
-                          <p className="font-semibold">{new Date().toLocaleDateString()}</p>
-                        </div>
-                        <div>
-                          <span className="text-gray-500">Location:</span>
-                          <p className="font-semibold text-sm">
-                            {formData.isIndian 
-                              ? `${formData.state}, ${formData.district}, India`
-                              : formData.countryName}
-                          </p>
-                        </div>
-                        <div>
-                          <span className="text-gray-500">Email:</span>
-                          <p className="font-semibold text-xs">{formData.email}</p>
-                        </div>
-                      </div>
-                      
-                      {/* QR Code Placeholder */}
-                      <div className="mt-6 flex justify-center">
-                        <div className="w-24 h-24 bg-gray-200 flex items-center justify-center text-xs text-gray-500">
-                          QR Code
-                        </div>
-                      </div>
-                      
-                      <div className="border-t border-gray-200 pt-4 mt-6">
-                        <p className="text-center text-xs text-gray-400">
-                          This is a digitally verified certificate. For verification, scan the QR code.
-                        </p>
-                        <p className="text-center text-xs text-gray-400 mt-1">
-                          *Screenshots are disabled for security purposes*
-                        </p>
-                      </div>
-                    </div>
-                    
-                    {/* Certificate Footer */}
-                    <div className="bg-[#2C3E2B] text-white p-3 text-center text-xs">
-                      <p>Authorized Signature</p>
-                      <p className="mt-1">MSRS Foundation - Government Registered</p>
-                    </div>
-                  </div>
-                  
-                  {/* Close Button Only - No Download/Screenshot */}
-                  <div className="mt-6">
-                    <button
-                      onClick={closeForm}
-                      className="w-full py-3 bg-[#667A62] text-white rounded-lg font-semibold hover:bg-[#4A5C46] transition flex items-center justify-center gap-2"
-                    >
-                      <FiX size={18} /> Close
-                    </button>
-                  </div>
+                <div className="bg-[#2C3E2B] text-white p-3 text-center text-xs">
+                  <p>Authorized Signature</p>
+                  <p className="mt-1">MSRS Foundation - Government Registered</p>
                 </div>
-              </>
-            )}
+              </div>
+              
+              <div className="mt-6">
+                <button
+                  onClick={closeModal}
+                  className="w-full py-3 bg-[#667A62] text-white rounded-lg font-semibold hover:bg-[#4A5C46] transition flex items-center justify-center gap-2"
+                >
+                  <FiX size={18} /> Close
+                </button>
+              </div>
+            </div>
           </div>
         </div>
+      )}
+
+      {/* Verification Popup - Only show if not verified */}
+      {showVerificationPopup && !isVerified && (
+        <VerificationPopup 
+          onClose={closeVerificationPopup}
+          onSuccess={handleVerificationSuccess}
+          isOpen={showVerificationPopup}
+        />
       )}
     </div>
   );

@@ -22,6 +22,7 @@ import EventsInitiatives from './components/Events/EventsInitiatives';
 import IndividualSupport from './components/GetInvolved/IndividualSupport';
 import CorporatePartnership from './components/GetInvolved/CorporatePartnership';
 import VolunteerForm from './components/GetInvolved/VolunteerForm';
+import AuditReports from "./components/Audit/AuditReports"
 
 function App() {
   useEffect(() => {
@@ -57,6 +58,7 @@ function App() {
           <Route path="/donate" element={<DonateNow />} />
           <Route path="/schedule-meeting" element={<ScheduleMeeting />} />
           <Route path="/events" element={<EventsInitiatives />} />
+          <Route path="/audit-reports" element={<AuditReports />} />
         </Routes>
       </main>
       <Footer />

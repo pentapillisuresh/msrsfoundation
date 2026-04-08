@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { 
   FiUsers, FiClock, FiHeart, FiAward, FiCheckCircle, FiSend, 
   FiUser, FiBriefcase, FiBookOpen, FiTrendingUp, FiArrowRight, 
-  FiStar, FiThumbsUp, FiSmile, FiTarget, FiCalendar, FiMapPin
+  FiStar, FiThumbsUp, FiSmile, FiTarget, FiCalendar, FiMapPin,
+  FiPlus, FiX, FiEdit2
 } from 'react-icons/fi';
 import { FaHandsHelping, FaQuoteLeft, FaChalkboardTeacher, FaFemale, FaTree } from 'react-icons/fa';
 import AOS from 'aos';
@@ -22,18 +23,64 @@ const VolunteerForm = () => {
   const [formData, setFormData] = useState({
     fullName: '', dateOfBirth: '', gender: '', phone: '', email: '',
     address: '', applicationType: '', preferredMode: '',
-    areasOfInterest: [], qualification: '', skills: '',
+    areasOfInterest: [], customArea: '', qualification: '', skills: '',
     startDate: '', duration: '', motivation: '', 
     declaration: false, rules: false
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [showCustomAreaInput, setShowCustomAreaInput] = useState(false);
+  const [customAreaValue, setCustomAreaValue] = useState('');
 
-  const areasList = [
-    'Education & Teaching Support', 'Rural Development Programs', 'Women Empowerment Initiatives',
-    'Health & Awareness Campaigns', 'CSR Project Execution', 'Digital Media & Content Creation'
+  // Comprehensive Education Qualification Options
+  const educationQualifications = [
+    { value: "no_formal", label: "No Formal Education" },
+    { value: "primary", label: "Primary School (Class 1-5)" },
+    { value: "middle", label: "Middle School (Class 6-8)" },
+    { value: "high_school", label: "High School (Class 9-10)" },
+    { value: "higher_secondary", label: "Higher Secondary (Class 11-12)" },
+    { value: "diploma", label: "Diploma / Polytechnic" },
+    { value: "iti", label: "ITI / Vocational Training" },
+    { value: "bachelor_arts", label: "Bachelor of Arts (BA)" },
+    { value: "bachelor_science", label: "Bachelor of Science (BSc)" },
+    { value: "bachelor_commerce", label: "Bachelor of Commerce (BCom)" },
+    { value: "bachelor_engineering", label: "Bachelor of Engineering (BE/BTech)" },
+    { value: "bachelor_technology", label: "Bachelor of Technology (BTech)" },
+    { value: "bachelor_education", label: "Bachelor of Education (BEd)" },
+    { value: "bachelor_law", label: "Bachelor of Laws (LLB)" },
+    { value: "bachelor_pharmacy", label: "Bachelor of Pharmacy (BPharm)" },
+    { value: "bachelor_physiotherapy", label: "Bachelor of Physiotherapy (BPT)" },
+    { value: "bachelor_architecture", label: "Bachelor of Architecture (BArch)" },
+    { value: "bachelor_business", label: "Bachelor of Business Administration (BBA)" },
+    { value: "bachelor_computer", label: "Bachelor of Computer Applications (BCA)" },
+    { value: "bachelor_social_work", label: "Bachelor of Social Work (BSW)" },
+    { value: "master_arts", label: "Master of Arts (MA)" },
+    { value: "master_science", label: "Master of Science (MSc)" },
+    { value: "master_commerce", label: "Master of Commerce (MCom)" },
+    { value: "master_engineering", label: "Master of Engineering (ME/MTech)" },
+    { value: "master_business", label: "Master of Business Administration (MBA)" },
+    { value: "master_computer", label: "Master of Computer Applications (MCA)" },
+    { value: "master_education", label: "Master of Education (MEd)" },
+    { value: "master_law", label: "Master of Laws (LLM)" },
+    { value: "master_social_work", label: "Master of Social Work (MSW)" },
+    { value: "doctoral", label: "Doctoral Degree (PhD)" },
+    { value: "post_doctoral", label: "Post-Doctoral Fellowship" },
+    { value: "certification", label: "Professional Certification" },
+    { value: "other", label: "Other Qualification" }
   ];
+
+const areasList = [
+  'Education & Teaching Support',
+  'Rural Development Programs',
+  'Women Empowerment Initiatives',
+  'Health & Awareness Campaigns',
+  'Spiritual & Cultural Programs',
+  'CSR Project Execution',
+  'Digital Media & Content Creation',
+  'Fundraising & Partnerships',
+  'Administration & Operations'
+];
 
   const benefits = [
     { icon: <FaHandsHelping />, title: "Make an Impact", description: "Directly contribute to social change and see the results" },
@@ -44,7 +91,8 @@ const VolunteerForm = () => {
 
   const testimonials = [
     { name: "Anjali Sharma", role: "Education Volunteer", text: "Volunteering with MSRS Foundation has been life-changing. The smile on children's faces is priceless.", duration: "2 years" },
-    { name: "Rahul Verma", role: "Healthcare Volunteer", text: "The organization's transparency and impact measurement is exceptional. Proud to be part of this mission.", duration: "1.5 years" }
+    { name: "Rahul Verma", role: "Healthcare Volunteer", text: "The organization's transparency and impact measurement is exceptional. Proud to be part of this mission.", duration: "1.5 years" },
+    { name: "Priya Mehta", role: "Intern", text: "The internship program gave me real-world experience and mentorship. Highly recommended!", duration: "6 months" }
   ];
 
   const handleChange = (e) => {
@@ -66,22 +114,57 @@ const VolunteerForm = () => {
     }
   };
 
+  const handleCustomAreaAdd = () => {
+    if (customAreaValue.trim() && !formData.areasOfInterest.includes(customAreaValue.trim())) {
+      setFormData({
+        ...formData,
+        areasOfInterest: [...formData.areasOfInterest, customAreaValue.trim()]
+      });
+      setCustomAreaValue('');
+      setShowCustomAreaInput(false);
+    }
+  };
+
+  const handleRemoveArea = (areaToRemove) => {
+    setFormData({
+      ...formData,
+      areasOfInterest: formData.areasOfInterest.filter(area => area !== areaToRemove)
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Validation
+    if (!formData.fullName || !formData.phone || !formData.email) {
+      alert('Please fill in all required fields');
+      return;
+    }
+    
+    if (formData.areasOfInterest.length === 0) {
+      alert('Please select at least one area of interest');
+      return;
+    }
+    
     setIsSubmitting(true);
     
     setTimeout(() => {
-      console.log('Volunteer Application:', formData);
+      console.log('Volunteer Application:', {
+        ...formData,
+        customArea: customAreaValue
+      });
       setIsSubmitting(false);
       setSubmitSuccess(true);
       setTimeout(() => setSubmitSuccess(false), 5000);
       setFormData({
         fullName: '', dateOfBirth: '', gender: '', phone: '', email: '',
         address: '', applicationType: '', preferredMode: '',
-        areasOfInterest: [], qualification: '', skills: '',
+        areasOfInterest: [], customArea: '', qualification: '', skills: '',
         startDate: '', duration: '', motivation: '', 
         declaration: false, rules: false
       });
+      setCustomAreaValue('');
+      setShowCustomAreaInput(false);
     }, 1500);
   };
 
@@ -142,6 +225,14 @@ const VolunteerForm = () => {
             outline: none;
             border-color: #667A62;
             box-shadow: 0 0 0 3px rgba(102, 122, 98, 0.1);
+          }
+          
+          .interest-tag {
+            transition: all 0.3s ease;
+          }
+          
+          .interest-tag:hover {
+            transform: translateX(3px);
           }
           
           .btn-submit {
@@ -349,19 +440,19 @@ const VolunteerForm = () => {
                       <FiUser size={14} className="text-[#667A62]" /> Personal Info
                     </h4>
                     <div className="space-y-3">
-                      <input type="text" name="fullName" placeholder="Full Name *" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} />
+                      <input type="text" name="fullName" placeholder="Full Name *" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.fullName} />
                       <div className="grid grid-cols-2 gap-3">
-                        <input type="date" name="dateOfBirth" required className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} />
-                        <select name="gender" className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange}>
+                        <input type="date" name="dateOfBirth" required className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.dateOfBirth} />
+                        <select name="gender" className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.gender}>
                           <option value="">Gender *</option>
                           <option>Male</option>
                           <option>Female</option>
                           <option>Other</option>
                         </select>
                       </div>
-                      <input type="tel" name="phone" placeholder="Phone Number *" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} />
-                      <input type="email" name="email" placeholder="Email Address *" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} />
-                      <input type="text" name="address" placeholder="Address *" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} />
+                      <input type="tel" name="phone" placeholder="Phone Number *" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.phone} />
+                      <input type="email" name="email" placeholder="Email Address *" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.email} />
+                      <input type="text" name="address" placeholder="Address *" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.address} />
                     </div>
                   </div>
 
@@ -371,12 +462,12 @@ const VolunteerForm = () => {
                       <FiBriefcase size={14} className="text-[#667A62]" /> Application Type
                     </h4>
                     <div className="grid grid-cols-2 gap-3">
-                      <select name="applicationType" className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange}>
+                      <select name="applicationType" className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.applicationType}>
                         <option value="">Apply As *</option>
                         <option>Volunteer</option>
                         <option>Intern</option>
                       </select>
-                      <select name="preferredMode" className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange}>
+                      <select name="preferredMode" className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.preferredMode}>
                         <option value="">Mode *</option>
                         <option>On-site</option>
                         <option>Remote</option>
@@ -385,12 +476,27 @@ const VolunteerForm = () => {
                     </div>
                   </div>
 
-                  {/* Areas of Interest */}
+                  {/* Areas of Interest - Updated with Custom Field */}
                   <div className="mb-4">
                     <h4 className="text-sm font-bold text-[#2C3E2B] mb-3 pb-1 border-b border-[#667A62] flex items-center gap-2">
                       <FiTarget size={14} className="text-[#667A62]" /> Areas of Interest
                     </h4>
-                    <div className="grid grid-cols-2 gap-2">
+                    
+                    {/* Selected Areas Display */}
+                    {formData.areasOfInterest.length > 0 && (
+                      <div className="mb-3 flex flex-wrap gap-2">
+                        {formData.areasOfInterest.map((area, idx) => (
+                          <span key={idx} className="interest-tag inline-flex items-center gap-1 px-2 py-1 bg-[#EAF6E3] text-[#667A62] rounded-full text-xs">
+                            {area}
+                            <button type="button" onClick={() => handleRemoveArea(area)} className="hover:text-red-500">
+                              <FiX size={12} />
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    
+                    <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto p-2 border border-gray-200 rounded-lg mb-2">
                       {areasList.map((area, idx) => (
                         <label key={idx} className="flex items-center gap-2 cursor-pointer">
                           <input type="checkbox" name="areasOfInterest" value={area} onChange={handleChange} className="w-3 h-3 text-[#667A62] rounded" />
@@ -398,16 +504,60 @@ const VolunteerForm = () => {
                         </label>
                       ))}
                     </div>
+                    
+                    {/* Custom Area Input */}
+                    {!showCustomAreaInput ? (
+                      <button
+                        type="button"
+                        onClick={() => setShowCustomAreaInput(true)}
+                        className="w-full mt-2 py-1.5 border border-dashed border-[#667A62] text-[#667A62] rounded-lg text-xs font-semibold hover:bg-[#EAF6E3] transition-all flex items-center justify-center gap-1"
+                      >
+                        <FiPlus size={12} /> Add Custom Area of Interest
+                      </button>
+                    ) : (
+                      <div className="mt-2 flex gap-2">
+                        <input
+                          type="text"
+                          value={customAreaValue}
+                          onChange={(e) => setCustomAreaValue(e.target.value)}
+                          placeholder="Enter your custom area..."
+                          className="flex-1 form-input px-3 py-1.5 rounded-lg bg-gray-50 text-sm"
+                          autoFocus
+                        />
+                        <button
+                          type="button"
+                          onClick={handleCustomAreaAdd}
+                          className="px-3 py-1.5 bg-[#667A62] text-white rounded-lg text-xs font-semibold hover:bg-[#4A5C46] transition-all"
+                        >
+                          Add
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowCustomAreaInput(false);
+                            setCustomAreaValue('');
+                          }}
+                          className="px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-semibold hover:bg-gray-100 transition-all"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    )}
                   </div>
 
-                  {/* Skills & Qualification */}
+                  {/* Skills & Qualification - Updated with Comprehensive Education Options */}
                   <div className="mb-4">
                     <h4 className="text-sm font-bold text-[#2C3E2B] mb-3 pb-1 border-b border-[#667A62] flex items-center gap-2">
                       <FiBookOpen size={14} className="text-[#667A62]" /> Skills & Qualification
                     </h4>
                     <div className="space-y-3">
-                      <input type="text" name="qualification" placeholder="Educational Qualification *" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} />
-                      <textarea name="skills" placeholder="Relevant Skills *" rows="2" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange}></textarea>
+                      <select name="qualification" className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.qualification}>
+                        <option value="">Educational Qualification *</option>
+                        {educationQualifications.map((qual, idx) => (
+                          <option key={idx} value={qual.value}>{qual.label}</option>
+                        ))}
+                      </select>
+                      <textarea name="skills" placeholder="Relevant Skills * (e.g., Communication, Leadership, Teaching, etc.)" rows="2" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.skills}></textarea>
                     </div>
                   </div>
 
@@ -417,13 +567,15 @@ const VolunteerForm = () => {
                       <FiCalendar size={14} className="text-[#667A62]" /> Availability
                     </h4>
                     <div className="grid grid-cols-2 gap-3">
-                      <input type="date" name="startDate" required className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} />
-                      <select name="duration" className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange}>
+                      <input type="date" name="startDate" required className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.startDate} />
+                      <select name="duration" className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.duration}>
                         <option value="">Duration *</option>
                         <option>1 Month</option>
                         <option>3 Months</option>
                         <option>6 Months</option>
                         <option>6+ Months</option>
+                        <option>1 Year</option>
+                        <option>2+ Years</option>
                       </select>
                     </div>
                   </div>
@@ -433,16 +585,16 @@ const VolunteerForm = () => {
                     <h4 className="text-sm font-bold text-[#2C3E2B] mb-3 pb-1 border-b border-[#667A62] flex items-center gap-2">
                       <FiHeart size={14} className="text-[#667A62]" /> Motivation
                     </h4>
-                    <textarea name="motivation" placeholder="Why do you want to join us? *" rows="2" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange}></textarea>
+                    <textarea name="motivation" placeholder="Why do you want to join us? *" rows="2" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.motivation}></textarea>
                   </div>
 
                   {/* Declaration */}
-               <div className="mb-5 space-y-2 p-3 bg-[#EAF6E3] rounded-lg">
-  <label className="flex items-center gap-2 cursor-pointer">
-    <input type="checkbox" name="declaration" onChange={handleChange} className="w-3 h-3 rounded text-[#667A62]" />
-    <span className="text-xs text-[#4A5C46]">I hereby declare that the information provided is true and correct and I agree to abide by the rules and values of the Foundation.</span>
-  </label>
-</div>
+                  <div className="mb-5 space-y-2 p-3 bg-[#EAF6E3] rounded-lg">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input type="checkbox" name="declaration" onChange={handleChange} className="w-3 h-3 rounded text-[#667A62]" />
+                      <span className="text-xs text-[#4A5C46]">I hereby declare that the information provided is true and correct and I agree to abide by the rules and values of the Foundation.</span>
+                    </label>
+                  </div>
 
                   <button 
                     type="submit" 
