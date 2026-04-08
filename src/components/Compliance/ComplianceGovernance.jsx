@@ -207,21 +207,48 @@ const ComplianceGovernance = () => {
             transform: translateY(-5px);
           }
           
+          /* Fixed Governance Card Hover Styles */
           .governance-card {
             transition: all 0.4s ease;
+            background: white;
           }
           
           .governance-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             background: linear-gradient(135deg, #667A62 0%, #2C3E2B 100%);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+          }
+          
+          .governance-card:hover .governance-icon {
+            color: white !important;
+          }
+          
+          .governance-card:hover .governance-title {
+            color: white !important;
+          }
+          
+          .governance-card:hover .governance-desc {
+            color: rgba(255, 255, 255, 0.9) !important;
+          }
+          
+          .governance-card:hover .governance-list li {
+            color: rgba(255, 255, 255, 0.85) !important;
+          }
+          
+          .governance-card:hover .governance-list svg {
+            color: white !important;
+          }
+          
+          /* Ensure all text elements have proper contrast on hover */
+          .governance-card:hover * {
             color: white;
           }
           
-          .governance-card:hover .governance-icon,
-          .governance-card:hover .governance-title,
-          .governance-card:hover .governance-desc,
-          .governance-card:hover .governance-list {
-            color: white;
+          .governance-card:hover .text-gray-500,
+          .governance-card:hover .text-gray-600,
+          .governance-card:hover .text-xs,
+          .governance-card:hover .text-sm {
+            color: rgba(255, 255, 255, 0.9) !important;
           }
           
           .floating-element { animation: float 6s ease-in-out infinite; }
@@ -349,7 +376,7 @@ const ComplianceGovernance = () => {
                 </div>
                 <h3 className="governance-title text-lg font-bold text-[#2C3E2B] mb-2 text-center">{item.title}</h3>
                 <p className="governance-desc text-xs text-gray-500 mb-3 text-center">{item.description}</p>
-                <ul className="governance-list space-y-1">
+                <ul className="governance-list space-y-2">
                   {item.responsibilities.map((resp, idx) => (
                     <li key={idx} className="text-xs text-gray-600 flex items-start gap-2">
                       <FiCheckCircle className="text-[#667A62] text-xs mt-0.5 flex-shrink-0" />
