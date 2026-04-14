@@ -361,7 +361,7 @@ const Hero = () => {
               <div className="relative z-10 flex items-center justify-center h-full text-center px-6">
                 <div className="max-w-3xl hero-content">
                   
-                  <h1 className="hero-title text-white text-4xl md:text-5xl lg:text-6xl font-bold mb-3 leading-[1.2]">
+                  <h1 className="hero-title text-white text-4xl md:text-5xl lg:text-6xl font-bold mb-3 leading-[1.2]" style={{fontFamily:"Cormorant Garamond', serif"}}>
                     {banner.title}
                   </h1>
 

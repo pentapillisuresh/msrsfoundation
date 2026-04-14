@@ -43,38 +43,39 @@ const SustainableGoals = () => {
           Sustainable Development Goals
         </h2>
 
-        {/* Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {goals.map((goal) => (
-            <div
-              key={goal.id}
-              className="
-                group
-                bg-[#EAF3E6]
-                rounded-lg
-                p-6
-                text-center
-                cursor-pointer
-                transition-all duration-300
-                hover:bg-[#5C6F5C]
-              "
-            >
-              {/* Image */}
-              <div className="flex justify-center mb-3">
-                <img
-                  src={goal.image}
-                  alt={goal.title}
-                  className="w-12 h-12 object-contain transition duration-300 group-hover:brightness-0 group-hover:invert"
-                />
-              </div>
+       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 justify-items-center">
+  {goals.map((goal) => (
+    <div
+      key={goal.id}
+      className="
+        group
+        bg-[#EAF3E6]
+        w-[150px]
+        h-[150px]
+        rounded-full
+        flex flex-col items-center justify-center
+        text-center
+        cursor-pointer
+        transition-all duration-300
+        hover:bg-[#5C6F5C]
+      "
+    >
+      {/* Image */}
+      <div className="flex justify-center mb-2">
+        <img
+          src={goal.image}
+          alt={goal.title}
+          className="w-10 h-10 object-contain transition duration-300 group-hover:brightness-0 group-hover:invert"
+        />
+      </div>
 
-              {/* Title */}
-              <p className="text-sm font-medium text-[#5C6F5C] group-hover:text-white transition">
-                {goal.title}
-              </p>
-            </div>
-          ))}
-        </div>
+      {/* Title */}
+      <p className="text-xs font-medium text-[#5C6F5C] group-hover:text-white transition px-2">
+        {goal.title}
+      </p>
+    </div>
+  ))}
+</div>
 
       </div>
     </section>
