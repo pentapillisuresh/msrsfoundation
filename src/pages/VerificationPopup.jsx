@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiX, FiCheckCircle, FiShield, FiPhone, FiMail, FiMapPin, FiGlobe } from 'react-icons/fi';
 import { FaCertificate, FaUser, FaRegFlag } from 'react-icons/fa';
 
@@ -15,19 +15,186 @@ const VerificationPopup = ({ onClose, onSuccess, isOpen }) => {
     isOtpVerified: false
   });
   const [generatedOtp, setGeneratedOtp] = useState('');
+  const [states, setStates] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [loadingStates, setLoadingStates] = useState(false);
+  const [loadingDistricts, setLoadingDistricts] = useState(false);
+  const [countries, setCountries] = useState([]);
+  const [loadingCountries, setLoadingCountries] = useState(false);
 
-  const indiaData = {
-    "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Nellore", "Kurnool"],
-    "Karnataka": ["Bangalore", "Mysore", "Hubli", "Mangalore", "Belgaum"],
-    "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Thane"],
-    "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem"],
-    "Delhi": ["New Delhi", "North Delhi", "South Delhi", "East Delhi", "West Delhi"],
-    "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar"],
-    "Uttar Pradesh": ["Lucknow", "Kanpur", "Agra", "Varanasi", "Allahabad"],
-    "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Siliguri", "Asansol"],
-    "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Ajmer"],
-    "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Thrissur", "Kollam"]
+  // Fetch countries on component mount
+  useEffect(() => {
+    fetchCountries();
+  }, []);
+
+  // Fetch states when country changes (for non-Indian users)
+  useEffect(() => {
+    if (!formData.isIndian && formData.countryName) {
+      fetchStatesByCountry(formData.countryName);
+    } else if (formData.isIndian) {
+      // Reset states when switching to Indian citizen
+      setStates([]);
+      setDistricts([]);
+      setFormData(prev => ({ ...prev, state: '', district: '' }));
+    }
+  }, [formData.countryName, formData.isIndian]);
+
+  // Fetch districts ONLY for Indian users when state changes
+  useEffect(() => {
+    if (formData.isIndian && formData.state) {
+      fetchDistrictsByState(formData.state);
+    } else if (!formData.isIndian) {
+      // Clear districts for non-Indian users
+      setDistricts([]);
+      setFormData(prev => ({ ...prev, district: '' }));
+    }
+  }, [formData.state, formData.isIndian]);
+
+  // Fetch countries using REST Countries API
+  const fetchCountries = async () => {
+    setLoadingCountries(true);
+    try {
+      const response = await fetch('https://restcountries.com/v3.1/all?fields=name,cca2');
+      const data = await response.json();
+      const sortedCountries = data
+        .map(country => country.name.common)
+        .sort();
+      setCountries(sortedCountries);
+    } catch (error) {
+      console.error('Error fetching countries:', error);
+      setCountries(['United States', 'United Kingdom', 'Canada', 'Australia', 'Germany', 'France', 'Japan', 'China', 'Brazil', 'South Africa']);
+    } finally {
+      setLoadingCountries(false);
+    }
   };
+
+  // Fetch states for a specific country (for non-Indian users)
+  const fetchStatesByCountry = async (countryName) => {
+    setLoadingStates(true);
+    setFormData(prev => ({ ...prev, state: '', district: '' }));
+    setDistricts([]); // Clear districts for non-Indian users
+    
+    try {
+      const response = await fetch('https://countriesnow.space/api/v0.1/countries/states', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ country: countryName }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.data && data.data.states) {
+        const stateList = data.data.states.map(state => state.name);
+        setStates(stateList);
+      } else {
+        setStates([]);
+      }
+    } catch (error) {
+      console.error('Error fetching states:', error);
+      setStates([]);
+    } finally {
+      setLoadingStates(false);
+    }
+  };
+
+  // Fetch districts ONLY for Indian states
+  const fetchDistrictsByState = async (stateName) => {
+    setLoadingDistricts(true);
+    setFormData(prev => ({ ...prev, district: '' }));
+    
+    try {
+      const response = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          country: 'India',
+          state: stateName 
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.data && Array.isArray(data.data)) {
+        setDistricts(data.data);
+      } else {
+        const localDistricts = getLocalDistricts(stateName);
+        setDistricts(localDistricts);
+      }
+    } catch (error) {
+      console.error('Error fetching districts:', error);
+      const localDistricts = getLocalDistricts(stateName);
+      setDistricts(localDistricts);
+    } finally {
+      setLoadingDistricts(false);
+    }
+  };
+
+  // Local fallback data for Indian districts
+  const getLocalDistricts = (stateName) => {
+    const indiaDistricts = {
+      "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Nellore", "Kurnool", "Anantapur", "Tirupati", "Kakinada"],
+      "Karnataka": ["Bangalore", "Mysore", "Hubli", "Mangalore", "Belgaum", "Gulbarga", "Davanagere", "Shimoga"],
+      "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Thane", "Aurangabad", "Solapur", "Kolhapur"],
+      "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem", "Tirunelveli", "Vellore", "Erode"],
+      "Delhi": ["New Delhi", "North Delhi", "South Delhi", "East Delhi", "West Delhi", "Central Delhi", "Shahdara", "Dwarka"],
+      "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Jamnagar", "Gandhinagar", "Junagadh"],
+      "Uttar Pradesh": ["Lucknow", "Kanpur", "Agra", "Varanasi", "Allahabad", "Meerut", "Ghaziabad", "Noida"],
+      "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Siliguri", "Asansol", "Darjeeling", "Kharagpur", "Malda"],
+      "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Ajmer", "Bikaner", "Alwar", "Bhilwara"],
+      "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Thrissur", "Kollam", "Palakkad", "Alappuzha", "Kannur"]
+    };
+    return indiaDistricts[stateName] || [];
+  };
+
+  // Fetch Indian states from API
+  const fetchIndianStates = async () => {
+    setLoadingStates(true);
+    try {
+      const response = await fetch('https://countriesnow.space/api/v0.1/countries/states', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ country: 'India' }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.data && data.data.states) {
+        const stateList = data.data.states.map(state => state.name);
+        setStates(stateList);
+      } else {
+        setStates([
+          "Andhra Pradesh", "Karnataka", "Maharashtra", "Tamil Nadu", "Delhi",
+          "Gujarat", "Uttar Pradesh", "West Bengal", "Rajasthan", "Kerala",
+          "Bihar", "Madhya Pradesh", "Punjab", "Haryana", "Telangana"
+        ]);
+      }
+    } catch (error) {
+      console.error('Error fetching Indian states:', error);
+      setStates([
+        "Andhra Pradesh", "Karnataka", "Maharashtra", "Tamil Nadu", "Delhi",
+        "Gujarat", "Uttar Pradesh", "West Bengal", "Rajasthan", "Kerala"
+      ]);
+    } finally {
+      setLoadingStates(false);
+    }
+  };
+
+  // When Indian citizen is selected, fetch states
+  useEffect(() => {
+    if (formData.isIndian) {
+      fetchIndianStates();
+    } else {
+      setStates([]);
+      setDistricts([]);
+      setFormData(prev => ({ ...prev, state: '', district: '' }));
+    }
+  }, [formData.isIndian]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -212,7 +379,7 @@ const VerificationPopup = ({ onClose, onSuccess, isOpen }) => {
                   name="isIndian"
                   value="true"
                   checked={formData.isIndian === true}
-                  onChange={() => setFormData(prev => ({ ...prev, isIndian: true, countryName: '' }))}
+                  onChange={() => setFormData(prev => ({ ...prev, isIndian: true, countryName: '', state: '', district: '' }))}
                   className="w-4 h-4 text-[#667A62] cursor-pointer"
                 />
                 <span className="text-sm">Yes</span>
@@ -232,21 +399,51 @@ const VerificationPopup = ({ onClose, onSuccess, isOpen }) => {
           </div>
           
           {!formData.isIndian && (
-            <div>
-              <label className="block text-sm font-semibold text-[#2C3E2B] mb-2">
-                <FiGlobe className="inline mr-2 text-[#667A62]" size={14} />
-                Country Name *
-              </label>
-              <input
-                type="text"
-                name="countryName"
-                value={formData.countryName}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#667A62]"
-                placeholder="Enter your country name"
-                required={!formData.isIndian}
-              />
-            </div>
+            <>
+              <div>
+                <label className="block text-sm font-semibold text-[#2C3E2B] mb-2">
+                  <FiGlobe className="inline mr-2 text-[#667A62]" size={14} />
+                  Country *
+                </label>
+                <select
+                  name="countryName"
+                  value={formData.countryName}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#667A62]"
+                  required={!formData.isIndian}
+                  disabled={loadingCountries}
+                >
+                  <option value="">Select Country</option>
+                  {countries.map(country => (
+                    <option key={country} value={country}>{country}</option>
+                  ))}
+                </select>
+                {loadingCountries && <p className="text-xs text-gray-500 mt-1">Loading countries...</p>}
+              </div>
+              
+              {formData.countryName && (
+                <div>
+                  <label className="block text-sm font-semibold text-[#2C3E2B] mb-2">
+                    <FiMapPin className="inline mr-2 text-[#667A62]" size={14} />
+                    State/Province *
+                  </label>
+                  <select
+                    name="state"
+                    value={formData.state}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#667A62]"
+                    required={!formData.isIndian}
+                    disabled={loadingStates}
+                  >
+                    <option value="">Select State</option>
+                    {states.map(state => (
+                      <option key={state} value={state}>{state}</option>
+                    ))}
+                  </select>
+                  {loadingStates && <p className="text-xs text-gray-500 mt-1">Loading states...</p>}
+                </div>
+              )}
+            </>
           )}
           
           {formData.isIndian && (
@@ -262,12 +459,14 @@ const VerificationPopup = ({ onClose, onSuccess, isOpen }) => {
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#667A62]"
                   required={formData.isIndian}
+                  disabled={loadingStates}
                 >
                   <option value="">Select State</option>
-                  {Object.keys(indiaData).map(state => (
+                  {states.map(state => (
                     <option key={state} value={state}>{state}</option>
                   ))}
                 </select>
+                {loadingStates && <p className="text-xs text-gray-500 mt-1">Loading states...</p>}
               </div>
               
               {formData.state && (
@@ -282,12 +481,14 @@ const VerificationPopup = ({ onClose, onSuccess, isOpen }) => {
                     onChange={handleInputChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#667A62]"
                     required={formData.isIndian}
+                    disabled={loadingDistricts}
                   >
                     <option value="">Select District</option>
-                    {indiaData[formData.state]?.map(district => (
+                    {districts.map(district => (
                       <option key={district} value={district}>{district}</option>
                     ))}
                   </select>
+                  {loadingDistricts && <p className="text-xs text-gray-500 mt-1">Loading districts...</p>}
                 </div>
               )}
             </>
