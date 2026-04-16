@@ -7,11 +7,13 @@ import EventsInitiatives from '../components/Events/EventsInitiatives';
 import Testimonials from '../components/Testimonials/Testimonials';
 import SustainableGoals from '../components/Home/SustainableGoals';
 import Services from "../components/Home/Services"
+import About from "../components/Home/About"
 
 const Home = () => {
   return (
     <div>
       <Hero />
+      <About/>
       <SustainableGoals/>
       <Services/>
       <KeyHighlights />
