@@ -124,3 +124,13 @@ a:focus {
     background-position: -200% 0;
   }
 }
+
+/* Add to your global CSS file */
+.icon-green-filter {
+  filter: brightness(0) saturate(100%) invert(48%) sepia(13%) saturate(620%) hue-rotate(62deg) brightness(94%) contrast(87%);
+}
+
+/* For hover effect */
+.group:hover .icon-green-filter {
+  filter: brightness(0) saturate(100%) invert(35%) sepia(8%) saturate(800%) hue-rotate(50deg) brightness(95%) contrast(90%);
+}

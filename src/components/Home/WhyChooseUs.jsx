@@ -1,154 +1,140 @@
-import React from 'react';
-import { FiTrendingUp, FiBarChart2, FiShield, FiTarget } from 'react-icons/fi';
+import React, { useEffect, useState, useRef } from "react";
 
-const WhyChooseUs = () => {
-  const reasons = [
-    { 
-      icon: <FiTrendingUp />, 
-      title: 'Transparent Fund Utilization', 
-      description: 'Every rupee is accounted for and reported',
-      stat: '100%',
-      statLabel: 'Transparency Guarantee'
+const WorkingProcess = () => {
+  const [animated, setAnimated] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setAnimated(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
+  const processes = [
+    {
+      id: "01",
+      title: "Transparent Fund Utilization",
+      desc: "Every rupee is tracked and reported with full transparency.",
+      icon: "./images/fund1.png",
     },
-    { 
-      icon: <FiBarChart2 />, 
-      title: 'Real-Time Project Reporting', 
-      description: 'Live updates on project progress and impact',
-      stat: '24/7',
-      statLabel: 'Live Tracking'
+    {
+      id: "02",
+      title: "Real-Time Project Reporting",
+      desc: "Live updates and detailed reports on project progress.",
+      icon: "./images/project1.png",
     },
-    { 
-      icon: <FiShield />, 
-      title: 'Government Compliant Operations', 
-      description: 'Full compliance with all regulatory requirements',
-      stat: '100%',
-      statLabel: 'Compliant Certified'
+    {
+      id: "03",
+      title: "Government Compliant Operations",
+      desc: "Strict adherence to CSR laws and compliance standards.",
+      icon: "./images/business.png",
     },
-    { 
-      icon: <FiTarget />, 
-      title: 'High Impact ROI for CSR Investors', 
-      description: 'Maximum social impact for your investment',
-      stat: '3x',
-      statLabel: 'Average Social ROI'
+    {
+      id: "04",
+      title: "High Impact ROI for CSR Investors",
+      desc: "Maximize measurable social impact for every investment.",
+      icon: "./images/investor.png",
     },
   ];
 
   return (
-    <section className="relative section-padding gradient-bg overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-secondary/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary/5 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-3xl"></div>
-      </div>
-
-      <div className="relative container-custom">
-        <div className="text-center mb-16" data-aos="fade-up">
-          <div className="inline-block mb-4">
-            <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-white/90 text-secondary shadow-sm backdrop-blur-sm">
-              Why Partner With Us
-            </span>
+    <section ref={sectionRef} className="py-20 px-6 overflow-hidden bg-white">
+      <div className="container mx-auto max-w-6xl">
+        
+        {/* Heading Section */}
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center gap-2 bg-[#EAF3E6] px-4 py-1.5 rounded-full mb-3">
+            <span className="text-[#5C6F5C] text-sm font-semibold">🔶 WHY CHOOSE US FOR CSR FUNDING</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-dark mb-4">
-            Why Choose Us for <span className="text-secondary">CSR Funding</span>
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-secondary to-secondary/40 mx-auto mb-6 rounded-full"></div>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            Partner with a trusted organization committed to transparency and impact
-          </p>
+          <div className="w-16 h-0.5 bg-[#5C6F5C]/30 rounded-full mx-auto"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {reasons.map((reason, index) => (
-            <div
-              key={index}
-              data-aos="flip-left"
-              data-aos-delay={index * 100}
-              className="group relative bg-white rounded-2xl p-8 text-center card-hover shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden"
-            >
-              {/* Gradient Border Effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-secondary/10 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-              
-              {/* Icon Container */}
-              <div className="relative mb-6">
-                <div className="absolute inset-0 bg-secondary/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative inline-block p-4 bg-gradient-to-br from-secondary/10 to-secondary/5 rounded-full group-hover:scale-110 transition-transform duration-500">
-                  <div className="text-5xl text-secondary">
-                    {React.cloneElement(reason.icon, { className: "text-5xl text-secondary" })}
+        <div className="flex flex-col lg:flex-row items-center gap-16">
+          
+          {/* LEFT SIDE: Process Steps */}
+          <div className="w-full lg:w-3/5 relative">
+            <div className="space-y-10">
+              {processes.map((step, index) => (
+                <div 
+                  key={index} 
+                  className={`relative flex items-center gap-12 group transition-all duration-500 ${
+                    animated ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                  }`}
+                  style={{ transitionDelay: `${index * 100}ms` }}
+                >
+                  
+                  {/* Icon Circle with Colored Image */}
+                  <div className="relative z-10 flex-shrink-0">
+                    <div className="w-20 h-20 rounded-full bg-[#EAF3E6] flex items-center justify-center border border-[#5C6F5C]/20 shadow-md group-hover:border-[#5C6F5C] group-hover:shadow-lg transition-all duration-300">
+                      <img 
+                        src={step.icon} 
+                        alt={step.title}
+                        className="w-10 h-10 object-contain"
+                        style={{
+                          filter: "brightness(0) saturate(100%) invert(35%) sepia(8%) saturate(800%) hue-rotate(50deg) brightness(95%) contrast(90%)"
+                        }}
+                      />
+                    </div>
+                    
+                    {/* Increased Dotted Line Length */}
+                    <div className="absolute top-1/2 -right-16 w-16 border-t-2 border-dotted border-[#5C6F5C]/40"></div>
                   </div>
-                </div>
-              </div>
 
-              {/* Title */}
-              <h3 className="text-xl font-bold text-dark mb-3 group-hover:text-secondary transition-colors duration-300">
-                {reason.title}
-              </h3>
-              
-              {/* Description */}
-              <p className="text-gray-600 mb-6 leading-relaxed">
-                {reason.description}
-              </p>
+                  {/* Content Card */}
+                  <div className="bg-[#EAF3E6] p-6 rounded-xl border border-[#5C6F5C]/20 shadow-md relative flex-1 max-w-[280px] group-hover:shadow-lg transition-all duration-300">
+                    
+                    {/* Number Badge */}
+                    <div className="absolute top-1/2 -left-4 -translate-y-1/2 w-8 h-8 bg-[#5C6F5C] rounded-full flex items-center justify-center shadow-md border-2 border-white z-20">
+                      <span className="text-white font-bold text-[11px]">{step.id}</span>
+                    </div>
 
-              {/* Stats Section */}
-              <div className="pt-4 border-t border-gray-100">
-                <div className="text-3xl font-bold text-secondary mb-1">
-                  {reason.stat}
-                </div>
-                <div className="text-xs text-gray-500 uppercase tracking-wider">
-                  {reason.statLabel}
-                </div>
-              </div>
+                    <div className="pl-5">
+                      <h3 className="text-[#2d3a2d] text-base font-bold mb-2 leading-tight">{step.title}</h3>
+                      <p className="text-[#5C6F5C] text-sm leading-relaxed">
+                        {step.desc}
+                      </p>
+                    </div>
+                  </div>
 
-              {/* Decorative Icon Background */}
-              <div className="absolute -bottom-8 -right-8 text-8xl text-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                {React.cloneElement(reason.icon, { className: "text-8xl" })}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* RIGHT SIDE: Circular Image */}
+          <div className={`w-full lg:w-2/5 flex justify-center lg:justify-center transition-all duration-700 ${
+            animated ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'
+          }`}>
+            <div className="relative">
+              <div className="w-80 h-80 md:w-[380px] md:h-[380px] rounded-full overflow-hidden border-[6px] border-[#EAF3E6] shadow-xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800" 
+                  alt="CSR Funding" 
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
-          ))}
-        </div>
+          </div>
 
-        {/* Trust Indicators */}
-        <div className="mt-16 flex flex-wrap justify-center gap-8" data-aos="fade-up" data-aos-delay={400}>
-          <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
-            <div className="w-2 h-2 bg-secondary rounded-full"></div>
-            <span className="text-sm text-gray-600">ISO Certified</span>
-          </div>
-          <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
-            <div className="w-2 h-2 bg-secondary rounded-full"></div>
-            <span className="text-sm text-gray-600">FCRA Registered</span>
-          </div>
-          <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
-            <div className="w-2 h-2 bg-secondary rounded-full"></div>
-            <span className="text-sm text-gray-600">12A & 80G Certified</span>
-          </div>
-          <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
-            <div className="w-2 h-2 bg-secondary rounded-full"></div>
-            <span className="text-sm text-gray-600">NGO Darpan Registered</span>
-          </div>
         </div>
       </div>
-
-      {/* Custom CSS */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-        
-        .group:hover .group-hover\\:scale-110 {
-          transform: scale(1.1);
-        }
-        
-        .card-hover {
-          transition: all 0.3s ease;
-        }
-        
-        .gradient-bg {
-          background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
-        }
-      `}</style>
     </section>
   );
 };
 
-export default WhyChooseUs;
+export default WorkingProcess;
