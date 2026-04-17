@@ -5,7 +5,7 @@ const services = [
   {
     id: 1,
     title: "Education Support",
-    frontImage: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400&h=300&fit=crop",
+    frontImage: "./images/service1.avif",
     subpoints: [
       "Sponsor a Child's Education",
       "School Infrastructure Development",
@@ -16,7 +16,7 @@ const services = [
   {
     id: 2,
     title: "Annadanam (Food Donation)",
-    frontImage: "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=400&h=300&fit=crop",
+    frontImage: "./images/service2.avif",
     subpoints: [
       "Daily Meals for Needy",
       "Festival Annadanam Sponsorship",
@@ -27,7 +27,7 @@ const services = [
   {
     id: 3,
     title: "Healthcare & Medical Aid",
-    frontImage: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=300&fit=crop",
+    frontImage: "./images/service3.avif",
     subpoints: [
       "Free Medical Camps",
       "Medicines for the Poor",
@@ -38,7 +38,7 @@ const services = [
   {
     id: 4,
     title: "Spiritual & Cultural Activities",
-    frontImage: "https://images.unsplash.com/photo-1519791883288-dc8bd696e667?w=400&h=300&fit=crop",
+    frontImage: "./images/service4.jpg",
     subpoints: [
       "Temple Development & Maintenance",
       "Vedic & Spiritual Programs",
@@ -49,7 +49,7 @@ const services = [
   {
     id: 5,
     title: "Rural & Community Development",
-    frontImage: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=400&h=300&fit=crop",
+    frontImage: "./images/service5.avif",
     subpoints: [
       "Village Development Projects",
       "Clean Water Initiatives",
@@ -60,7 +60,7 @@ const services = [
   {
     id: 6,
     title: "Women & Child Welfare",
-    frontImage: "https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=400&h=300&fit=crop",
+    frontImage: "./images/service6.avif",
     subpoints: [
       "Women Empowerment Programs",
       "Child Protection & Care",
@@ -82,7 +82,7 @@ const services = [
   {
     id: 8,
     title: "Disaster Relief & Emergency Support",
-    frontImage: "https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=400&h=300&fit=crop",
+    frontImage: "./images/service7.jpg",
     subpoints: [
       "Flood / Cyclone Relief",
       "Emergency Response Fund",
@@ -93,7 +93,7 @@ const services = [
   {
     id: 9,
     title: "General Fund",
-    frontImage: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=400&h=300&fit=crop",
+    frontImage: "./images/service8.avif",
     subpoints: [
       "Support Any Ongoing Initiative",
       "Flexible Fund Allocation",
@@ -103,7 +103,7 @@ const services = [
   {
     id: 10,
     title: "CSR & Corporate Contributions",
-    frontImage: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&h=300&fit=crop",
+    frontImage: "./images/service9.jpg",
     subpoints: [
       "Corporate Social Responsibility Projects",
       "Adopt a Village / School",
@@ -114,7 +114,7 @@ const services = [
   {
     id: 11,
     title: "Infrastructure Development",
-    frontImage: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop",
+    frontImage: "./images/service10.jpg",
     subpoints: [
       "School & Classroom Construction",
       "Hospital & Medical Facility Setup",
@@ -126,7 +126,7 @@ const services = [
   {
     id: 12,
     title: "Goshala Seva",
-    frontImage: "https://images.unsplash.com/photo-1546443042-6cccd3a2e0b3?w=400&h=300&fit=crop",
+    frontImage: "./images/service11.avif",
     subpoints: [
       "Cow Feeding Seva",
       "Goshala Maintenance",
@@ -148,7 +148,7 @@ const ServiceCard = ({ service, onSupport }) => {
     >
       <div className="book-wrapper" style={{ perspective: '2000px' }}>
         <div 
-          className="book relative w-full h-[400px]"
+          className="book relative w-full h-[370px]"
           style={{ transformStyle: 'preserve-3d' }}
         >
           {/* Cover (Front) - Opens like a book cover */}
