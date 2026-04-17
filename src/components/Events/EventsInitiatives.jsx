@@ -453,70 +453,7 @@ const EventsInitiatives = () => {
         </div>
       </section>
 
-      {/* Testimonial Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="text-center mb-12" data-aos="fade-up">
-            <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-wider text-[#667A62] uppercase bg-[#EAF6E3] rounded-full">
-              Participant Stories
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#2C3E2B] mb-3 heading-font">
-              What Participants Say
-            </h2>
-            <div className="w-16 h-0.5 bg-[#667A62] mx-auto mb-4"></div>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-[#EAF6E3] rounded-2xl p-6" data-aos="fade-up" data-aos-delay="100">
-              <FaQuoteLeft className="text-[#667A62] text-3xl mb-4 opacity-50" />
-              <p className="text-gray-700 text-sm mb-4">
-                "The Gong Yoga session was life-changing. I've never experienced such deep relaxation and inner peace."
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[#667A62] rounded-full flex items-center justify-center text-white font-bold">
-                  SP
-                </div>
-                <div>
-                  <p className="font-semibold text-[#2C3E2B] text-sm">Sarah Patel</p>
-                  <p className="text-xs text-gray-500">Yoga Practitioner</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-[#EAF6E3] rounded-2xl p-6" data-aos="fade-up" data-aos-delay="200">
-              <FaQuoteLeft className="text-[#667A62] text-3xl mb-4 opacity-50" />
-              <p className="text-gray-700 text-sm mb-4">
-                "The New Moon Gong event helped me set powerful intentions. The energy was incredible!"
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[#667A62] rounded-full flex items-center justify-center text-white font-bold">
-                  RK
-                </div>
-                <div>
-                  <p className="font-semibold text-[#2C3E2B] text-sm">Rajesh Kumar</p>
-                  <p className="text-xs text-gray-500">Meditation Enthusiast</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-[#EAF6E3] rounded-2xl p-6" data-aos="fade-up" data-aos-delay="300">
-              <FaQuoteLeft className="text-[#667A62] text-3xl mb-4 opacity-50" />
-              <p className="text-gray-700 text-sm mb-4">
-                "Beautiful community, transformative practices. I've found my spiritual home here."
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[#667A62] rounded-full flex items-center justify-center text-white font-bold">
-                  MJ
-                </div>
-                <div>
-                  <p className="font-semibold text-[#2C3E2B] text-sm">Maria Johnson</p>
-                  <p className="text-xs text-gray-500">Regular Participant</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+     
 
       {/* CTA Section */}
       <section className="py-16 bg-gradient-to-r from-[#2C3E2B] to-[#3A4E39] relative overflow-hidden">
