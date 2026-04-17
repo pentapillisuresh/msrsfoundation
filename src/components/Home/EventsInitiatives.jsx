@@ -1,57 +1,151 @@
 import React from 'react';
-import { FiCalendar, FiMapPin, FiUsers } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
+import { FiClock } from 'react-icons/fi';
 
 const EventsInitiatives = () => {
+  const navigate = useNavigate();
+
   const events = [
     {
+      id: 1,
       title: 'Annual Health Camp 2024',
-      date: 'March 15-20, 2024',
-      location: 'Rural Districts, Maharashtra',
-      description: 'Free medical checkups and health awareness programs',
+      date: '13',
+      month: 'JUN',
+      time: '9:00 AM - 5:00 PM',
+      image: 'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=800',
+      description: 'Free health checkup and medicine distribution',
+      location: 'Community Health Center, Delhi',
     },
     {
+      id: 2,
       title: 'Women Entrepreneurship Summit',
-      date: 'April 5, 2024',
-      location: 'Mumbai, India',
-      description: 'Empowering women through skill development and mentorship',
+      date: '06',
+      month: 'MAY',
+      time: '10:00 AM - 4:00 PM',
+      image: 'https://images.pexels.com/photos/3760067/pexels-photo-3760067.jpeg?auto=compress&cs=tinysrgb&w=800',
+      description: 'Empowering women through skill development',
+      location: 'Convention Hall, Mumbai',
     },
     {
+      id: 3,
       title: 'Tree Plantation Drive',
-      date: 'June 5, 2024',
-      location: 'Multiple Locations',
-      description: 'Planting 10,000 trees for environmental sustainability',
+      date: '19',
+      month: 'MAY',
+      time: '7:00 AM - 11:00 AM',
+      image: 'https://images.pexels.com/photos/2440024/pexels-photo-2440024.jpeg?auto=compress&cs=tinysrgb&w=800',
+      description: 'Planting 5000 trees for a greener future',
+      location: 'City Forest Area, Bangalore',
+    },
+    {
+      id: 4,
+      title: 'Education for All Campaign',
+      date: '25',
+      month: 'JUL',
+      time: '8:00 AM - 3:00 PM',
+      image: 'https://images.pexels.com/photos/5212345/pexels-photo-5212345.jpeg?auto=compress&cs=tinysrgb&w=800',
+      description: 'Free books and stationery distribution',
+      location: 'Government School, Pune',
     },
   ];
 
+  const handleEventClick = (eventId) => {
+    navigate(`/events/${eventId}`);
+  };
+
+  const handleViewAllEvents = () => {
+    navigate('/events');
+  };
+
+  const handleRegisterClick = (event, e) => {
+    e.stopPropagation();
+    // Navigate to volunteer page with event data in state
+    navigate('/get-involved/volunteer', { 
+      state: { 
+        eventId: event.id,
+        eventTitle: event.title,
+        eventDate: `${event.date} ${event.month}`,
+        eventTime: event.time,
+        eventLocation: event.location
+      } 
+    });
+  };
+
   return (
-    <section className="section-padding bg-white">
-      <div className="container-custom">
-        <div className="text-center mb-12" data-aos="fade-up">
-          <h2 className="text-3xl md:text-4xl font-bold text-dark mb-4">Events & Initiatives</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Driving Change Through Purposeful Engagements
+    <section className="py-16 bg-white font-sans">
+      <div className="container mx-auto px-4 max-w-6xl">
+        
+        {/* Section Header */}
+        <div className="mb-12 text-center md:text-left">
+          <div className="flex items-center justify-center md:justify-start gap-3 mb-3">
+            <div className="w-10 h-0.5 bg-[#d1a284]"></div>
+            <span className="text-[#d1a284] font-medium uppercase text-sm tracking-wider">Upcoming Events</span>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#5C6F5C] border-l-4 border-[#d1a284] pl-4 inline-block">
+            Events & Initiatives
+          </h2>
+          <p className="text-gray-500 mt-4 max-w-2xl mx-auto md:mx-0">
+            Join us in our mission to create lasting change through these impactful events and initiatives
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        {/* Event List */}
+        <div className="flex flex-col gap-6">
           {events.map((event, index) => (
-            <div
-              key={index}
-              data-aos="slide-up"
-              data-aos-delay={index * 100}
-              className="bg-gradient-to-br from-primary to-white rounded-xl p-6 shadow-lg card-hover"
+            <div 
+              key={index} 
+              className="group flex flex-col md:flex-row items-center bg-white rounded-[40px] shadow-md border border-[#EAF3E6] p-2 pr-6 hover:shadow-xl transition-all duration-300 hover:border-[#d1a284]/30 cursor-pointer"
+              onClick={() => handleEventClick(event.id)}
             >
-              <div className="flex items-center space-x-2 text-secondary mb-4">
-                <FiCalendar />
-                <span className="text-sm">{event.date}</span>
+              {/* Image Section with Date Badge */}
+              <div className="relative flex-shrink-0">
+                <div className="w-full md:w-56 h-36 rounded-[30px] overflow-hidden">
+                  <img 
+                    src={event.image} 
+                    alt={event.title} 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
+                <div className="absolute top-1/2 -right-6 -translate-y-1/2 bg-[#5C6F5C] rounded-full w-16 h-16 flex flex-col items-center justify-center shadow-lg border-2 border-white">
+                  <span className="text-2xl font-bold text-white leading-none">{event.date}</span>
+                  <span className="text-[10px] font-bold text-[#d1a284] uppercase tracking-tighter">{event.month}</span>
+                </div>
               </div>
-              <div className="flex items-center space-x-2 text-secondary mb-4">
-                <FiMapPin />
-                <span className="text-sm">{event.location}</span>
+
+              {/* Content Section */}
+              <div className="flex-grow mt-4 md:mt-0 md:ml-14 text-center md:text-left">
+                <h3 className="text-xl font-bold text-[#5C6F5C] mb-2 hover:text-[#d1a284] transition-colors duration-300">
+                  {event.title}
+                </h3>
+                <p className="text-gray-500 text-sm mb-2 hidden md:block">
+                  {event.description}
+                </p>
+                <div className="flex items-center justify-center md:justify-start gap-2 text-[#d1a284] text-sm">
+                  <FiClock className="w-4 h-4" />
+                  <span className="font-medium text-gray-600">{event.time}</span>
+                </div>
               </div>
-              <h3 className="text-xl font-semibold text-dark mb-3">{event.title}</h3>
-              <p className="text-gray-600">{event.description}</p>
+
+              {/* Action Button - Navigates to Volunteer Page */}
+              <div className="mt-4 md:mt-0" onClick={(e) => e.stopPropagation()}>
+                <button 
+                  onClick={(e) => handleRegisterClick(event, e)}
+                  className="bg-[#EAF3E6] hover:bg-[#5C6F5C] text-[#5C6F5C] hover:text-white px-8 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 shadow-md hover:shadow-lg"
+                >
+                  Register Now
+                </button>
+              </div>
             </div>
           ))}
+        </div>
+
+        {/* View All Events Button */}
+        <div className="text-center mt-12">
+          <button 
+            onClick={handleViewAllEvents}
+            className="border-2 border-[#5C6F5C] text-[#5C6F5C] hover:bg-[#5C6F5C] hover:text-white px-8 py-3 rounded-full text-sm font-semibold transition-all duration-300"
+          >
+            View All Events
+          </button>
         </div>
       </div>
     </section>

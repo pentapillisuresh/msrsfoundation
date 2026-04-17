@@ -1,139 +1,107 @@
 import React from 'react';
-import { FiCheckCircle, FiUsers, FiGlobe, FiAward } from 'react-icons/fi';
+import { FiCheckCircle } from 'react-icons/fi';
 
 const KeyHighlights = () => {
   const highlights = [
-    {
-      icon: <FiCheckCircle className="text-4xl text-secondary" />,
-      title: 'CSR-1 Registered Organization',
-      description: 'Officially registered for CSR funding compliance',
-      stat: '500+',
-      statLabel: 'Projects Completed'
-    },
-    {
-      icon: <FiAward className="text-4xl text-secondary" />,
-      title: 'Section 8 Company',
-      description: 'Ministry of Corporate Affairs Approved',
-      stat: '12+',
-      statLabel: 'Years of Trust'
-    },
-    {
-      icon: <FiGlobe className="text-4xl text-secondary" />,
-      title: 'Multi-Sector Development',
-      description: 'Comprehensive social initiatives',
-      stat: '20+',
-      statLabel: 'Sectors Covered'
-    },
-    {
-      icon: <FiUsers className="text-4xl text-secondary" />,
-      title: 'Nationwide Impact',
-      description: 'Serving Communities Across India',
-      stat: '1M+',
-      statLabel: 'Lives Impacted'
-    },
+    { title: 'CSR-1 Registered Organization', description: 'Officially registered for CSR funding' },
+    { title: 'Section 8 Company', description: 'MCA Approved Trust' },
+    { title: 'Multi-Sector Development', description: 'Comprehensive social initiatives' },
+    { title: 'Nationwide Impact', description: 'Serving Communities Across India' },
   ];
 
   return (
-    <section className="relative section-padding gradient-bg overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-secondary/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-secondary/5 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-secondary/5 rounded-full blur-3xl"></div>
-      </div>
-
-      <div className="relative container-custom">
-        {/* Section Header */}
-        <div className="text-center mb-16" data-aos="fade-up">
-          <div className="inline-block mb-4">
-            <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-white/90 text-secondary shadow-sm backdrop-blur-sm">
-              Why Choose Us
-            </span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-dark mb-4">
-            Key <span className="text-secondary">Highlights</span>
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-secondary to-secondary/40 mx-auto mb-6 rounded-full"></div>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            Recognized excellence and proven track record in social development
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {highlights.map((highlight, index) => (
-            <div
-              key={index}
-              data-aos="zoom-in"
-              data-aos-delay={index * 100}
-              className="group relative bg-white rounded-2xl p-8 text-center card-hover shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden"
-            >
-              {/* Gradient Border Effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-secondary/20 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
+    <section className="py-24 bg-white font-sans overflow-hidden">
+      <div className="container mx-auto px-6 lg:px-20 max-w-7xl">
+        
+        {/* Main 2-Column Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-16 lg:gap-20">
+          
+          {/* ========================================================== */}
+          {/* LEFT SIDE: Single Image with Backside Dots */}
+          {/* ========================================================== */}
+          <div className="relative order-2 lg:order-1">
+            
+            {/* Main Image Container */}
+            <div className="relative flex justify-center">
               
-              {/* Icon Container with Animation */}
-              <div className="relative mb-6">
-                <div className="absolute inset-0 bg-secondary/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative inline-block p-4 bg-gradient-to-br from-secondary/10 to-secondary/5 rounded-full group-hover:scale-110 transition-transform duration-500">
-                  {React.cloneElement(highlight.icon, { className: "text-5xl text-secondary" })}
-                </div>
-              </div>
-
-              {/* Title */}
-              <h3 className="text-xl font-bold text-dark mb-3 group-hover:text-secondary transition-colors duration-300">
-                {highlight.title}
-              </h3>
+              {/* Backside Dots - Top Left */}
+              <div 
+                className="absolute -top-6 -left-6 w-32 h-32 z-0 opacity-30" 
+                style={{ backgroundImage: 'radial-gradient(#5C6F5C 2px, transparent 2px)', backgroundSize: '12px 12px' }}
+              ></div>
               
-              {/* Description */}
-              <p className="text-gray-600 mb-6 leading-relaxed">
-                {highlight.description}
-              </p>
-
-              {/* Stats Section */}
-              <div className="pt-4 border-t border-gray-100">
-                <div className="text-2xl font-bold text-secondary mb-1">
-                  {highlight.stat}
-                </div>
-                <div className="text-xs text-gray-500 uppercase tracking-wider">
-                  {highlight.statLabel}
-                </div>
+              {/* Backside Dots - Bottom Right */}
+              <div 
+                className="absolute -bottom-6 -right-6 w-40 h-40 z-0 opacity-30" 
+                style={{ backgroundImage: 'radial-gradient(#5C6F5C 2px, transparent 2px)', backgroundSize: '12px 12px' }}
+              ></div>
+              
+            
+              
+              {/* Single Image */}
+              <div className="relative z-10  overflow-hidden  transform hover:scale-[1.02] transition-transform duration-500 w-full max-w-md">
+                <img 
+                  src="./images/key.avif" 
+                  alt="Organization Volunteer" 
+                  className="w-full h-[450px] object-cover"
+                />
               </div>
 
-              {/* Decorative Number */}
-              <div className="absolute top-4 right-4 text-4xl font-bold text-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                {(index + 1).toString().padStart(2, '0')}
-              </div>
+              {/* Backside Dots - Bottom Left inside */}
+              <div 
+                className="absolute bottom-4 left-4 w-24 h-24 z-10 opacity-20" 
+                style={{ backgroundImage: 'radial-gradient(#EAF3E6 2px, transparent 2px)', backgroundSize: '8px 8px' }}
+              ></div>
             </div>
-          ))}
-        </div>
+          </div>
 
-        {/* Bottom CTA */}
-        <div className="text-center mt-16" data-aos="fade-up" data-aos-delay={400}>
-          <button className="group relative inline-flex items-center justify-center px-8 py-3 bg-secondary text-white font-semibold rounded-full hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 overflow-hidden">
-            <span className="relative z-10">Discover Our Impact</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-secondary to-secondary/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </button>
+
+          {/* ========================================================== */}
+          {/* RIGHT SIDE: Updated with SustainableGoals Colors */}
+          {/* ========================================================== */}
+          <div className="order-1 lg:order-2 space-y-8">
+            
+            {/* Pre-Heading Line */}
+            <div className="flex items-center gap-3">
+               <span className="text-[#5C6F5C]">
+                 <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
+               </span>
+               <span className="text-gray-500 font-medium tracking-wide uppercase text-sm">Key Highlights</span>
+            </div>
+
+            {/* Main Heading - Using #5C6F5C color */}
+            <h2 className="text-4xl lg:text-5xl font-extrabold text-[#5C6F5C] leading-tight max-w-xl">
+              Some Reasons to Choose <br/>
+              <span className="text-[#5C6F5C]">(Our Organization)</span>
+            </h2>
+
+            {/* Description Paragraph */}
+            <p className="text-gray-500 text-lg leading-relaxed max-w-lg">
+              Recognized excellence and proven track record in comprehensive social development, 
+              meeting ministry guidelines across diverse sectors.
+            </p>
+
+            {/* The Icon-Checklist Grid (2 columns) - Updated colors */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 pt-4">
+              {highlights.map((item, idx) => (
+                <div key={idx} className="flex items-start gap-4">
+                  {/* The green circle icon - Using #5C6F5C */}
+                  <div className="mt-1 flex-shrink-0 bg-[#5C6F5C] rounded-full p-[3px]">
+                    <FiCheckCircle className="text-white text-lg" />
+                  </div>
+                  {/* Text */}
+                  <div>
+                    <h4 className="font-bold text-[#5C6F5C] text-lg leading-snug">{item.title}</h4>
+                    <p className="text-sm text-gray-500">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+          
+          </div>
         </div>
       </div>
-
-      {/* Custom CSS for animations */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-        
-        .group:hover .group-hover\\:scale-110 {
-          transform: scale(1.1);
-        }
-        
-        .card-hover {
-          transition: all 0.3s ease;
-        }
-        
-        .gradient-bg {
-          background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
-        }
-      `}</style>
     </section>
   );
 };
