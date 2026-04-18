@@ -5,7 +5,7 @@ const services = [
   {
     id: 1,
     title: "Education Support",
-    frontImage: "./images/service1.avif",
+    frontImage: "./images/service15.png",
     subpoints: [
       "Sponsor a Child's Education",
       "School Infrastructure Development",
@@ -49,7 +49,7 @@ const services = [
   {
     id: 5,
     title: "Rural & Community Development",
-    frontImage: "./images/service5.avif",
+    frontImage: "./images/rural.jpg",
     subpoints: [
       "Village Development Projects",
       "Clean Water Initiatives",
@@ -71,7 +71,7 @@ const services = [
   {
     id: 7,
     title: "Environmental Protection",
-    frontImage: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=400&h=300&fit=crop",
+    frontImage: "./images/environment.avif",
     subpoints: [
       "Tree Plantation Drives",
       "Water Conservation Projects",
@@ -93,7 +93,7 @@ const services = [
   {
     id: 9,
     title: "General Fund",
-    frontImage: "./images/service8.avif",
+    frontImage: "./images/donation.avif",
     subpoints: [
       "Support Any Ongoing Initiative",
       "Flexible Fund Allocation",
@@ -103,7 +103,7 @@ const services = [
   {
     id: 10,
     title: "CSR & Corporate Contributions",
-    frontImage: "./images/service9.jpg",
+    frontImage: "./images/meeting.jpg",
     subpoints: [
       "Corporate Social Responsibility Projects",
       "Adopt a Village / School",
@@ -114,7 +114,7 @@ const services = [
   {
     id: 11,
     title: "Infrastructure Development",
-    frontImage: "./images/service10.jpg",
+    frontImage: "./images/service16.png",
     subpoints: [
       "School & Classroom Construction",
       "Hospital & Medical Facility Setup",
@@ -299,16 +299,14 @@ const Services = () => {
     <section className="py-20 bg-gradient-to-br from-[#EAF3E6] via-white to-[#EAF3E6]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header */}
+        {/* Section Header - Updated like About and What We Do */}
         <div className="mb-16 text-center">
-          <div className="inline-block px-4 py-1 rounded-full bg-[#5C6F5C]/10 text-[#5C6F5C] text-sm font-semibold mb-4">
-            What We Do
-          </div>
-           <h2 className="text-center text-3xl md:text-4xl font-semibold text-gray-800 mb-10">
-         Our Services
-        </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-[#5C6F5C] to-[#8BA88B] mx-auto rounded-full mb-5" />
-          <p className="text-gray-600 max-w-2xl mx-auto text-base">
+          <span className="text-xs tracking-[8px] text-secondary font-semibold mb-3 inline-block">
+            OUR SERVICES
+          </span>
+          
+          <div className="w-16 h-0.5 bg-secondary mx-auto"></div>
+          <p className="text-gray-600 max-w-2xl mx-auto mt-6 text-sm">
             Comprehensive support programs designed to create lasting impact across communities
           </p>
         </div>

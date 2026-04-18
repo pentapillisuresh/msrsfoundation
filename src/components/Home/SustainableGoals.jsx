@@ -37,46 +37,51 @@ const SustainableGoals = () => {
   return (
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-6">
+        {/* Section Header - Centered like About and What We Do */}
+        <div className="mb-12 text-center">
+          <span className="text-xs tracking-[8px] text-secondary font-semibold mb-3 inline-block">
+            SUSTAINABLE GOALS
+          </span>
+          
+          <div className="w-16 h-0.5 bg-secondary mx-auto"></div>
+          <p className="text-gray-600 max-w-2xl mx-auto mt-6 text-sm">
+            Aligning with global sustainability frameworks for a better tomorrow
+          </p>
+        </div>
 
-        {/* Title */}
-        <h2 className="text-center text-3xl md:text-4xl font-semibold text-gray-800 mb-10">
-          Sustainable Development Goals
-        </h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 justify-items-center">
+          {goals.map((goal) => (
+            <div
+              key={goal.id}
+              className="
+                group
+                bg-[#EAF3E6]
+                w-[150px]
+                h-[150px]
+                rounded-full
+                flex flex-col items-center justify-center
+                text-center
+                cursor-pointer
+                transition-all duration-300
+                hover:bg-[#5C6F5C]
+              "
+            >
+              {/* Image */}
+              <div className="flex justify-center mb-2">
+                <img
+                  src={goal.image}
+                  alt={goal.title}
+                  className="w-10 h-10 object-contain transition duration-300 group-hover:brightness-0 group-hover:invert"
+                />
+              </div>
 
-       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 justify-items-center">
-  {goals.map((goal) => (
-    <div
-      key={goal.id}
-      className="
-        group
-        bg-[#EAF3E6]
-        w-[150px]
-        h-[150px]
-        rounded-full
-        flex flex-col items-center justify-center
-        text-center
-        cursor-pointer
-        transition-all duration-300
-        hover:bg-[#5C6F5C]
-      "
-    >
-      {/* Image */}
-      <div className="flex justify-center mb-2">
-        <img
-          src={goal.image}
-          alt={goal.title}
-          className="w-10 h-10 object-contain transition duration-300 group-hover:brightness-0 group-hover:invert"
-        />
-      </div>
-
-      {/* Title */}
-      <p className="text-xs font-medium text-[#5C6F5C] group-hover:text-white transition px-2">
-        {goal.title}
-      </p>
-    </div>
-  ))}
-</div>
-
+              {/* Title */}
+              <p className="text-xs font-medium text-[#5C6F5C] group-hover:text-white transition px-2">
+                {goal.title}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

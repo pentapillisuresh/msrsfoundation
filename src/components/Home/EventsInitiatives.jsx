@@ -74,16 +74,14 @@ const EventsInitiatives = () => {
     <section className="py-16 bg-white font-sans">
       <div className="container mx-auto px-4 max-w-6xl">
         
-        {/* Section Header */}
-        <div className="mb-12 text-center md:text-left">
-          <div className="flex items-center justify-center md:justify-start gap-3 mb-3">
-            <div className="w-10 h-0.5 bg-[#d1a284]"></div>
-            <span className="text-[#d1a284] font-medium uppercase text-sm tracking-wider">Upcoming Events</span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-[#5C6F5C] border-l-4 border-[#d1a284] pl-4 inline-block">
-            Events & Initiatives
-          </h2>
-          <p className="text-gray-500 mt-4 max-w-2xl mx-auto md:mx-0">
+        {/* Section Header - Centered like other pages */}
+        <div className="mb-12 text-center">
+          <span className="text-xs tracking-[8px] text-secondary font-semibold mb-3 inline-block">
+            UPCOMING EVENTS
+          </span>
+          
+          <div className="w-16 h-0.5 bg-secondary mx-auto"></div>
+          <p className="text-gray-600 max-w-2xl mx-auto mt-6 text-sm">
             Join us in our mission to create lasting change through these impactful events and initiatives
           </p>
         </div>

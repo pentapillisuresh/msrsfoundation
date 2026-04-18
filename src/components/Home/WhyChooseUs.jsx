@@ -53,88 +53,98 @@ const WorkingProcess = () => {
   ];
 
   return (
-    <section ref={sectionRef} className="py-20 px-6 overflow-hidden bg-white">
-      <div className="container mx-auto max-w-6xl">
+    <section 
+      ref={sectionRef} 
+      className="py-20 px-6 overflow-hidden relative"
+      style={{
+        backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&auto=format")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+      }}
+    >
+      {/* Dull overlay */}
+      <div className="absolute inset-0 bg-black/60"></div>
+      
+      <div className="container mx-auto max-w-7xl relative z-10">
         
-        {/* Heading Section */}
-        <div className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 bg-[#EAF3E6] px-4 py-1.5 rounded-full mb-3">
-            <span className="text-[#5C6F5C] text-sm font-semibold">🔶 WHY CHOOSE US FOR CSR FUNDING</span>
+        {/* Section Header */}
+        <div className="mb-16 text-center">
+          <span className="text-xs tracking-[8px] text-[#EAF3E6] font-semibold mb-3 inline-block uppercase">
+            Why Choose Us
+          </span>
+          
+          <div className="flex justify-center mb-6">
+            <div className="w-16 h-0.5 bg-[#EAF3E6]"></div>
           </div>
-          <div className="w-16 h-0.5 bg-[#5C6F5C]/30 rounded-full mx-auto"></div>
+          
+          <p className="text-gray-300 max-w-2xl mx-auto text-sm">
+            Trusted partner for CSR funding with complete transparency and measurable impact
+          </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row items-center gap-16">
+        {/* Horizontal Steps Layout */}
+        <div className="relative">
           
-          {/* LEFT SIDE: Process Steps */}
-          <div className="w-full lg:w-3/5 relative">
-            <div className="space-y-10">
-              {processes.map((step, index) => (
-                <div 
-                  key={index} 
-                  className={`relative flex items-center gap-12 group transition-all duration-500 ${
-                    animated ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-                  }`}
-                  style={{ transitionDelay: `${index * 100}ms` }}
-                >
+          {/* Connecting Line 
+              - Positioned at top-12 (48px) to hit exact center of the w-24 (96px) circles.
+              - left-[12.5%] and right-[12.5%] ensures it starts at the center of the first item 
+                and ends at the center of the last item in a 4-column grid.
+          */}
+          <div className="absolute top-12 left-[12.5%] right-[12.5%] h-[1px] bg-white/20 hidden lg:block"></div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0">
+            {processes.map((step, index) => (
+              <div 
+                key={index} 
+                className={`relative text-center transition-all duration-700 ease-out ${
+                  animated ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+                }`}
+                style={{ transitionDelay: `${index * 200}ms` }}
+              >
+                {/* Step Number Circle */}
+                <div className="relative z-10 mb-8 group">
+                  <div className="w-24 h-24 mx-auto rounded-full bg-white/10 backdrop-blur-md border-2 border-[#EAF3E6]/30 flex flex-col items-center justify-center group-hover:border-[#EAF3E6] group-hover:bg-white/20 transition-all duration-300">
+                    <img 
+                      src={step.icon} 
+                      alt={step.title}
+                      className="w-10 h-10 object-contain mb-1"
+                      style={{ filter: "brightness(0) invert(1)" }}
+                    />
+                    <span className="text-[#EAF3E6] text-[10px] font-bold tracking-tighter">{step.id}</span>
+                  </div>
                   
-                  {/* Icon Circle with Colored Image */}
-                  <div className="relative z-10 flex-shrink-0">
-                    <div className="w-20 h-20 rounded-full bg-[#EAF3E6] flex items-center justify-center border border-[#5C6F5C]/20 shadow-md group-hover:border-[#5C6F5C] group-hover:shadow-lg transition-all duration-300">
-                      <img 
-                        src={step.icon} 
-                        alt={step.title}
-                        className="w-10 h-10 object-contain"
-                        style={{
-                          filter: "brightness(0) saturate(100%) invert(35%) sepia(8%) saturate(800%) hue-rotate(50deg) brightness(95%) contrast(90%)"
-                        }}
-                      />
+                  {/* Arrow Indicator (Optional) - Positioned on the line between circles */}
+                  {index < processes.length - 1 && (
+                    <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 -right-4 w-8 h-8 text-[#EAF3E6]/40 z-20">
+                      <svg fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                      </svg>
                     </div>
-                    
-                    {/* Increased Dotted Line Length */}
-                    <div className="absolute top-1/2 -right-16 w-16 border-t-2 border-dotted border-[#5C6F5C]/40"></div>
-                  </div>
-
-                  {/* Content Card */}
-                  <div className="bg-[#EAF3E6] p-6 rounded-xl border border-[#5C6F5C]/20 shadow-md relative flex-1 max-w-[280px] group-hover:shadow-lg transition-all duration-300">
-                    
-                    {/* Number Badge */}
-                    <div className="absolute top-1/2 -left-4 -translate-y-1/2 w-8 h-8 bg-[#5C6F5C] rounded-full flex items-center justify-center shadow-md border-2 border-white z-20">
-                      <span className="text-white font-bold text-[11px]">{step.id}</span>
-                    </div>
-
-                    <div className="pl-5">
-                      <h3 className="text-[#2d3a2d] text-base font-bold mb-2 leading-tight">{step.title}</h3>
-                      <p className="text-[#5C6F5C] text-sm leading-relaxed">
-                        {step.desc}
-                      </p>
-                    </div>
-                  </div>
-
+                  )}
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* RIGHT SIDE: Circular Image */}
-          <div className={`w-full lg:w-2/5 flex justify-center lg:justify-center transition-all duration-700 ${
-            animated ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'
-          }`}>
-            <div className="relative">
-              <div className="w-80 h-80 md:w-[380px] md:h-[380px] rounded-full overflow-hidden border-[6px] border-[#EAF3E6] shadow-xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800" 
-                  alt="CSR Funding" 
-                  className="w-full h-full object-cover"
-                />
+                
+                {/* Title */}
+                <h3 className="text-white text-base font-bold mb-3 px-4 leading-tight min-h-[40px]">
+                  {step.title}
+                </h3>
+                
+                {/* Description */}
+                <p className="text-gray-400 text-xs leading-relaxed max-w-[220px] mx-auto px-2">
+                  {step.desc}
+                </p>
+                
+                {/* Decorative bottom element */}
+                <div className="mt-6 flex justify-center">
+                  <div className="w-6 h-1 bg-[#EAF3E6]/20 rounded-full"></div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-
         </div>
       </div>
     </section>
   );
 };
 
-export default WorkingProcess;
+export default WorkingProcess;  

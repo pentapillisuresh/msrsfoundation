@@ -3,8 +3,9 @@ import React, { useEffect, useState } from "react";
 const LoadingScreen = ({ onLoadingComplete }) => {
   const [progress, setProgress] = useState(0);
   const [startExit, setStartExit] = useState(false);
+  const [openGate, setOpenGate] = useState(false);
 
-  const duration = 2400; // TOTAL animation time (ms)
+  const duration = 2400;
 
   useEffect(() => {
     let start = Date.now();
@@ -18,15 +19,20 @@ const LoadingScreen = ({ onLoadingComplete }) => {
         clearInterval(interval);
 
         setTimeout(() => {
-          setStartExit(true);
+          setOpenGate(true); // 👈 start gate animation
+
           setTimeout(() => {
-            onLoadingComplete();
-          }, 700);
-        }, 300);
+            setStartExit(true);
+
+            setTimeout(() => {
+              onLoadingComplete();
+            }, 800);
+          }, 800);
+        }, 200);
       }
 
       setProgress(percent);
-    }, 16); // smooth (60fps)
+    }, 16);
 
     return () => clearInterval(interval);
   }, [onLoadingComplete]);
@@ -34,47 +40,65 @@ const LoadingScreen = ({ onLoadingComplete }) => {
   const text = "MSRS";
 
   return (
-    <div
-      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#333d4b] transition-all duration-700 ${
-        startExit ? "opacity-0 scale-110 blur-md" : "opacity-100"
-      }`}
-    >
-      {/* LETTER DROP */}
-      <div className="flex space-x-2 text-6xl md:text-8xl font-bold text-white">
-        {text.split("").map((char, index) => (
-          <span
-            key={index}
-            className="letter"
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
+      
+      {/* LEFT PANEL */}
+      <div
+        className={`absolute left-0 top-0 h-full w-1/2 bg-[#333d4b] z-40 transition-transform duration-700 ${
+          openGate ? "-translate-x-full" : "translate-x-0"
+        }`}
+      />
+
+      {/* RIGHT PANEL */}
+      <div
+        className={`absolute right-0 top-0 h-full w-1/2 bg-[#333d4b] z-40 transition-transform duration-700 ${
+          openGate ? "translate-x-full" : "translate-x-0"
+        }`}
+      />
+
+      {/* CENTER CONTENT */}
+      <div
+        className={`relative z-50 flex flex-col items-center justify-center transition-all duration-700 ${
+          startExit ? "opacity-0 scale-90" : "opacity-100"
+        }`}
+      >
+        {/* LETTER DROP */}
+        <div className="flex space-x-2 text-6xl md:text-8xl font-bold text-white">
+          {text.split("").map((char, index) => (
+            <span
+              key={index}
+              className="letter"
+              style={{
+                animationDelay: `${index * 0.3}s`,
+                animationDuration: `${duration / 1000}s`,
+              }}
+            >
+              {char}
+            </span>
+          ))}
+        </div>
+
+        {/* FOUNDATION */}
+        <p className="mt-4 text-[#d1a284] tracking-[8px] text-lg animate-fadeIn">
+          FOUNDATION
+        </p>
+
+        {/* PROGRESS BAR */}
+        <div className="w-64 h-[2px] bg-white/20 mt-8 overflow-hidden rounded-full">
+          <div
+            className="h-full bg-[#d1a284]"
             style={{
-              animationDelay: `${index * 0.3}s`,
-              animationDuration: `${duration / 1000}s`,
+              width: `${progress}%`,
+              transition: "width 0.1s linear",
             }}
-          >
-            {char}
-          </span>
-        ))}
+          />
+        </div>
+
+        {/* PERCENT */}
+        <p className="text-white/70 mt-3 text-sm tracking-widest">
+          {Math.floor(progress)}%
+        </p>
       </div>
-
-      {/* FOUNDATION */}
-      <p className="mt-4 text-[#d1a284] tracking-[8px] text-lg animate-fadeIn">
-        FOUNDATION
-      </p>
-
-      {/* PROGRESS BAR */}
-      <div className="w-64 h-[2px] bg-white/20 mt-8 overflow-hidden rounded-full">
-        <div
-          className="h-full bg-[#d1a284]"
-          style={{
-            width: `${progress}%`,
-            transition: "width 0.1s linear",
-          }}
-        />
-      </div>
-
-      {/* PERCENT */}
-      <p className="text-white/70 mt-3 text-sm tracking-widest">
-        {Math.floor(progress)}%
-      </p>
 
       {/* STYLES */}
       <style>{`

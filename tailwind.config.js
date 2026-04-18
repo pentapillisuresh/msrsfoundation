@@ -12,9 +12,9 @@ module.exports = {
       },
 
       fontFamily: {
-        sans: ['"Mulish"', 'sans-serif'],
-    heading: ['"Mulish"', 'sans-serif'],
-     inter: ['"Inter"', 'sans-serif'],
+        sans: ['Mulish', 'sans-serif'],
+    heading: ['Mulish', 'sans-serif'],
+     inter: ['Inter', 'sans-serif'],
       },
 
       animation: {
