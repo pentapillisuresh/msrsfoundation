@@ -16,7 +16,7 @@ const Hero = () => {
   const banners = [
     {
       id: 1,
-      image: './images/profilepic2.jpg',
+      image: './images/p.png',
       title: 'MSRS Foundation stands as a symbol of integrity, impact, and unwavering commitment to society.',
       subtitle: 'Under the distinguished leadership Director.',
       description: 'MSRS Foundation stands as a symbol of integrity, impact, and unwavering commitment to society.',
@@ -129,9 +129,10 @@ const Hero = () => {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap');
 
-        * {
-          font-family: 'Mulish', sans-serif;
-        }
+        // * {
+        //   font-family: 'Mulish', sans-serif;
+        // }
+
 
         .hero-title {
           font-size: clamp(2.5rem, 4vw, 4rem);
@@ -291,34 +292,26 @@ const Hero = () => {
           margin-right: auto;
         }
 
-        /* Quotation marks for first slide - inline with title */
-        .title-with-quotes {
-          display: inline;
-        }
-        
-        .quotation-open {
+        /* Quotation mark - only for first banner, directly above title */
+        .quote-above-title {
           font-family: 'Playfair Display', serif !important;
-          font-size: 3rem;
+          font-size: 3.5rem;
           color: #7A8E6B;
           line-height: 1;
           opacity: 0.8;
-          display: inline-block;
-          margin-right: 0.25rem;
-          vertical-align: middle;
-        }
-        
-        .quotation-close {
-          font-family: 'Playfair Display', serif !important;
-          font-size: 3rem;
-          color: #7A8E6B;
-          line-height: 1;
-          opacity: 0.8;
-          display: inline-block;
-          margin-left: 0.25rem;
-          vertical-align: middle;
+          display: block;
+          margin-bottom: 0.5rem;
+          text-align: left;
         }
 
-        /* Founder Info Styles */
+        /* Founder Info Styles - Bottom Right */
+        .founder-info {
+          position: absolute;
+          bottom: 2rem;
+          right: 2rem;
+          z-index: 20;
+        }
+
         .founder-name-text {
           font-size: 1rem;
           font-weight: 700;
@@ -524,8 +517,12 @@ const Hero = () => {
           .founder-title-text {
             font-size: 0.65rem;
           }
-          .quotation-open, .quotation-close {
-            font-size: 2rem;
+          .founder-info {
+            bottom: 1rem;
+            right: 1rem;
+          }
+          .quote-above-title {
+            font-size: 2.5rem;
           }
         }
 
@@ -537,8 +534,8 @@ const Hero = () => {
           .first-slide-bg {
             background-position: 55% center !important;
           }
-          .quotation-open, .quotation-close {
-            font-size: 1.5rem;
+          .quote-above-title {
+            font-size: 2rem;
           }
         }
       `}</style>
@@ -585,8 +582,8 @@ const Hero = () => {
 
               {/* Content */}
               <div className="relative z-10 flex flex-col justify-between h-full px-6 md:px-12 lg:px-20 py-12 md:py-16">
-                {/* Main Content Area */}
-                <div className="flex-1 flex items-center">
+                {/* Main Content Area - Vertically centered */}
+                <div className="flex-1 flex items-center justify-center">
                   <div className={`${banner.layout === 'left' ? 'left-aligned-content' : 'text-center max-w-4xl mx-auto w-full'} hero-content`}>
                     {/* Category Tag */}
                     <div className="category-tag inline-block mb-4 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold tracking-wider uppercase">
@@ -598,21 +595,18 @@ const Hero = () => {
                       {idx === 5 && 'Partnership'}
                     </div>
 
-                    {/* Title with opening and closing quotation marks for first slide only */}
-                    {idx === 0 ? (
-                      <h1 className="hero-title text-white font-bold mb-4 leading-[1.2]">
-                        <span className="quotation-open">“</span>
-                        {banner.title}
-                        <span className="quotation-close">”</span>
-                      </h1>
-                    ) : (
-                      <h1 className="hero-title text-white font-bold mb-4 leading-[1.2]">
-                        {banner.title}
-                      </h1>
+                    {/* Quotation mark - ONLY for first banner, directly above title */}
+                    {idx === 0 && (
+                      <div className="quote-above-title">“</div>
                     )}
 
+                    {/* Title */}
+                    <h1 className="hero-title text-white font-bold mb-4 leading-[1.2]">
+                      {banner.title}
+                    </h1>
+
                     {banner.subtitle && (
-                      <h2 className="hero-subtitle text-white/95 text-xl md:text-2xl lg:text-2xl mb-4 font-medium tracking-wide">
+                      <h2 className="hero-subtitle  text-white/95 text-xl md:text-2xl lg:text-2xl mb-4  tracking-wide">
                         {banner.subtitle}
                       </h2>
                     )}
@@ -665,14 +659,12 @@ const Hero = () => {
                   </div>
                 </div>
 
-                {/* Bottom Area with Founder Info - Aligned with buttons horizontally */}
+                {/* Bottom Area with Founder Info - Bottom Right corner */}
                 {idx === 0 && (
-                  <div className="founder-info w-full">
-                    <div className="flex justify-end">
-                      <div className="text-right">
-                        <div className="founder-name-text">Mr. Srinivasa Sai Kavali</div>
-                        <div className="founder-title-text">Founder, Chairman & Managing Director</div>
-                      </div>
+                  <div className="founder-info">
+                    <div className="text-center">
+                      <div className="founder-name-text">Mr. Srinivasa Sai Kavali</div>
+                      <div className="founder-title-text">Founder, Chairman & Managing Director</div>
                     </div>
                   </div>
                 )}

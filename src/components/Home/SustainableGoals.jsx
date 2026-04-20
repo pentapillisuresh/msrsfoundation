@@ -45,7 +45,7 @@ const SustainableGoals = () => {
           
           <div className="w-16 h-0.5 bg-secondary mx-auto"></div>
           <p className="text-gray-600 max-w-2xl mx-auto mt-6 text-sm">
-            Aligning with global sustainability frameworks for a better tomorrow
+            Driving Sustainable Impact Aligned with Global Development Goals
           </p>
         </div>
 

@@ -77,7 +77,7 @@ const GovernmentRegistrations = () => {
             <div className="w-16 h-0.5 bg-[#EAF3E6]"></div>
           </div>
           <p className="text-gray-300 max-w-2xl mx-auto text-sm">
-            Aligning with global sustainability frameworks for a better tomorrow
+           Building Trust Through Certified Processes and Responsible Governance
           </p>
         </div>
 
