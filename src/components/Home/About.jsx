@@ -13,7 +13,7 @@ const About = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header - Centered like What We Do */}
         <div className="mb-16 text-center">
-          <span className="text-xs tracking-[8px] text-secondary font-semibold mb-3 inline-block">
+          <span className="text-xs tracking-[5px] text-secondary font-semibold mb-3 inline-block">
             ABOUT
           </span>
 

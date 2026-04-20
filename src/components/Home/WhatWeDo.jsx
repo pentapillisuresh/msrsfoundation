@@ -100,7 +100,7 @@ const WhatWeDo = () => {
         
         {/* Section Header */}
         <div className="mb-16 text-center">
-          <span className="text-xs tracking-[8px] text-secondary font-semibold mb-3 inline-block">
+          <span className="text-xs tracking-[5px] text-secondary font-semibold mb-3 inline-block">
             WHAT WE DO
           </span>
           <div className="w-16 h-0.5 bg-secondary mx-auto"></div>

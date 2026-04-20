@@ -76,7 +76,7 @@ const EventsInitiatives = () => {
         
         {/* Section Header - Centered like other pages */}
         <div className="mb-12 text-center">
-          <span className="text-xs tracking-[8px] text-secondary font-semibold mb-3 inline-block">
+          <span className="text-xs tracking-[5px] text-secondary font-semibold mb-3 inline-block">
             UPCOMING EVENTS
           </span>
           

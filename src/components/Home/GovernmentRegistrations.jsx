@@ -70,8 +70,8 @@ const GovernmentRegistrations = () => {
         
         {/* Section Header */}
         <div className="mb-16 text-center">
-          <span className="text-xs tracking-[8px] text-[#EAF3E6] font-semibold mb-3 inline-block uppercase">
-            Government Registrations
+          <span className="text-xs tracking-[5px] text-[#EAF3E6] font-semibold mb-3 inline-block uppercase">
+            Recognized & Certified by Government Authorities of India
           </span>
           <div className="flex justify-center mb-6">
             <div className="w-16 h-0.5 bg-[#EAF3E6]"></div>

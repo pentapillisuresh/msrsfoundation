@@ -157,7 +157,7 @@ const BizlyTestimonial = () => {
         
         {/* Section Header - Premium Centered */}
         <div className="mb-16 text-center">
-          <span className="text-xs tracking-[8px] text-[#d1a284] font-semibold mb-3 inline-block">
+          <span className="text-xs tracking-[5px] text-[#d1a284] font-semibold mb-3 inline-block">
             TESTIMONIALS
           </span>
           

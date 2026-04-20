@@ -48,7 +48,7 @@ const KeyHighlights = () => {
           data-aos="fade-up"
           data-aos-duration="800"
         >
-          <span className="text-xs tracking-[8px] text-[#EAF3E6] font-semibold mb-3 inline-block">
+          <span className="text-xs tracking-[5px] text-[#EAF3E6] font-semibold mb-3 inline-block">
             {('KEY HIGHLIGHTS')}
           </span>
           

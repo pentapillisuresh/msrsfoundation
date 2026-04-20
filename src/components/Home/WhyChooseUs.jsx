@@ -70,7 +70,7 @@ const WorkingProcess = () => {
         
         {/* Section Header */}
         <div className="mb-16 text-center">
-          <span className="text-xs tracking-[8px] text-[#EAF3E6] font-semibold mb-3 inline-block uppercase">
+          <span className="text-xs tracking-[5px] text-[#EAF3E6] font-semibold mb-3 inline-block uppercase">
             Why Choose Us
           </span>
           

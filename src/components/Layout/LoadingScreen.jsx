@@ -79,7 +79,7 @@ const LoadingScreen = ({ onLoadingComplete }) => {
         </div>
 
         {/* FOUNDATION */}
-        <p className="mt-4 text-[#d1a284] tracking-[8px] text-lg animate-fadeIn">
+        <p className="mt-4 text-[#d1a284] tracking-[5px] text-lg animate-fadeIn">
           FOUNDATION
         </p>
 

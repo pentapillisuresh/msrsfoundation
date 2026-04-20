@@ -20,7 +20,7 @@ const DonationPolicy = () => {
           data-aos="fade-up"
           className="mb-12 text-center"
         >
-          <span className="text-xs tracking-[8px] text-[#5C6F5C] font-semibold mb-3 inline-block uppercase">
+          <span className="text-xs tracking-[5px] text-[#5C6F5C] font-semibold mb-3 inline-block uppercase">
             Legal
           </span>
           <div className="w-16 h-0.5 bg-[#5C6F5C] mx-auto mb-6"></div>
