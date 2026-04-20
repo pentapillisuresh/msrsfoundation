@@ -1,3 +1,4 @@
+// Updated App.jsx - Add the floating buttons to your app
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import AOS from 'aos';
@@ -6,6 +7,7 @@ import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
 import ScrollToTop from './components/Layout/ScrollToTop';
 import LoadingScreen from './components/Layout/LoadingScreen';
+import FloatingButtons from './components/Contact/FloatingButtons';
 import Home from './pages/Home';
 import AboutUs from './components/About/AboutUs';
 import CSRProjects from './components/CSR/CSRProjects';
@@ -82,6 +84,9 @@ function App() {
         </Routes>
       </main>
       <Footer />
+      
+      {/* Floating Contact Buttons */}
+      <FloatingButtons />
     </div>
   );
 }
