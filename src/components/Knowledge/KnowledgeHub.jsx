@@ -329,7 +329,7 @@ const KnowledgeHub = () => {
       </style>
 
       {/* --- HERO SECTION --- */}
-      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
             src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2070" 

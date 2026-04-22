@@ -58,7 +58,6 @@ const EventsInitiatives = () => {
 
   const handleRegisterClick = (event, e) => {
     e.stopPropagation();
-    // Navigate to volunteer page with event data in state
     navigate('/get-involved/volunteer', { 
       state: { 
         eventId: event.id,
@@ -76,11 +75,11 @@ const EventsInitiatives = () => {
         
         {/* Section Header - Centered like other pages */}
         <div className="mb-12 text-center">
-          <span className="text-xs tracking-[5px] text-secondary font-semibold mb-3 inline-block">
+          <span className="text-xs tracking-[5px] text-[#667A62] font-semibold mb-3 inline-block">
             UPCOMING EVENTS
           </span>
           
-          <div className="w-16 h-0.5 bg-secondary mx-auto"></div>
+          <div className="w-16 h-0.5 bg-[#667A62] mx-auto"></div>
           <p className="text-gray-600 max-w-2xl mx-auto mt-6 text-sm">
             Join us in our mission to create lasting change through these impactful events and initiatives
           </p>
@@ -91,7 +90,7 @@ const EventsInitiatives = () => {
           {events.map((event, index) => (
             <div 
               key={index} 
-              className="group flex flex-col md:flex-row items-center bg-white rounded-[40px] shadow-md border border-[#EAF3E6] p-2 pr-6 hover:shadow-xl transition-all duration-300 hover:border-[#d1a284]/30 cursor-pointer"
+              className="group flex flex-col md:flex-row items-center bg-white rounded-[40px] shadow-md border border-[#EAF6E3] p-2 pr-6 hover:shadow-xl transition-all duration-300 hover:border-[#667A62]/30 cursor-pointer"
               onClick={() => handleEventClick(event.id)}
             >
               {/* Image Section with Date Badge */}
@@ -103,21 +102,21 @@ const EventsInitiatives = () => {
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
-                <div className="absolute top-1/2 -right-6 -translate-y-1/2 bg-[#5C6F5C] rounded-full w-16 h-16 flex flex-col items-center justify-center shadow-lg border-2 border-white">
+                <div className="absolute top-1/2 -right-6 -translate-y-1/2 bg-[#2C3E2B] rounded-full w-16 h-16 flex flex-col items-center justify-center shadow-lg border-2 border-white">
                   <span className="text-2xl font-bold text-white leading-none">{event.date}</span>
-                  <span className="text-[10px] font-bold text-[#d1a284] uppercase tracking-tighter">{event.month}</span>
+                  <span className="text-[10px] font-bold text-[#667A62] uppercase tracking-tighter">{event.month}</span>
                 </div>
               </div>
 
               {/* Content Section */}
               <div className="flex-grow mt-4 md:mt-0 md:ml-14 text-center md:text-left">
-                <h3 className="text-xl font-bold text-[#5C6F5C] mb-2 hover:text-[#d1a284] transition-colors duration-300">
+                <h3 className="text-xl font-bold text-[#2C3E2B] mb-2 hover:text-[#667A62] transition-colors duration-300">
                   {event.title}
                 </h3>
                 <p className="text-gray-500 text-sm mb-2 hidden md:block">
                   {event.description}
                 </p>
-                <div className="flex items-center justify-center md:justify-start gap-2 text-[#d1a284] text-sm">
+                <div className="flex items-center justify-center md:justify-start gap-2 text-[#667A62] text-sm">
                   <FiClock className="w-4 h-4" />
                   <span className="font-medium text-gray-600">{event.time}</span>
                 </div>
@@ -127,7 +126,7 @@ const EventsInitiatives = () => {
               <div className="mt-4 md:mt-0" onClick={(e) => e.stopPropagation()}>
                 <button 
                   onClick={(e) => handleRegisterClick(event, e)}
-                  className="bg-[#EAF3E6] hover:bg-[#5C6F5C] text-[#5C6F5C] hover:text-white px-8 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 shadow-md hover:shadow-lg"
+                  className="bg-[#EAF6E3] hover:bg-[#2C3E2B] text-[#2C3E2B] hover:text-white px-8 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 shadow-md hover:shadow-lg"
                 >
                   Register Now
                 </button>
@@ -140,7 +139,7 @@ const EventsInitiatives = () => {
         <div className="text-center mt-12">
           <button 
             onClick={handleViewAllEvents}
-            className="border-2 border-[#5C6F5C] text-[#5C6F5C] hover:bg-[#5C6F5C] hover:text-white px-8 py-3 rounded-full text-sm font-semibold transition-all duration-300"
+            className="border-2 border-[#2C3E2B] text-[#2C3E2B] hover:bg-[#2C3E2B] hover:text-white px-8 py-3 rounded-full text-sm font-semibold transition-all duration-300"
           >
             View All Events
           </button>

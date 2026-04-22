@@ -309,7 +309,7 @@ const VolunteerForm = () => {
       </style>
 
       {/* --- HERO SECTION --- */}
-      <section className="relative h-[50vh] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
             src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?q=80&w=2070" 

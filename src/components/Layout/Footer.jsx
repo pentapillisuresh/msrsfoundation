@@ -22,7 +22,7 @@ const Footer = () => {
   const upiQrCodeUrl = "/images/qr1.png";
 
   return (
-    <footer className="bg-[#5C6F5C] text-white pt-20 pb-8 relative overflow-hidden font-sans">
+    <footer className="bg-[#2C3E2B] text-white pt-20 pb-8 relative overflow-hidden font-sans">
       {/* Background Text - MSRS */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0">
         <span className="text-[15vw] font-black text-white/5 whitespace-nowrap tracking-wider">
@@ -30,7 +30,7 @@ const Footer = () => {
         </span>
       </div>
       
-      <div className="container mx-auto px-6  relative z-10">
+      <div className="container mx-auto px-6 lg:px-20 relative z-10">
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-16">
           
@@ -42,12 +42,12 @@ const Footer = () => {
                 MSRS<br/>Foundation
               </h2>
             </div>
-            <p className="text-sm leading-relaxed text-white/70 italic">
+            <p className="text-sm leading-relaxed text-white/80 italic">
               "Excellence in Service, Transparency in Governance."
             </p>
             <div className="flex gap-3">
               {[FiFacebook, FiInstagram, FiLinkedin].map((Icon, idx) => (
-                <a key={idx} href="#" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-[#5C6F5C] transition-all duration-300">
+                <a key={idx} href="#" className="w-9 h-9 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-[#2C3E2B] transition-all duration-300">
                   <Icon size={16} />
                 </a>
               ))}
@@ -56,31 +56,31 @@ const Footer = () => {
 
           {/* Column 2: Navigation */}
           <div>
-            <h4 className="text-white/70 text-xs font-bold uppercase tracking-[0.2em] mb-7">Navigation</h4>
+            <h4 className="text-white/80 text-xs font-bold uppercase tracking-[0.2em] mb-7">Navigation</h4>
             <ul className="grid grid-cols-1 gap-3">
-              <li><Link to="/" className="text-sm text-white/70 hover:text-white transition-all flex items-center gap-2 group"><FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> Home</Link></li>
-              <li><Link to="/about" className="text-sm text-white/70 hover:text-white transition-all flex items-center gap-2 group"><FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> About Us</Link></li>
-              <li><Link to="/csr-projects" className="text-sm text-white/70 hover:text-white transition-all flex items-center gap-2 group"><FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> CSR Projects</Link></li>
-              <li><Link to="/events" className="text-sm text-white/70 hover:text-white transition-all flex items-center gap-2 group"><FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> Events</Link></li>
-              <li><Link to="/digital-media" className="text-sm text-white/70 hover:text-white transition-all flex items-center gap-2 group"><FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> Digital Media</Link></li>
-              <li><Link to="/knowledge-hub" className="text-sm text-white/70 hover:text-white transition-all flex items-center gap-2 group"><FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> Knowledge Hub</Link></li>
+              <li><Link to="/" className="text-sm text-white/80 hover:text-white transition-all flex items-center gap-2 group"><FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> Home</Link></li>
+              <li><Link to="/about" className="text-sm text-white/80 hover:text-white transition-all flex items-center gap-2 group"><FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> About Us</Link></li>
+              <li><Link to="/csr-projects" className="text-sm text-white/80 hover:text-white transition-all flex items-center gap-2 group"><FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> CSR Projects</Link></li>
+              <li><Link to="/events" className="text-sm text-white/80 hover:text-white transition-all flex items-center gap-2 group"><FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> Events</Link></li>
+              <li><Link to="/digital-media" className="text-sm text-white/80 hover:text-white transition-all flex items-center gap-2 group"><FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> Digital Media</Link></li>
+              <li><Link to="/knowledge-hub" className="text-sm text-white/80 hover:text-white transition-all flex items-center gap-2 group"><FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> Knowledge Hub</Link></li>
             </ul>
           </div>
 
           {/* Column 3: Governance & Legal */}
           <div>
-            <h4 className="text-white/70 text-xs font-bold uppercase tracking-[0.2em] mb-7">Governance</h4>
+            <h4 className="text-white/80 text-xs font-bold uppercase tracking-[0.2em] mb-7">Governance</h4>
             <ul className="space-y-3">
-              <li><Link to="/compliance" className="text-sm text-white/70 hover:text-white transition-all">Compliance & Governance</Link></li>
-              <li><Link to="/board-management" className="text-sm text-white/70 hover:text-white transition-all">Board Management</Link></li>
-              <li><Link to="/certificates" className="text-sm text-white/70 hover:text-white transition-all">Statutory Certificates</Link></li>
-              <li><Link to="/audit-reports" className="text-sm text-white/70 hover:text-white transition-all">Audit Reports</Link></li>
+              <li><Link to="/compliance" className="text-sm text-white/80 hover:text-white transition-all">Compliance & Governance</Link></li>
+              <li><Link to="/board-management" className="text-sm text-white/80 hover:text-white transition-all">Board Management</Link></li>
+              <li><Link to="/certificates" className="text-sm text-white/80 hover:text-white transition-all">Statutory Certificates</Link></li>
+              <li><Link to="/audit-reports" className="text-sm text-white/80 hover:text-white transition-all">Audit Reports</Link></li>
             </ul>
           </div>
 
           {/* Column 4: Contact */}
           <div>
-            <h4 className="text-white/70 text-xs font-bold uppercase tracking-[0.2em] mb-7">Contact</h4>
+            <h4 className="text-white/80 text-xs font-bold uppercase tracking-[0.2em] mb-7">Contact</h4>
             <div className="space-y-4 mb-6">
               <div className="flex items-center gap-3 text-sm text-white/80">
                 <FiPhone className="text-white" size={14} /> 
@@ -97,10 +97,10 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Column 5: QR Code & Donate - Bigger Box */}
+          {/* Column 5: QR Code & Donate */}
           <div>
             <div className="bg-white/10 backdrop-blur-sm p-5 rounded-2xl border border-white/20 shadow-lg">
-              {/* QR Code - Bigger Size */}
+              {/* QR Code */}
               <div className="flex justify-center mb-4">
                 <img 
                   src={upiQrCodeUrl} 
@@ -114,17 +114,14 @@ const Footer = () => {
               </div>
               
               {/* Scan Text */}
-              <p className="text-center text-[10px] text-white/60 font-semibold tracking-wider mb-3">
+              <p className="text-center text-[10px] text-white/70 font-semibold tracking-wider mb-3">
                 SCAN & PAY VIA UPI
               </p>
-              
-              {/* Donate Button Inside Box */}
-             
             </div>
             <div>
-               <button 
+              <button 
                 onClick={() => navigate('/donate')}
-                className="w-full bg-white hover:bg-white/90 text-[#5C6F5C] font-bold py-3 mt-2 px-4 rounded-xl transition-all duration-300 text-sm tracking-widest flex items-center justify-center gap-2 shadow-lg"
+                className="w-full bg-white hover:bg-white/90 text-[#2C3E2B] font-bold py-3 mt-2 px-4 rounded-xl transition-all duration-300 text-sm tracking-widest flex items-center justify-center gap-2 shadow-lg"
               >
                 <FiHeart size={16} />
                 DONATE NOW
@@ -133,12 +130,12 @@ const Footer = () => {
               {/* 80G Tax Exemption Text */}
               <div className="mt-3 text-center">
                 <div className="flex items-center justify-center gap-1">
-                  <FiCheckCircle size={10} className="text-white/70" />
-                  <p className="text-[8px] text-white/70 font-medium tracking-wide">
+                  <FiCheckCircle size={10} className="text-white/80" />
+                  <p className="text-[8px] text-white/80 font-medium tracking-wide">
                     80G Tax Exemption Available
                   </p>
                 </div>
-                <p className="text-[7px] text-white/40 mt-1">
+                <p className="text-[7px] text-white/50 mt-1">
                   UPI • NetBanking • Cards
                 </p>
               </div>
@@ -149,7 +146,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-[10px] font-medium tracking-[0.2em] text-white/40 uppercase">
+          <p className="text-[10px] font-medium tracking-[0.2em] text-white/50 uppercase">
             © {currentYear} Maha Shree Rudra Samsthanam Foundation • All Rights Reserved
           </p>
           
