@@ -31,7 +31,7 @@ const FloatingContactButtons = () => {
           aria-label="WhatsApp us"
         >
           <img
-            src="./images/whatsapp.png"
+            src="/images/whatsapp.png"
             alt="WhatsApp"
             className="w-12 h-12 group-hover:scale-110 transition-transform"
           />
@@ -108,7 +108,7 @@ const FloatingContactButtons = () => {
         className="w-12 h-12 hover:scale-110  transition-all duration-300 flex items-center justify-center group"
         aria-label="Call us"
       >
-       <img src="./images/apple.png"/>
+       <img src="/images/apple.png"/>
       </button>
 
       {/* Gmail Button */}
@@ -117,7 +117,7 @@ const FloatingContactButtons = () => {
         className="w-12 h-12  transition-all duration-300 flex items-center justify-center group"
         aria-label="Email us"
       >
-        <img src="./images/gmail.png"/>
+        <img src="/images/gmail2.png"/>
       </button>
 
       {/* Add custom animation */}

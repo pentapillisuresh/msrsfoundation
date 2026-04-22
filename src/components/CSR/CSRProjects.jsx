@@ -1,16 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiTarget, FiUsers, FiTrendingUp, FiAward, FiArrowRight, FiCheckCircle, FiBarChart2, FiHeart, FiBookOpen, FiGlobe } from 'react-icons/fi';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 const CSRProjects = () => {
+  const [activeCategory, setActiveCategory] = useState('All');
+
   useEffect(() => {
     AOS.init({
-      duration: 1000,
-      once: false,
-      offset: 120,
-      easing: 'ease-in-out',
+      duration: 1200,
+      once: true,
+      offset: 100,
+      easing: 'ease-out-back',
     });
   }, []);
 
@@ -90,153 +92,134 @@ const CSRProjects = () => {
     { number: '25+', label: 'Corporate Partners', icon: <FiAward />, delay: 400 },
   ];
 
+  const categories = ['All', 'Healthcare', 'Education', 'Empowerment', 'Sustainability', 'Infrastructure', 'Development'];
+
+  const filteredProjects = activeCategory === 'All' 
+    ? projectsData 
+    : projectsData.filter(project => project.category === activeCategory);
+
   return (
-    <div className="pt-24 overflow-x-hidden">
+    <div className="bg-[#FCFDFB] overflow-x-hidden selection:bg-[#667A62] selection:text-white">
       <style>
         {`
-          @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap');
           
-          * {
-            font-family: 'Mulish', sans-serif;
+          .font-serif { font-family: 'Cormorant Garamond', serif; }
+          .font-sans { font-family: 'Mulish', sans-serif; }
+
+          .premium-gradient-text {
+            background: linear-gradient(to right, #2C3E2B, #667A62, #8A9A87);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
           }
-          
-          h1, h2, h3, h4, .heading-font {
-            font-family: 'Cormorant Garamond', serif;
-          }
-          
-          .banner-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-          }
-          
-          .section-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-          }
-          
-          .csr-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(44, 62, 43, 0.85) 0%, rgba(44, 62, 43, 0.7) 50%, rgba(44, 62, 43, 0.85) 100%);
-          }
-          
-          .csr-bg {
-            position: absolute;
-            inset: 0;
-            background-image: url('https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            animation: zoomIn 20s ease-out infinite alternate;
-          }
-          
-          @keyframes zoomIn {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
-          }
-          
-          .banner-content {
-            animation: fadeInUp 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
-          }
-          
-          @keyframes fadeInUp {
-            from {
-              opacity: 0;
-              transform: translateY(40px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-          
+
           .project-card {
             transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             position: relative;
             overflow: hidden;
-          }
-          
-          .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(102, 122, 98, 0.08), transparent);
-            transition: left 0.6s ease;
-            z-index: 1;
-          }
-          
-          .project-card:hover::before {
-            left: 100%;
+            cursor: pointer;
+            background: white;
+            border-radius: 0px;
+            height: 300px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
           }
           
           .project-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-6px);
             box-shadow: 0 20px 40px rgba(44, 62, 43, 0.15);
           }
           
-          .stat-card {
-            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-          }
-          
-          .stat-card:hover {
-            transform: translateY(-5px);
-          }
-          
-          .stat-card .stat-icon {
-            transition: all 0.4s ease;
-          }
-          
-          .stat-card:hover .stat-icon {
-            transform: scale(1.1) rotate(5deg);
-          }
-          
-          .category-badge {
-            transition: all 0.3s ease;
-          }
-          
-          .project-card:hover .category-badge {
-            background: #667A62;
-            color: white;
-          }
-          
-          .btn-premium {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s ease;
-          }
-          
-          .btn-premium::before {
-            content: '';
+          /* Image Container - Hidden initially, slides up from bottom on hover */
+          .image-container {
             position: absolute;
-            top: 0;
-            left: -100%;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            overflow: hidden;
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            z-index: 1;
+          }
+          
+          /* On hover, full image slides up completely from bottom to top */
+          .project-card:hover .image-container {
+            transform: translateY(0);
+          }
+          
+          .image-container img {
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
+            object-fit: cover;
           }
           
-          .btn-premium:hover::before {
-            left: 100%;
+          /* Overlay on image for better text visibility */
+          .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            pointer-events: none;
           }
           
-          .floating-element {
-            animation: float 6s ease-in-out infinite;
+          /* Content Container */
+          .card-content {
+            position: relative;
+            z-index: 2;
+            background: white;
+            height: 100%;
+            padding: 16px;
+            transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            display: flex;
+            flex-direction: column;
           }
           
-          @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+          /* On hover, content slides up slowly from bottom to reveal image */
+          .project-card:hover .card-content {
+            transform: translateY(-100%);
+          }
+          
+          /* Image category badge */
+          .image-category-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 10;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(4px);
+            padding: 5px 12px;
+            font-size: 11px;
+            font-weight: bold;
+            color: #667A62;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          }
+          
+          /* Image icon wrapper */
+          .image-icon-wrapper {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            z-index: 10;
+            width: 40px;
+            height: 40px;
+            background: #667A62;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
           }
           
           .impact-metric {
             position: relative;
-            padding-left: 20px;
-            margin-bottom: 6px;
+            padding-left: 18px;
+            margin-bottom: 5px;
+            font-size: 12px;
           }
           
           .impact-metric::before {
@@ -244,298 +227,284 @@ const CSRProjects = () => {
             position: absolute;
             left: 0;
             color: #667A62;
-            font-size: 12px;
+            font-size: 11px;
           }
           
-          .image-container {
+          .stagger-border {
             position: relative;
-            overflow: hidden;
-            height: 280px;
           }
-          
-          .image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-          }
-          
-          .project-card:hover .image-container img {
-            transform: scale(1.08);
-          }
-          
-          .image-overlay {
+          .stagger-border::after {
+            content: '';
             position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(44, 62, 43, 0.8) 0%, transparent 50%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            top: 20px;
+            left: 20px;
+            right: -20px;
+            bottom: -20px;
+            border: 2px solid #667A62;
+            z-index: -1;
+            transition: all 0.5s ease;
+          }
+          .stagger-border:hover::after {
+            top: 10px;
+            left: 10px;
+            right: -10px;
+            bottom: -10px;
+          }
+
+          @keyframes subtle-zoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+          }
+          .animate-zoom { animation: subtle-zoom 20s infinite alternate linear; }
+
+          .category-tab {
+            transition: all 0.3s ease;
+          }
+          .category-tab:hover {
+            background: #667A62;
+            color: white;
+            border-color: #667A62;
+          }
+          .category-tab.active {
+            background: #667A62;
+            color: white;
+            border-color: #667A62;
+          }
+
+          .line-clamp-1 {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
           }
           
-          .project-card:hover .image-overlay {
-            opacity: 1;
+          .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
           }
           
-          @media (max-width: 768px) {
-            .banner-title {
-              font-size: 2.8rem !important;
-            }
-            .image-container {
-              height: 220px;
-            }
+          .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
           }
         `}
       </style>
 
-      {/* Premium Banner Section */}
-      <section className="relative h-[60vh] min-h-[500px] w-full overflow-hidden">
-        <div className="csr-bg" />
-        <div className="csr-overlay" />
-        
-        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
-          <div className="max-w-5xl banner-content">
-            <span className="inline-block px-6 py-2 mb-6 text-sm font-bold tracking-wider text-white uppercase bg-[#667A62] rounded-full shadow-lg animate-pulse">
-              Corporate Social Responsibility
-            </span>
-            <h1 className="banner-title text-white text-6xl md:text-7xl lg:text-8xl font-bold mb-6 leading-[1.15]">
-              CSR Projects
-            </h1>
-            <div className="flex justify-center gap-2 mb-6">
-              <div className="w-12 h-0.5 bg-[#667A62]"></div>
-              <div className="w-6 h-0.5 bg-[#667A62]"></div>
-              <div className="w-3 h-0.5 bg-[#667A62]"></div>
-            </div>
-            <p className="text-white/95 text-xl md:text-2xl lg:text-3xl max-w-3xl mx-auto font-light tracking-wide">
-              Strategic Initiatives. Measurable Impact. Sustainable Change.
-            </p>
-            <div className="mt-10">
-              <Link to="/donate" className="inline-flex items-center gap-2 px-8 py-3 bg-white text-[#2C3E2B] font-semibold rounded-full hover:shadow-2xl transition-all hover:gap-3">
-                Partner With Us <FiArrowRight />
-              </Link>
-            </div>
-          </div>
+      {/* --- HERO SECTION --- */}
+      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070" 
+            className="w-full h-full object-cover animate-zoom" 
+            alt="CSR Hero"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1a2619]/90 via-[#2C3E2B]/70 to-[#FCFDFB]" />
         </div>
-        
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-            <div className="w-1 h-2 bg-white rounded-full mt-2 animate-pulse"></div>
+
+        <div className="container mx-auto px-6 relative z-10 text-center">
+          <div data-aos="fade-down">
+            <span className="inline-block px-6 py-1.5 mb-5 text-[10px] font-bold tracking-[0.3em] text-white uppercase border border-white/30 rounded-full backdrop-blur-sm">
+              CORPORATE SOCIAL RESPONSIBILITY
+            </span>
           </div>
+          <h1 className="text-white text-3xl md:text-4xl lg:text-5xl mb-4" data-aos="fade-up" data-aos-delay="200">
+            Strategic CSR Initiatives
+          </h1>
+          <p className="text-white/80 font-sans text-base max-w-2xl mx-auto mb-6 font-light tracking-wide" data-aos="fade-up" data-aos-delay="400">
+            Delivering measurable impact through transparent, scalable, and sustainable development programs aligned with national priorities.
+          </p>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-[#2C3E2B] relative overflow-hidden">
-        <div className="container mx-auto px-4 max-w-7xl relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="stat-card text-center" data-aos="zoom-in-up" data-aos-delay={stat.delay}>
-                <div className="stat-icon text-5xl text-[#667A62] mb-4 flex justify-center">
-                  {stat.icon}
-                </div>
-                <div className="text-4xl md:text-5xl font-bold text-white mb-2">
-                  {stat.number}
-                </div>
-                <div className="text-sm font-semibold text-[#EAF6E3] uppercase tracking-wider">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Projects Grid Section */}
-      <section className="py-24 bg-gradient-to-b from-white to-[#EAF6E3]">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="text-center mb-16" data-aos="fade-up">
-            <span className="inline-block px-6 py-2 mb-5 text-sm font-bold tracking-wider text-[#667A62] uppercase bg-white shadow-md rounded-full">
-              Our Initiatives
+      {/* --- PROJECTS GRID SECTION WITH CATEGORY TABS --- */}
+      <section className="py-20 bg-[#F7F9F5]">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="text-center mb-12" data-aos="fade-up">
+            <span className="text-xs tracking-[5px] text-[#667A62] font-semibold mb-3 inline-block">
+              OUR INITIATIVES
             </span>
-            <h2 className="section-title text-4xl md:text-5xl lg:text-6xl font-bold text-[#2C3E2B] mb-4">
-              Featured Projects
-            </h2>
-            <div className="w-20 h-0.5 bg-gradient-to-r from-transparent via-[#667A62] to-transparent mx-auto mb-6"></div>
-            <p className="text-[#4A5C46] max-w-2xl mx-auto text-base">
-              Discover our CSR-aligned projects designed to address critical social challenges while delivering accountability, scalability, and sustainable outcomes.
-            </p>
+            <div className="w-16 h-0.5 bg-[#667A62] mx-auto"></div>
+            <p className="text-gray-500 mt-4 tracking-widest text-sm">Flagship CSR Projects Creating Lasting Change</p>
           </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {projectsData.map((project, index) => (
-              <div
+
+          {/* Category Tabs */}
+          <div data-aos="fade-up" data-aos-delay="100" className="mb-12">
+            <div className="flex flex-wrap justify-center gap-2">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`category-tab px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-full border transition-all duration-300 ${
+                    activeCategory === category
+                      ? 'active bg-[#667A62] text-white border-[#667A62] shadow-md'
+                      : 'bg-white text-[#4A5C46] border-gray-200 hover:bg-[#667A62] hover:text-white hover:border-[#667A62]'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Projects Grid - 4 cards per row */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {filteredProjects.map((project, index) => (
+              <div 
                 key={project.id}
+                className="project-card"
                 data-aos="fade-up"
-                data-aos-delay={index * 100}
-                className="project-card bg-white rounded-2xl overflow-hidden shadow-xl"
+                data-aos-delay={(index % 4) * 100}
               >
-                {/* Increased image height from 192px to 280px */}
-                <div className="image-container relative">
-                  <img 
-                    src={project.image} 
-                    alt={project.title}
-                  />
+                {/* Image that slides up from bottom on hover */}
+                <div className="image-container">
+                  <img src={project.image} alt={project.title} />
                   <div className="image-overlay"></div>
-                  <div className="absolute top-4 right-4 z-10">
-                    <span className="category-badge inline-block px-3 py-1 bg-white/95 backdrop-blur-sm text-[#667A62] text-xs font-bold rounded-full shadow-md">
-                      {project.category}
-                    </span>
+                  <div className="image-category-badge">
+                    {project.category}
                   </div>
-                  <div className="absolute bottom-4 left-4 text-white z-10">
-                    <div className="text-2xl bg-black/30 p-2 rounded-full backdrop-blur-sm">{project.icon}</div>
+                  <div className="image-icon-wrapper">
+                    {project.icon}
                   </div>
                 </div>
                 
-                {/* Card content - same size as before */}
-                <div className="p-6">
-                  <h3 className="section-title text-2xl font-bold text-[#2C3E2B] mb-3">
-                    {project.title}
-                  </h3>
+                {/* Content - slides up slowly on hover to reveal image */}
+                <div className="card-content">
+                  {/* Category Badge in Content */}
+                  <div className="mb-2">
+                    <span className="inline-block px-2 py-1 bg-[#EAF6E3] text-[#667A62] text-[9px] font-bold uppercase tracking-wider">
+                      {project.category}
+                    </span>
+                  </div>
                   
-                  <div className="space-y-4">
+                  <h3 className="font-serif text-base font-bold text-[#2C3E2B] mb-2 line-clamp-1">{project.title}</h3>
+                  
+                  <div className="space-y-2 flex-grow">
                     <div>
-                      <h4 className="flex items-center gap-2 font-semibold text-[#667A62] mb-2 text-sm uppercase tracking-wide">
-                        <FiTarget size={14} /> Objective
-                      </h4>
-                      <p className="text-[#4A5C46] leading-relaxed text-sm">
-                        {project.objective}
-                      </p>
+                      <h4 className="text-[9px] font-bold text-[#667A62] uppercase tracking-wider mb-0.5">Objective</h4>
+                      <p className="text-[#4A5C46] text-[11px] leading-relaxed line-clamp-2">{project.objective}</p>
                     </div>
                     
                     <div>
-                      <h4 className="flex items-center gap-2 font-semibold text-[#667A62] mb-2 text-sm uppercase tracking-wide">
-                        <FiUsers size={14} /> Target Beneficiaries
-                      </h4>
-                      <p className="text-[#4A5C46] leading-relaxed text-sm font-medium">
-                        {project.beneficiaries}
-                      </p>
+                      <h4 className="text-[9px] font-bold text-[#667A62] uppercase tracking-wider mb-0.5">Beneficiaries</h4>
+                      <p className="text-[#4A5C46] text-[11px] font-medium line-clamp-1">{project.beneficiaries}</p>
                     </div>
                     
                     <div>
-                      <h4 className="flex items-center gap-2 font-semibold text-[#667A62] mb-2 text-sm uppercase tracking-wide">
-                        <FiTrendingUp size={14} /> Impact Metrics
-                      </h4>
-                      <div className="space-y-1">
-                        {project.impactMetrics.split('•').map((metric, i) => (
-                          <p key={i} className="impact-metric text-[#4A5C46] leading-relaxed text-sm">
+                      <h4 className="text-[9px] font-bold text-[#667A62] uppercase tracking-wider mb-0.5">Impact Metrics</h4>
+                      <div className="space-y-0.5">
+                        {project.impactMetrics.split('•').slice(0, 2).map((metric, i) => (
+                          <p key={i} className="impact-metric text-[#4A5C46] text-[11px] leading-tight">
                             {metric.trim()}
                           </p>
                         ))}
                       </div>
                     </div>
-                    
-                    <div>
-                      <h4 className="flex items-center gap-2 font-semibold text-[#667A62] mb-2 text-sm uppercase tracking-wide">
-                        <FiAward size={14} /> CSR Alignment
-                      </h4>
-                      <p className="text-[#4A5C46] leading-relaxed text-sm">
-                        {project.csrAlignment}
-                      </p>
-                    </div>
                   </div>
                   
-                  <div className="mt-6 pt-4 border-t border-[#EAF6E3]">
+                  <div className="mt-3 pt-2 border-t border-[#EAF6E3]">
                     <Link 
                       to="/donate" 
-                      className="inline-flex items-center gap-2 text-[#667A62] font-semibold text-sm hover:gap-3 transition-all group"
+                      className="inline-flex items-center gap-1 text-[#667A62] font-semibold text-[10px] hover:gap-2 transition-all group"
                     >
                       Support This Project 
-                      <FiArrowRight className="group-hover:translate-x-1 transition-transform" size={14} />
+                      <FiArrowRight className="group-hover:translate-x-0.5 transition-transform" size={10} />
                     </Link>
                   </div>
                 </div>
               </div>
             ))}
           </div>
+
+          {/* Empty state */}
+          {filteredProjects.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-[#4A5C46]">No projects found in this category.</p>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Impact Section */}
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div data-aos="fade-right" data-aos-duration="1000">
-              <span className="inline-block px-5 py-2 mb-5 text-sm font-bold tracking-wider text-[#667A62] uppercase bg-[#EAF6E3] rounded-full">
-                Our Impact
-              </span>
-              <h2 className="section-title text-4xl md:text-5xl font-bold text-[#2C3E2B] mb-5">
-                Creating Measurable <br />Social Impact
-              </h2>
-              <div className="w-16 h-0.5 bg-[#667A62] mb-8"></div>
-              
-              <div className="space-y-6">
-                <div className="flex gap-4 group" data-aos="fade-up" data-aos-delay="100">
-                  <div className="w-12 h-12 rounded-xl bg-[#EAF6E3] flex items-center justify-center flex-shrink-0 group-hover:bg-[#667A62] transition-colors duration-300">
-                    <FiCheckCircle className="text-xl text-[#667A62] group-hover:text-white transition-colors duration-300" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-[#2C3E2B] mb-2">Transparent Reporting</h3>
-                    <p className="text-[#4A5C46] text-sm">Regular impact assessments and detailed reports shared with all stakeholders.</p>
-                  </div>
+      {/* --- IMPACT SECTION --- */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-5" data-aos="fade-right">
+              <div className="stagger-border">
+                <img 
+                  src="./images/working.avif" 
+                  className="w-full h-[400px] object-cover rounded-sm grayscale hover:grayscale-0 transition-all duration-700" 
+                  alt="Impact"
+                />
+              </div>
+            </div>
+
+            <div className="lg:col-span-7 space-y-8">
+              <div data-aos="fade-up">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-[2px] bg-[#667A62]"></div>
+                  <h2 className="font-serif text-3xl md:text-4xl text-[#2C3E2B]">Our Impact Framework</h2>
                 </div>
-                
-                <div className="flex gap-4 group" data-aos="fade-up" data-aos-delay="200">
-                  <div className="w-12 h-12 rounded-xl bg-[#EAF6E3] flex items-center justify-center flex-shrink-0 group-hover:bg-[#667A62] transition-colors duration-300">
-                    <FiBarChart2 className="text-xl text-[#667A62] group-hover:text-white transition-colors duration-300" />
+                <p className="text-[#4A5C46] text-lg leading-relaxed font-light">
+                  We believe in creating measurable, sustainable change through structured interventions 
+                  and transparent reporting mechanisms.
+                </p>
+              </div>
+
+              <div data-aos="fade-up" data-aos-delay="200">
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div className="p-4 border-l-2 border-[#667A62] bg-[#F7F9F5]">
+                    <h4 className="font-bold text-[#2C3E2B] mb-1 uppercase text-[10px] tracking-widest">Transparent Reporting</h4>
+                    <p className="text-xs text-gray-600">Regular impact assessments and detailed reports shared with all stakeholders.</p>
                   </div>
-                  <div>
-                    <h3 className="font-bold text-[#2C3E2B] mb-2">Data-Driven Decisions</h3>
-                    <p className="text-[#4A5C46] text-sm">Using real-time data and analytics to optimize program effectiveness.</p>
+                  <div className="p-4 border-l-2 border-[#667A62] bg-[#F7F9F5]">
+                    <h4 className="font-bold text-[#2C3E2B] mb-1 uppercase text-[10px] tracking-widest">Data-Driven Decisions</h4>
+                    <p className="text-xs text-gray-600">Using real-time analytics to optimize program effectiveness and reach.</p>
                   </div>
-                </div>
-                
-                <div className="flex gap-4 group" data-aos="fade-up" data-aos-delay="300">
-                  <div className="w-12 h-12 rounded-xl bg-[#EAF6E3] flex items-center justify-center flex-shrink-0 group-hover:bg-[#667A62] transition-colors duration-300">
-                    <FiUsers className="text-xl text-[#667A62] group-hover:text-white transition-colors duration-300" />
+                  <div className="p-4 border-l-2 border-[#667A62] bg-[#F7F9F5]">
+                    <h4 className="font-bold text-[#2C3E2B] mb-1 uppercase text-[10px] tracking-widest">Community Engagement</h4>
+                    <p className="text-xs text-gray-600">Active involvement of local communities in project planning and execution.</p>
                   </div>
-                  <div>
-                    <h3 className="font-bold text-[#2C3E2B] mb-2">Community Engagement</h3>
-                    <p className="text-[#4A5C46] text-sm">Active involvement of local communities in project planning and execution.</p>
+                  <div className="p-4 border-l-2 border-[#667A62] bg-[#F7F9F5]">
+                    <h4 className="font-bold text-[#2C3E2B] mb-1 uppercase text-[10px] tracking-widest">Sustainable Outcomes</h4>
+                    <p className="text-xs text-gray-600">Designing interventions that create lasting value beyond our presence.</p>
                   </div>
                 </div>
               </div>
-            </div>
-            
-            <div className="relative" data-aos="fade-left" data-aos-duration="1000">
-              <div className="absolute -top-5 -right-5 w-full h-full bg-gradient-to-tl from-[#EAF6E3] to-transparent rounded-2xl"></div>
-              <img 
-                src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=800&h=600&fit=crop&q=80"
-                alt="Impact"
-                className="rounded-2xl shadow-2xl w-full h-[450px] object-cover relative z-10"
-              />
-              <div className="absolute -bottom-5 -left-5 w-40 h-40 bg-[#667A62] rounded-full opacity-5 floating-element"></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-[#2C3E2B] to-[#3A4E39] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-        </div>
-        
-        <div className="container mx-auto px-4 max-w-5xl text-center relative z-10">
-          <div data-aos="zoom-in" data-aos-duration="1000">
-            <h2 className="section-title text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-              Partner With Us
-            </h2>
-            <div className="w-20 h-0.5 bg-[#667A62] mx-auto mb-6"></div>
-            <p className="text-[#EAF6E3] text-lg mb-10 max-w-2xl mx-auto">
-              Join hands with MSRS Foundation to create lasting social impact through strategic CSR partnerships.
-            </p>
-            <div className="flex flex-wrap gap-5 justify-center">
+      {/* --- CTA SECTION --- */}
+      <section className="py-16">
+        <div className="container mx-auto px-6">
+          <div className="bg-[#6F8770] px-8 md:px-12 py-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+            <div className="text-center lg:text-left">
+              <h2 className="font-serif text-white text-2xl md:text-3xl leading-snug mb-3">
+                Ready to partner for change?
+              </h2>
+              <p className="text-white/80 text-sm md:text-base">
+                Join hands with MSRS Foundation to create lasting social impact through strategic CSR partnerships.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap justify-center lg:justify-end gap-3">
               <Link 
                 to="/contact" 
-                className="btn-premium inline-flex items-center gap-2 px-8 py-3.5 bg-[#667A62] text-white font-semibold rounded-full shadow-lg hover:shadow-2xl transition-all hover:gap-3 hover:-translate-y-0.5"
+                className="group flex items-center gap-2 px-5 py-2.5 bg-white text-[#2C3E2B] font-semibold text-sm rounded-md hover:bg-[#667A62] hover:text-white transition-all duration-300 shadow-md"
               >
-                Become a Partner <FiArrowRight />
+                Become a Partner 
+                <FiArrowRight className="group-hover:translate-x-1 transition-transform" size={14} />
               </Link>
               <Link 
                 to="/donate" 
-                className="btn-premium inline-flex items-center gap-2 px-8 py-3.5 border-2 border-[#667A62] text-white font-semibold rounded-full hover:bg-[#667A62] hover:text-white transition-all hover:gap-3 hover:-translate-y-0.5"
+                className="px-5 py-2.5 border border-white text-white font-semibold text-sm rounded-md hover:bg-white hover:text-[#2C3E2B] transition-all duration-300"
               >
-                Support Our Cause <FiArrowRight />
+                Support Our Cause
               </Link>
             </div>
           </div>

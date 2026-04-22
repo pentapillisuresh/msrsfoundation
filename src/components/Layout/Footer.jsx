@@ -18,7 +18,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   const navigate = useNavigate();
 
-  const upiQrCodeUrl = "./images/qr.png";
+  const upiQrCodeUrl = "/images/qr.png";
 
   return (
     <footer className="bg-[#5C6F5C] text-white pt-20 pb-8 relative overflow-hidden font-sans">
