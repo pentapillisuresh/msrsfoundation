@@ -14,10 +14,10 @@ const AuditReports = () => {
   
   useEffect(() => {
     AOS.init({
-      duration: 1000,
-      once: false,
-      offset: 120,
-      easing: 'ease-in-out',
+      duration: 1200,
+      once: true,
+      offset: 100,
+      easing: 'ease-out-back',
     });
   }, []);
 
@@ -170,12 +170,6 @@ const AuditReports = () => {
     }
   ];
 
-  const stats = [
-    { number: "14+", label: "Reports", icon: <FaFileInvoice />, delay: 100 },
-    { number: "100%", label: "Audited", icon: <FiCheckCircle />, delay: 200 },
-    { number: "4+", label: "Years", icon: <FiCalendar />, delay: 300 },
-    { number: "100%", label: "Transparent", icon: <FiShield />, delay: 400 }
-  ];
 
   const handleViewReport = (report, type) => {
     if (isVerified && userData) {
@@ -244,61 +238,99 @@ const AuditReports = () => {
   const currentReports = getCurrentReports();
 
   return (
-    <div className="pt-24 overflow-x-hidden">
+    <div className="bg-[#FCFDFB] overflow-x-hidden selection:bg-[#667A62] selection:text-white">
       <style>
         {`
-          @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap');
           
-          * { font-family: 'Mulish', sans-serif; }
-          
-          h1, h2, h3, h4, .heading-font { font-family: 'Cormorant Garamond', serif; }
-          
-          .banner-title { font-family: 'Cormorant Garamond', serif; font-weight: 700; letter-spacing: -0.02em; }
-          .section-title { font-family: 'Cormorant Garamond', serif; font-weight: 700; letter-spacing: -0.01em; }
-          
-          .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(44, 62, 43, 0.85) 0%, rgba(44, 62, 43, 0.7) 50%, rgba(44, 62, 43, 0.85) 100%);
+          .font-serif { font-family: 'Cormorant Garamond', serif; }
+          .font-sans { font-family: 'Mulish', sans-serif; }
+
+          .premium-gradient-text {
+            background: linear-gradient(to right, #2C3E2B, #667A62, #8A9A87);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
           }
-          
-          .hero-bg {
-            position: absolute;
-            inset: 0;
-            background-image: url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            animation: zoomIn 20s ease-out infinite alternate;
-          }
-          
-          @keyframes zoomIn {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
-          }
-          
-          .banner-content { animation: fadeInUp 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards; }
-          
-          @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-          
-          .report-card, .stat-card {
+
+          .report-card {
             transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border: 1px solid #EAF6E3;
           }
           
-          .report-card:hover, .stat-card:hover {
-            transform: translateY(-8px);
+          .report-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(44, 62, 43, 0.12);
+          }
+          
+          .stat-card {
+            transition: all 0.4s ease;
+          }
+          
+          .stat-card:hover {
+            transform: translateY(-5px);
+          }
+          
+          .stat-card .stat-icon {
+            transition: all 0.4s ease;
+          }
+          
+          .stat-card:hover .stat-icon {
+            transform: scale(1.1) rotate(5deg);
+          }
+          
+          .tab-button {
+            transition: all 0.3s ease;
           }
           
           .tab-active {
-            background: linear-gradient(135deg, #667A62 0%, #2C3E2B 100%);
+            background: #667A62;
             color: white;
           }
           
           .tab-inactive {
+            background: white;
+            color: #4A5C46;
+            border: 1px solid #EAF6E3;
+          }
+          
+          .tab-inactive:hover {
             background: #EAF6E3;
-            color: #2C3E2B;
+          }
+          
+          .stagger-border {
+            position: relative;
+          }
+          .stagger-border::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: -20px;
+            bottom: -20px;
+            border: 2px solid #667A62;
+            z-index: -1;
+            transition: all 0.5s ease;
+          }
+          .stagger-border:hover::after {
+            top: 10px;
+            left: 10px;
+            right: -10px;
+            bottom: -10px;
+          }
+
+          @keyframes subtle-zoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+          }
+          .animate-zoom { animation: subtle-zoom 20s infinite alternate linear; }
+          
+          .floating-element {
+            animation: float 6s ease-in-out infinite;
+          }
+          
+          @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
           }
           
           .modal-overlay {
@@ -320,10 +352,12 @@ const AuditReports = () => {
           
           .modal-content {
             animation: scaleUp 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
           }
           
           @keyframes scaleUp {
-            from { transform: scale(0.9); opacity: 0; }
+            from { transform: scale(0.95); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
           }
           
@@ -352,43 +386,32 @@ const AuditReports = () => {
             -moz-user-select: none;
             -ms-user-select: none;
           }
-          
-          .floating-element { animation: float 6s ease-in-out infinite; }
-          
-          @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-          }
-          
-          @media (max-width: 768px) {
-            .banner-title { font-size: 2.5rem !important; }
-            .tab-button { font-size: 0.8rem !important; padding: 0.5rem 1rem !important; }
-          }
         `}
       </style>
 
-      {/* Hero Section */}
-      <section className="relative h-[50vh] min-h-[450px] w-full overflow-hidden">
-        <div className="hero-bg" />
-        <div className="hero-overlay" />
-        
-        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
-          <div className="max-w-5xl banner-content">
-            <span className="inline-block px-6 py-2 mb-5 text-sm font-bold tracking-wider text-white uppercase bg-[#667A62] rounded-full shadow-lg">
-              Transparency & Accountability
+      {/* --- PREMIUM HERO SECTION --- */}
+      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2070" 
+            className="w-full h-full object-cover animate-zoom" 
+            alt="Audit Reports Hero"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1a2619]/90 via-[#2C3E2B]/70 to-[#FCFDFB]" />
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10 text-center">
+          <div data-aos="fade-down">
+            <span className="inline-block px-6 py-1.5 mb-5 text-[10px] font-bold tracking-[0.3em] text-white uppercase border border-white/30 rounded-full backdrop-blur-sm">
+              TRANSPARENCY & ACCOUNTABILITY
             </span>
-            <h1 className="banner-title text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
-              Reports Dashboard
-            </h1>
-            <div className="flex justify-center gap-2 mb-5">
-              <div className="w-12 h-0.5 bg-[#667A62]"></div>
-              <div className="w-6 h-0.5 bg-[#667A62]"></div>
-              <div className="w-3 h-0.5 bg-[#667A62]"></div>
-            </div>
-            <p className="text-white/95 text-lg md:text-xl max-w-3xl mx-auto">
-              Access our comprehensive monthly, quarterly, half-yearly, and yearly reports
-            </p>
           </div>
+          <h1 className="text-white text-3xl md:text-4xl lg:text-5xl mb-4 font-serif" data-aos="fade-up" data-aos-delay="200">
+            Reports Dashboard
+          </h1>
+          <p className="text-white/80 font-sans text-base max-w-2xl mx-auto mb-6 font-light tracking-wide" data-aos="fade-up" data-aos-delay="400">
+            Access our comprehensive monthly, quarterly, half-yearly, and yearly reports
+          </p>
         </div>
         
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
@@ -398,73 +421,54 @@ const AuditReports = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-[#2C3E2B]">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stats.map((stat, index) => (
-              <div key={index} className="stat-card text-center" data-aos="zoom-in" data-aos-delay={stat.delay}>
-                <div className="stat-icon text-4xl text-[#667A62] mb-3 flex justify-center">
-                  {stat.icon}
-                </div>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-1">
-                  {stat.number}
-                </div>
-                <div className="text-sm text-[#EAF6E3] font-semibold">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+    
 
-      {/* Tab Navigation */}
+      {/* --- TAB NAVIGATION --- */}
       <section className="py-10 bg-white">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="flex flex-wrap justify-center gap-3 mb-6">
             <button
               onClick={() => setActiveTab('monthly')}
-              className={`tab-button px-6 py-3 rounded-full font-semibold transition-all flex items-center gap-2 ${
-                activeTab === 'monthly' ? 'tab-active' : 'tab-inactive hover:bg-[#667A62] hover:text-white'
+              className={`tab-button px-5 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
+                activeTab === 'monthly' ? 'tab-active' : 'tab-inactive'
               }`}
             >
-              <FiCalendar size={18} />
+              <FiCalendar size={14} />
               Monthly
             </button>
             <button
               onClick={() => setActiveTab('quarterly')}
-              className={`tab-button px-6 py-3 rounded-full font-semibold transition-all flex items-center gap-2 ${
-                activeTab === 'quarterly' ? 'tab-active' : 'tab-inactive hover:bg-[#667A62] hover:text-white'
+              className={`tab-button px-5 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
+                activeTab === 'quarterly' ? 'tab-active' : 'tab-inactive'
               }`}
             >
-              <FiTrendingUp size={18} />
+              <FiTrendingUp size={14} />
               Quarterly
             </button>
             <button
               onClick={() => setActiveTab('halfYearly')}
-              className={`tab-button px-6 py-3 rounded-full font-semibold transition-all flex items-center gap-2 ${
-                activeTab === 'halfYearly' ? 'tab-active' : 'tab-inactive hover:bg-[#667A62] hover:text-white'
+              className={`tab-button px-5 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
+                activeTab === 'halfYearly' ? 'tab-active' : 'tab-inactive'
               }`}
             >
-              <FiPieChart size={18} />
+              <FiPieChart size={14} />
               Half-Yearly
             </button>
             <button
               onClick={() => setActiveTab('yearly')}
-              className={`tab-button px-6 py-3 rounded-full font-semibold transition-all flex items-center gap-2 ${
-                activeTab === 'yearly' ? 'tab-active' : 'tab-inactive hover:bg-[#667A62] hover:text-white'
+              className={`tab-button px-5 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
+                activeTab === 'yearly' ? 'tab-active' : 'tab-inactive'
               }`}
             >
-              <FaChartLine size={18} />
+              <FaChartLine size={14} />
               Yearly
             </button>
           </div>
           
           {/* Verification Status Badge */}
           {isVerified && (
-            <div className="text-center mb-8">
-              <div className="inline-block bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm">
+            <div className="text-center">
+              <div className="inline-block bg-green-100 text-green-700 px-3 py-1 text-xs rounded-full">
                 ✓ Verified User: {userData?.name}
               </div>
             </div>
@@ -472,43 +476,43 @@ const AuditReports = () => {
         </div>
       </section>
 
-      {/* Reports Section */}
-      <section className="py-12 bg-[#EAF6E3]">
-        <div className="container mx-auto px-4 max-w-7xl">
+      {/* --- REPORTS SECTION --- */}
+      <section className="py-12 bg-[#F7F9F5]">
+        <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-12" data-aos="fade-up">
-            <h2 className="section-title text-3xl md:text-4xl font-bold text-[#2C3E2B] mb-3">
+            <h2 className="font-serif text-3xl md:text-4xl text-[#2C3E2B] mb-3">
               {getTabTitle()}
             </h2>
             <div className="w-16 h-0.5 bg-[#667A62] mx-auto mb-4"></div>
-            <p className="text-[#4A5C46] max-w-2xl mx-auto text-sm">
+            <p className="text-[#4A5C46] text-sm max-w-2xl mx-auto">
               {getTabDescription()}
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {currentReports.map((report, index) => (
               <div 
                 key={index} 
-                className="report-card bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full"
+                className="report-card bg-white p-5 flex flex-col h-full"
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
               >
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-[#EAF6E3] flex items-center justify-center">
-                    <FiFileText className="text-[#667A62] text-2xl" />
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="w-10 h-10 bg-[#EAF6E3] flex items-center justify-center flex-shrink-0">
+                    <FiFileText className="text-[#667A62] text-xl" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-bold text-[#2C3E2B] text-lg">{report.title}</h3>
-                    <p className="text-xs text-gray-500">{report.period}</p>
-                    <p className="text-sm text-gray-600 mt-2">{report.description}</p>
+                    <h3 className="font-bold text-[#2C3E2B] text-sm">{report.title}</h3>
+                    <p className="text-[9px] text-gray-500">{report.period}</p>
+                    <p className="text-[10px] text-gray-600 mt-1">{report.description}</p>
                   </div>
                 </div>
                 
-                <div className="bg-[#EAF6E3] rounded-lg p-3 mb-4">
-                  <p className="text-xs font-semibold text-[#667A62] mb-2">Key Highlights:</p>
-                  <div className="flex flex-wrap gap-2">
+                <div className="bg-[#F7F9F5] p-2 mb-3 flex-1">
+                  <p className="text-[9px] font-semibold text-[#667A62] mb-1">Key Highlights:</p>
+                  <div className="flex flex-wrap gap-1">
                     {report.highlights.map((highlight, i) => (
-                      <span key={i} className="text-xs bg-white px-2 py-1 rounded-full text-gray-600">
+                      <span key={i} className="text-[8px] bg-white px-1.5 py-0.5 text-gray-600">
                         {highlight}
                       </span>
                     ))}
@@ -517,9 +521,9 @@ const AuditReports = () => {
                 
                 <button 
                   onClick={() => handleViewReport(report, activeTab)}
-                  className="w-full px-4 py-2 bg-[#667A62] text-white rounded-lg hover:bg-[#4A5C46] transition-all flex items-center justify-center gap-2 text-sm font-semibold"
+                  className="w-full px-3 py-1.5 bg-[#667A62] text-white text-[10px] font-semibold hover:bg-[#4A5C46] transition-all flex items-center justify-center gap-1"
                 >
-                  <FiEye size={16} /> View Report
+                  <FiEye size={12} /> View Report
                 </button>
               </div>
             ))}
@@ -527,134 +531,139 @@ const AuditReports = () => {
         </div>
       </section>
 
-      {/* Transparency Section */}
+      {/* --- TRANSPARENCY SECTION --- */}
       <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 max-w-7xl">
+        <div className="container mx-auto px-6 max-w-7xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div data-aos="fade-right">
-              <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-wider text-[#667A62] uppercase bg-[#EAF6E3] rounded-full">
-                Our Commitment
+              <span className="text-xs tracking-[5px] text-[#667A62] font-semibold mb-3 inline-block">
+                OUR COMMITMENT
               </span>
-              <h2 className="section-title text-3xl md:text-4xl font-bold text-[#2C3E2B] mb-4">
+              <div className="w-16 h-0.5 bg-[#667A62] mb-5"></div>
+              <h2 className="font-serif text-3xl md:text-4xl text-[#2C3E2B] mb-4">
                 Commitment to Transparency
               </h2>
-              <div className="w-16 h-0.5 bg-[#667A62] mb-6"></div>
-              <p className="text-[#4A5C46] leading-relaxed mb-6">
+              <p className="text-[#4A5C46] text-sm leading-relaxed mb-6">
                 We believe in complete transparency and accountability. All our financial records 
                 and activity reports are regularly updated and made available for public access.
               </p>
               <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <FiCheckCircle className="text-[#667A62]" />
-                  <span className="text-sm text-[#4A5C46]">Regular Monthly Updates</span>
+                <div className="flex items-center gap-2">
+                  <FiCheckCircle className="text-[#667A62] text-sm" />
+                  <span className="text-xs text-[#4A5C46]">Regular Monthly Updates</span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <FiCheckCircle className="text-[#667A62]" />
-                  <span className="text-sm text-[#4A5C46]">Quarterly Performance Reviews</span>
+                <div className="flex items-center gap-2">
+                  <FiCheckCircle className="text-[#667A62] text-sm" />
+                  <span className="text-xs text-[#4A5C46]">Quarterly Performance Reviews</span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <FiCheckCircle className="text-[#667A62]" />
-                  <span className="text-sm text-[#4A5C46]">Half-Yearly Impact Assessments</span>
+                <div className="flex items-center gap-2">
+                  <FiCheckCircle className="text-[#667A62] text-sm" />
+                  <span className="text-xs text-[#4A5C46]">Half-Yearly Impact Assessments</span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <FiCheckCircle className="text-[#667A62]" />
-                  <span className="text-sm text-[#4A5C46]">Annual Comprehensive Reports</span>
+                <div className="flex items-center gap-2">
+                  <FiCheckCircle className="text-[#667A62] text-sm" />
+                  <span className="text-xs text-[#4A5C46]">Annual Comprehensive Reports</span>
                 </div>
               </div>
             </div>
             <div className="relative" data-aos="fade-left">
-              <div className="absolute -top-5 -right-5 w-full h-full bg-[#EAF6E3] rounded-2xl"></div>
-              <img 
-                src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80"
-                alt="Transparency"
-                className="rounded-2xl shadow-2xl w-full h-[350px] object-cover relative z-10"
-              />
+              <div className="stagger-border">
+                <img 
+                  src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80"
+                  alt="Transparency"
+                  className="w-full h-[350px] object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-[#2C3E2B] to-[#3A4E39] relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1920&q=80')] bg-cover bg-center mix-blend-overlay opacity-20"></div>
-        <div className="container mx-auto px-4 max-w-5xl text-center relative z-10">
-          <div data-aos="zoom-in">
-            <FiShield className="text-5xl text-[#667A62] mx-auto mb-4 floating-element" />
-            <h2 className="section-title text-3xl md:text-4xl font-bold text-white mb-3">
-              Need More Information?
-            </h2>
-            <div className="w-16 h-0.5 bg-[#667A62] mx-auto mb-4"></div>
-            <p className="text-[#EAF6E3] text-base mb-6 max-w-2xl mx-auto">
-              For detailed queries or to request specific reports, please contact our documentation team.
-            </p>
-            <Link to="/contact">
-              <button className="inline-flex items-center gap-2 px-8 py-3 bg-[#667A62] text-white font-semibold rounded-full hover:bg-white hover:text-[#2C3E2B] transition-all">
-                Contact Us <FiArrowRight />
-              </button>
-            </Link>
+      {/* --- CTA SECTION --- */}
+      <section className="py-20">
+        <div className="container mx-auto px-6">
+          <div className="bg-[#6F8770] px-8 md:px-12 py-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+            <div className="text-center lg:text-left">
+              <h2 className="font-serif text-white text-2xl md:text-3xl leading-snug mb-3">
+                Need More Information?
+              </h2>
+              <p className="text-white/80 text-sm md:text-base">
+                For detailed queries or to request specific reports, please contact our documentation team.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap justify-center lg:justify-end gap-3">
+              <Link 
+                to="/contact"
+                className="group flex items-center gap-2 px-5 py-2.5 bg-white text-[#2C3E2B] font-semibold text-sm rounded-md hover:bg-[#667A62] hover:text-white transition-all duration-300 shadow-md"
+              >
+                Contact Us 
+                <FiArrowRight className="group-hover:translate-x-1 transition-transform" size={14} />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Report Modal */}
+      {/* --- REPORT MODAL --- */}
       {showModal && selectedReport && (
         <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content bg-white rounded-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="bg-gradient-to-r from-[#667A62] to-[#4A5C46] p-4 text-white sticky top-0">
+          <div className="modal-content bg-white max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-[#2C3E2B] p-4 text-white sticky top-0">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <FiFileText className="text-2xl" />
+                  <FiFileText className="text-xl" />
                   <div>
-                    <h3 className="text-lg font-bold">
+                    <h3 className="font-serif text-base font-bold">
                       {selectedReport.type === 'monthly' ? 'Monthly Report' : 
                        selectedReport.type === 'quarterly' ? 'Quarterly Report' :
                        selectedReport.type === 'halfYearly' ? 'Half-Yearly Report' : 'Yearly Report'}
                     </h3>
-                    <p className="text-xs opacity-90">{selectedReport.title}</p>
+                    <p className="text-[9px] text-white/70">{selectedReport.title}</p>
                   </div>
                 </div>
-                <button onClick={closeModal} className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition">
-                  <FiX size={18} />
+                <button onClick={closeModal} className="w-7 h-7 bg-white/10 flex items-center justify-center hover:bg-white/20 transition">
+                  <FiX size={14} />
                 </button>
               </div>
             </div>
             
             <div className="p-6">
-              <div className="report-watermark disable-select relative bg-gradient-to-br from-amber-50 to-yellow-50 rounded-xl overflow-hidden shadow-2xl border-4 border-[#667A62]">
+              <div className="report-watermark disable-select relative bg-gradient-to-br from-amber-50 to-yellow-50 border-2 border-[#667A62]">
                 <div className="absolute inset-0 opacity-5 pointer-events-none">
-                  <div className="absolute top-0 left-0 w-32 h-32 border-t-8 border-l-8 border-[#667A62]"></div>
-                  <div className="absolute bottom-0 right-0 w-32 h-32 border-b-8 border-r-8 border-[#667A62]"></div>
+                  <div className="absolute top-0 left-0 w-24 h-24 border-t-4 border-l-4 border-[#667A62]"></div>
+                  <div className="absolute bottom-0 right-0 w-24 h-24 border-b-4 border-r-4 border-[#667A62]"></div>
                 </div>
                 
-                <div className="bg-[#667A62] text-white p-4 text-center">
-                  <h2 className="text-2xl font-bold">MSRS FOUNDATION</h2>
-                  <p className="text-sm opacity-90">{selectedReport.title}</p>
+                <div className="bg-[#667A62] text-white p-3 text-center">
+                  <h2 className="font-serif text-xl font-bold">MSRS FOUNDATION</h2>
+                  <p className="text-[9px] text-white/80">{selectedReport.title}</p>
                 </div>
                 
-                <div className="p-8 text-center">
-                  <div className="mb-6">
+                <div className="p-6 text-center">
+                  <div className="mb-4">
                     <img 
                       src="https://cdn-icons-png.flaticon.com/512/1903/1903664.png" 
                       alt="Seal" 
-                      className="w-20 h-20 mx-auto opacity-80"
+                      className="w-16 h-16 mx-auto opacity-80"
                     />
                   </div>
                   
-                  <p className="text-gray-600 mb-4">This report is verified for</p>
+                  <p className="text-gray-600 text-xs mb-3">This report is verified for</p>
                   
-                  <h3 className="text-2xl font-bold text-[#2C3E2B] mb-2 border-b-2 border-[#667A62] inline-block pb-2">
+                  <h3 className="font-serif text-xl font-bold text-[#2C3E2B] mb-2 border-b-2 border-[#667A62] inline-block pb-1">
                     {selectedReport.userData?.name || userData?.name || 'Verified User'}
                   </h3>
                   
-                  <p className="text-gray-600 mt-6 mb-4">Report Details:</p>
+                  <p className="text-gray-600 text-xs mt-4 mb-3">Report Details:</p>
                   
-                  <div className="bg-white rounded-lg p-4 mb-6 shadow-md">
-                    <p className="font-bold text-[#667A62] text-lg">{selectedReport.title}</p>
-                    <p className="text-sm text-gray-500">{selectedReport.description}</p>
-                    <p className="text-xs text-gray-400 mt-2">Period: {selectedReport.period}</p>
+                  <div className="bg-white p-3 mb-4 shadow-sm border border-gray-200">
+                    <p className="font-bold text-[#667A62] text-sm">{selectedReport.title}</p>
+                    <p className="text-[9px] text-gray-500">{selectedReport.description}</p>
+                    <p className="text-[8px] text-gray-400 mt-1">Period: {selectedReport.period}</p>
                   </div>
                   
-                  <div className="my-6 border-2 border-gray-200 rounded-lg overflow-hidden">
+                  <div className="my-4 border border-gray-200 overflow-hidden">
                     <img 
                       src={selectedReport.imageUrl}
                       alt={selectedReport.title}
@@ -664,18 +673,18 @@ const AuditReports = () => {
                     />
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-4 text-sm text-left mt-6 p-4 bg-gray-50 rounded-lg">
+                  <div className="grid grid-cols-2 gap-3 text-xs text-left mt-4 p-3 bg-gray-50">
                     <div>
                       <span className="text-gray-500">Report Number:</span>
-                      <p className="font-semibold text-xs">{Math.random().toString(36).substr(2, 10).toUpperCase()}</p>
+                      <p className="font-semibold text-[9px]">{Math.random().toString(36).substr(2, 10).toUpperCase()}</p>
                     </div>
                     <div>
                       <span className="text-gray-500">Date of Issue:</span>
-                      <p className="font-semibold">{new Date().toLocaleDateString()}</p>
+                      <p className="font-semibold text-[9px]">{new Date().toLocaleDateString()}</p>
                     </div>
                     <div>
                       <span className="text-gray-500">Location:</span>
-                      <p className="font-semibold text-sm">
+                      <p className="font-semibold text-[9px]">
                         {selectedReport.userData?.isIndian 
                           ? `${selectedReport.userData?.state}, ${selectedReport.userData?.district}, India`
                           : selectedReport.userData?.countryName || 'India'}
@@ -683,16 +692,16 @@ const AuditReports = () => {
                     </div>
                     <div>
                       <span className="text-gray-500">Email:</span>
-                      <p className="font-semibold text-xs">{selectedReport.userData?.email || userData?.email}</p>
+                      <p className="font-semibold text-[9px]">{selectedReport.userData?.email || userData?.email}</p>
                     </div>
                   </div>
                   
                   {selectedReport.highlights && (
-                    <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-                      <p className="text-xs font-semibold text-blue-700 mb-2">Key Highlights:</p>
-                      <div className="flex flex-wrap gap-2 justify-center">
+                    <div className="mt-3 p-2 bg-blue-50">
+                      <p className="text-[8px] font-semibold text-blue-700 mb-1">Key Highlights:</p>
+                      <div className="flex flex-wrap gap-1 justify-center">
                         {selectedReport.highlights.map((highlight, i) => (
-                          <span key={i} className="text-xs bg-white px-2 py-1 rounded-full text-gray-600">
+                          <span key={i} className="text-[7px] bg-white px-1.5 py-0.5 text-gray-600">
                             {highlight}
                           </span>
                         ))}
@@ -700,34 +709,34 @@ const AuditReports = () => {
                     </div>
                   )}
                   
-                  <div className="mt-6 flex justify-center">
-                    <div className="w-24 h-24 bg-gray-200 flex items-center justify-center text-xs text-gray-500 rounded">
+                  <div className="mt-4 flex justify-center">
+                    <div className="w-16 h-16 bg-gray-200 flex items-center justify-center text-[7px] text-gray-500">
                       QR Code
                     </div>
                   </div>
                   
-                  <div className="border-t border-gray-200 pt-4 mt-6">
-                    <p className="text-center text-xs text-gray-400">
+                  <div className="border-t border-gray-200 pt-3 mt-4">
+                    <p className="text-center text-[7px] text-gray-400">
                       This is a digitally verified report. For verification, scan the QR code.
                     </p>
-                    <p className="text-center text-xs text-gray-400 mt-1">
+                    <p className="text-center text-[7px] text-gray-400 mt-0.5">
                       *Screenshots are disabled for security purposes*
                     </p>
                   </div>
                 </div>
                 
-                <div className="bg-[#2C3E2B] text-white p-3 text-center text-xs">
+                <div className="bg-[#2C3E2B] text-white p-2 text-center text-[7px]">
                   <p>Authorized Signature</p>
-                  <p className="mt-1">MSRS Foundation - Government Registered</p>
+                  <p className="mt-0.5">MSRS Foundation - Government Registered</p>
                 </div>
               </div>
               
-              <div className="mt-6">
+              <div className="mt-5">
                 <button
                   onClick={closeModal}
-                  className="w-full py-3 bg-[#667A62] text-white rounded-lg font-semibold hover:bg-[#4A5C46] transition flex items-center justify-center gap-2"
+                  className="w-full py-2 bg-[#667A62] text-white text-xs font-semibold hover:bg-[#4A5C46] transition flex items-center justify-center gap-2"
                 >
-                  <FiX size={18} /> Close
+                  <FiX size={12} /> Close
                 </button>
               </div>
             </div>
@@ -735,7 +744,7 @@ const AuditReports = () => {
         </div>
       )}
 
-      {/* Verification Popup */}
+      {/* --- VERIFICATION POPUP --- */}
       {showVerificationPopup && !isVerified && (
         <VerificationPopup 
           onClose={closeVerificationPopup}

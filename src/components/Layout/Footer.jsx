@@ -18,7 +18,8 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   const navigate = useNavigate();
 
-  const upiQrCodeUrl = "/images/qr.png";
+  // Use your local image
+  const upiQrCodeUrl = "/images/qr1.png";
 
   return (
     <footer className="bg-[#5C6F5C] text-white pt-20 pb-8 relative overflow-hidden font-sans">
@@ -29,7 +30,7 @@ const Footer = () => {
         </span>
       </div>
       
-      <div className="container mx-auto px-6 lg:px-20 relative z-10">
+      <div className="container mx-auto px-6  relative z-10">
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-16">
           
@@ -75,10 +76,9 @@ const Footer = () => {
               <li><Link to="/certificates" className="text-sm text-white/70 hover:text-white transition-all">Statutory Certificates</Link></li>
               <li><Link to="/audit-reports" className="text-sm text-white/70 hover:text-white transition-all">Audit Reports</Link></li>
             </ul>
-         
           </div>
 
-          {/* Column 4: Contact & Get Involved */}
+          {/* Column 4: Contact */}
           <div>
             <h4 className="text-white/70 text-xs font-bold uppercase tracking-[0.2em] mb-7">Contact</h4>
             <div className="space-y-4 mb-6">
@@ -95,31 +95,38 @@ const Footer = () => {
                 <span>Hyderabad, Telangana, India</span>
               </div>
             </div>
-            
-          
           </div>
 
-          {/* Column 5: Scan & Donate */}
+          {/* Column 5: QR Code & Donate - Bigger Box */}
           <div>
-            <div className="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/20 shadow-sm">
-              <div className="flex items-center justify-between mb-4">
-                <div className="text-center">
-                  <img src={upiQrCodeUrl} alt="QR" className="w-24 h-24 object-contain rounded-lg bg-white p-2 mx-auto" />
-                  <p className="text-[9px] text-white/60 mt-2 font-semibold">SCAN & PAY</p>
-                </div>
-                <div className="text-right">
-                  <div className="flex items-center gap-1 justify-end mb-1">
-                    <FiShield size={12} className="text-white" />
-                    <p className="text-[9px] text-white/60 font-semibold">SECURE</p>
-                  </div>
-                  <FiHeart className="text-white" size={28} />
-                </div>
+            <div className="bg-white/10 backdrop-blur-sm p-5 rounded-2xl border border-white/20 shadow-lg">
+              {/* QR Code - Bigger Size */}
+              <div className="flex justify-center mb-4">
+                <img 
+                  src={upiQrCodeUrl} 
+                  alt="Scan QR Code to Donate" 
+                  className="w-40 h-40 object-contain rounded-xl bg-white p-3"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "https://placehold.co/160x160/667A62/white?text=QR+Code";
+                  }}
+                />
               </div>
               
-              <button 
+              {/* Scan Text */}
+              <p className="text-center text-[10px] text-white/60 font-semibold tracking-wider mb-3">
+                SCAN & PAY VIA UPI
+              </p>
+              
+              {/* Donate Button Inside Box */}
+             
+            </div>
+            <div>
+               <button 
                 onClick={() => navigate('/donate')}
-                className="w-full bg-white hover:bg-white/90 text-[#5C6F5C] font-bold py-3 px-4 rounded-xl transition-all duration-300 text-xs tracking-widest flex items-center justify-center gap-2 shadow-lg"
+                className="w-full bg-white hover:bg-white/90 text-[#5C6F5C] font-bold py-3 mt-2 px-4 rounded-xl transition-all duration-300 text-sm tracking-widest flex items-center justify-center gap-2 shadow-lg"
               >
+                <FiHeart size={16} />
                 DONATE NOW
               </button>
               

@@ -13,10 +13,10 @@ import 'aos/dist/aos.css';
 const VolunteerForm = () => {
   useEffect(() => {
     AOS.init({
-      duration: 1000,
-      once: false,
-      offset: 120,
-      easing: 'ease-in-out',
+      duration: 1200,
+      once: true,
+      offset: 100,
+      easing: 'ease-out-back',
     });
   }, []);
 
@@ -33,7 +33,6 @@ const VolunteerForm = () => {
   const [showCustomAreaInput, setShowCustomAreaInput] = useState(false);
   const [customAreaValue, setCustomAreaValue] = useState('');
 
-  // Comprehensive Education Qualification Options
   const educationQualifications = [
     { value: "no_formal", label: "No Formal Education" },
     { value: "primary", label: "Primary School (Class 1-5)" },
@@ -70,17 +69,17 @@ const VolunteerForm = () => {
     { value: "other", label: "Other Qualification" }
   ];
 
-const areasList = [
-  'Education & Teaching Support',
-  'Rural Development Programs',
-  'Women Empowerment Initiatives',
-  'Health & Awareness Campaigns',
-  'Spiritual & Cultural Programs',
-  'CSR Project Execution',
-  'Digital Media & Content Creation',
-  'Fundraising & Partnerships',
-  'Administration & Operations'
-];
+  const areasList = [
+    'Education & Teaching Support',
+    'Rural Development Programs',
+    'Women Empowerment Initiatives',
+    'Health & Awareness Campaigns',
+    'Spiritual & Cultural Programs',
+    'CSR Project Execution',
+    'Digital Media & Content Creation',
+    'Fundraising & Partnerships',
+    'Administration & Operations'
+  ];
 
   const benefits = [
     { icon: <FaHandsHelping />, title: "Make an Impact", description: "Directly contribute to social change and see the results" },
@@ -94,6 +93,8 @@ const areasList = [
     { name: "Rahul Verma", role: "Healthcare Volunteer", text: "The organization's transparency and impact measurement is exceptional. Proud to be part of this mission.", duration: "1.5 years" },
     { name: "Priya Mehta", role: "Intern", text: "The internship program gave me real-world experience and mentorship. Highly recommended!", duration: "6 months" }
   ];
+
+
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -135,7 +136,6 @@ const areasList = [
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Validation
     if (!formData.fullName || !formData.phone || !formData.email) {
       alert('Please fill in all required fields');
       return;
@@ -149,10 +149,7 @@ const areasList = [
     setIsSubmitting(true);
     
     setTimeout(() => {
-      console.log('Volunteer Application:', {
-        ...formData,
-        customArea: customAreaValue
-      });
+      console.log('Volunteer Application:', formData);
       setIsSubmitting(false);
       setSubmitSuccess(true);
       setTimeout(() => setSubmitSuccess(false), 5000);
@@ -169,51 +166,53 @@ const areasList = [
   };
 
   return (
-    <div className="pt-24 overflow-x-hidden">
+    <div className="bg-[#FCFDFB] overflow-x-hidden selection:bg-[#667A62] selection:text-white">
       <style>
         {`
-          @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap');
           
-          * { font-family: 'Mulish', sans-serif; }
-          
-          h1, h2, h3, h4, .heading-font { font-family: 'Cormorant Garamond', serif; }
-          
-          .banner-title { font-family: 'Cormorant Garamond', serif; font-weight: 700; letter-spacing: -0.02em; }
-          .section-title { font-family: 'Cormorant Garamond', serif; font-weight: 700; letter-spacing: -0.01em; }
-          
-          .volunteer-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(44, 62, 43, 0.85) 0%, rgba(44, 62, 43, 0.7) 50%, rgba(44, 62, 43, 0.85) 100%);
+          .font-serif { font-family: 'Cormorant Garamond', serif; }
+          .font-sans { font-family: 'Mulish', sans-serif; }
+
+          .premium-gradient-text {
+            background: linear-gradient(to right, #2C3E2B, #667A62, #8A9A87);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          }
+
+          .benefit-card, .testimonial-card {
+            transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            position: relative;
+            overflow: hidden;
           }
           
-          .volunteer-bg {
-            position: absolute;
-            inset: 0;
-            background-image: url('https://img.freepik.com/free-photo/helping-hands-volunteer-support-community-service-graphic_53876-64955.jpg?t=st=1775642459~exp=1775646059~hmac=7461e9d2ff28a789a1acac89f54cf6db29096ef68abe1e26c539ec6f82bbf43c&w=1060');
-            background-size: cover;
-            background-position: center;
-            animation: zoomIn 20s ease-out infinite alternate;
+          .benefit-card:hover, .testimonial-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(44, 62, 43, 0.12);
           }
           
-          @keyframes zoomIn {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
+          .benefit-card:hover .icon-wrapper {
+            background-color: #667A62;
           }
           
-          .banner-content { animation: fadeInUp 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards; }
-          
-          @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+          .benefit-card:hover .icon-wrapper svg {
+            color: white;
           }
           
-          .benefit-card, .stat-card, .testimonial-card {
-            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+          .stat-card {
+            transition: all 0.4s ease;
           }
           
-          .benefit-card:hover, .stat-card:hover, .testimonial-card:hover {
+          .stat-card:hover {
             transform: translateY(-5px);
+          }
+          
+          .stat-card .stat-icon {
+            transition: all 0.4s ease;
+          }
+          
+          .stat-card:hover .stat-icon {
+            transform: scale(1.1) rotate(5deg);
           }
           
           .form-input {
@@ -235,6 +234,42 @@ const areasList = [
             transform: translateX(3px);
           }
           
+          .stagger-border {
+            position: relative;
+          }
+          .stagger-border::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: -20px;
+            bottom: -20px;
+            border: 2px solid #667A62;
+            z-index: -1;
+            transition: all 0.5s ease;
+          }
+          .stagger-border:hover::after {
+            top: 10px;
+            left: 10px;
+            right: -10px;
+            bottom: -10px;
+          }
+
+          @keyframes subtle-zoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+          }
+          .animate-zoom { animation: subtle-zoom 20s infinite alternate linear; }
+          
+          .floating-element {
+            animation: float 6s ease-in-out infinite;
+          }
+          
+          @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+          }
+          
           .btn-submit {
             position: relative;
             overflow: hidden;
@@ -252,96 +287,75 @@ const areasList = [
             transition: left 0.5s ease;
           }
           
-          .btn-submit:hover::before { left: 100%; }
+          .btn-submit:hover::before {
+            left: 100%;
+          }
           
-          .success-message { animation: slideIn 0.5s ease forwards; }
+          .success-message {
+            animation: slideIn 0.5s ease forwards;
+          }
           
           @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-          
-          .floating-element { animation: float 6s ease-in-out infinite; }
-          
-          @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-          }
-          
-          @media (max-width: 768px) {
-            .banner-title { font-size: 2.5rem !important; }
+            from {
+              opacity: 0;
+              transform: translateY(-20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
           }
         `}
       </style>
 
-      {/* Premium Banner Section */}
-      <section className="relative h-[60vh] min-h-[500px] w-full overflow-hidden">
-        <div className="volunteer-bg" />
-        <div className="volunteer-overlay" />
-        
-        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
-          <div className="max-w-5xl banner-content">
-            <span className="inline-block px-6 py-2 mb-5 text-sm font-bold tracking-wider text-white uppercase bg-[#667A62] rounded-full shadow-lg">
-              Be the Change
+      {/* --- HERO SECTION --- */}
+      <section className="relative h-[50vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?q=80&w=2070" 
+            className="w-full h-full object-cover animate-zoom" 
+            alt="Volunteer Hero"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1a2619]/90 via-[#2C3E2B]/70 to-[#FCFDFB]" />
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10 text-center">
+          <div data-aos="fade-down">
+            <span className="inline-block px-6 py-1.5 mb-5 text-[10px] font-bold tracking-[0.3em] text-white uppercase border border-white/30 rounded-full backdrop-blur-sm">
+              BE THE CHANGE
             </span>
-            <h1 className="banner-title text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
-              Join Our Mission
-            </h1>
-            <div className="flex justify-center gap-2 mb-5">
-              <div className="w-12 h-0.5 bg-[#667A62]"></div>
-              <div className="w-6 h-0.5 bg-[#667A62]"></div>
-              <div className="w-3 h-0.5 bg-[#667A62]"></div>
-            </div>
-            <p className="text-white/95 text-lg md:text-xl max-w-3xl mx-auto">
-              Your Time. Their Future. - Engage with us through volunteering and internships
-            </p>
+          </div>
+          <h1 className="text-white text-3xl md:text-4xl lg:text-5xl mb-4" data-aos="fade-up" data-aos-delay="200">
+            Join Our Mission
+          </h1>
+          <p className="text-white/80 font-sans text-base max-w-2xl mx-auto mb-6 font-light tracking-wide" data-aos="fade-up" data-aos-delay="400">
+            Your Time. Their Future. - Engage with us through volunteering and internships
+          </p>
+          <div data-aos="fade-up" data-aos-delay="500">
+            <a href="#application-form" className="inline-flex items-center gap-2 px-6 py-2.5 bg-white text-[#2C3E2B] font-semibold text-sm rounded-md hover:bg-[#667A62] hover:text-white transition-all duration-300 shadow-md">
+              Apply Now <FiArrowRight size={14} />
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-12 bg-[#2C3E2B]">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-            <div className="stat-card text-center" data-aos="zoom-in" data-aos-delay="100">
-              <div className="text-3xl text-[#667A62] mb-2 flex justify-center"><FiUsers /></div>
-              <div className="text-2xl md:text-3xl font-bold text-white mb-1">500+</div>
-              <div className="text-xs text-[#EAF6E3] font-semibold">Active Volunteers</div>
-            </div>
-            <div className="stat-card text-center" data-aos="zoom-in" data-aos-delay="200">
-              <div className="text-3xl text-[#667A62] mb-2 flex justify-center"><FiClock /></div>
-              <div className="text-2xl md:text-3xl font-bold text-white mb-1">10K+</div>
-              <div className="text-xs text-[#EAF6E3] font-semibold">Hours Donated</div>
-            </div>
-            <div className="stat-card text-center" data-aos="zoom-in" data-aos-delay="300">
-              <div className="text-3xl text-[#667A62] mb-2 flex justify-center"><FiBookOpen /></div>
-              <div className="text-2xl md:text-3xl font-bold text-white mb-1">50+</div>
-              <div className="text-xs text-[#EAF6E3] font-semibold">Interns Trained</div>
-            </div>
-            <div className="stat-card text-center" data-aos="zoom-in" data-aos-delay="400">
-              <div className="text-3xl text-[#667A62] mb-2 flex justify-center"><FiSmile /></div>
-              <div className="text-2xl md:text-3xl font-bold text-white mb-1">100%</div>
-              <div className="text-xs text-[#EAF6E3] font-semibold">Satisfaction Rate</div>
-            </div>
-          </div>
-        </div>
-      </section>
+     
 
-      {/* Main Content: Left Side + Right Side - Equal Parts */}
-      <section className="py-16 bg-[#EAF6E3]">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      {/* --- MAIN CONTENT SECTION --- */}
+      <section className="py-24 bg-[#F7F9F5]">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             
             {/* LEFT SIDE - Content */}
-            <div className="space-y-6">
+            <div className="space-y-8">
               <div data-aos="fade-right">
-                <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-wider text-[#667A62] uppercase bg-white rounded-full">
-                  Why Volunteer With Us
+                <span className="text-xs tracking-[5px] text-[#667A62] font-semibold mb-3 inline-block">
+                  WHY VOLUNTEER WITH US
                 </span>
-                <h2 className="section-title text-3xl font-bold text-[#2C3E2B] mb-3">
+                <div className="w-16 h-0.5 bg-[#667A62] mb-5"></div>
+                <h2 className="font-serif text-3xl md:text-4xl text-[#2C3E2B] mb-4 leading-tight">
                   Make a Real Difference
                 </h2>
-                <div className="w-12 h-0.5 bg-[#667A62] mb-4"></div>
                 <p className="text-[#4A5C46] text-sm leading-relaxed">
                   Join our passionate community of volunteers and contribute to meaningful social change. 
                   Your skills, time, and energy can transform lives and communities.
@@ -349,32 +363,32 @@ const areasList = [
               </div>
 
               {/* Benefits - 2x2 Grid */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-5">
                 {benefits.map((benefit, idx) => (
                   <div 
                     key={idx} 
-                    className="benefit-card bg-white rounded-xl p-4 text-center shadow-sm"
+                    className="benefit-card bg-white p-4 shadow-sm border border-[#EAF6E3]"
                     data-aos="fade-right"
                     data-aos-delay={idx * 100}
                   >
-                    <div className="w-12 h-12 rounded-full bg-[#EAF6E3] flex items-center justify-center mx-auto mb-3">
-                      <div className="text-xl text-[#667A62]">{benefit.icon}</div>
+                    <div className="icon-wrapper w-10 h-10 bg-[#EAF6E3] flex items-center justify-center mb-3 transition-colors duration-300">
+                      <div className="text-lg text-[#667A62] transition-colors duration-300">{benefit.icon}</div>
                     </div>
                     <h3 className="font-bold text-[#2C3E2B] text-sm mb-1">{benefit.title}</h3>
-                    <p className="text-[#4A5C46] text-xs">{benefit.description}</p>
+                    <p className="text-[#4A5C46] text-xs leading-relaxed">{benefit.description}</p>
                   </div>
                 ))}
               </div>
 
               {/* Testimonials */}
               <div data-aos="fade-right" data-aos-delay="200">
-                <h3 className="font-bold text-[#2C3E2B] text-base mb-3 flex items-center gap-2">
-                  <FiStar className="text-[#667A62]" /> What Volunteers Say
+                <h3 className="font-bold text-[#2C3E2B] text-base mb-4 flex items-center gap-2">
+                  <FiStar className="text-[#667A62]" size={14} /> What Volunteers Say
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {testimonials.map((testimonial, idx) => (
-                    <div key={idx} className="testimonial-card bg-white rounded-xl p-4 relative">
-                      <FaQuoteLeft className="absolute text-[#EAF6E3] text-3xl opacity-50" style={{ bottom: 10, right: 10 }} />
+                    <div key={idx} className="testimonial-card bg-white p-4 border border-[#EAF6E3] relative">
+                      <FaQuoteLeft className="absolute text-[#EAF6E3] text-2xl opacity-50" style={{ bottom: 10, right: 10 }} />
                       <div className="flex items-center gap-3 mb-2">
                         <div className="w-10 h-10 rounded-full bg-[#667A62] flex items-center justify-center text-white font-bold text-sm">
                           {testimonial.name.charAt(0)}
@@ -391,9 +405,9 @@ const areasList = [
               </div>
 
               {/* Impact Numbers */}
-              <div className="bg-white rounded-xl p-4" data-aos="fade-right" data-aos-delay="300">
+              <div className="bg-white p-4 border border-[#EAF6E3]" data-aos="fade-right" data-aos-delay="300">
                 <h3 className="font-bold text-[#2C3E2B] text-sm mb-3 flex items-center gap-2">
-                  <FiTarget className="text-[#667A62]" /> Our Impact
+                  <FiTarget className="text-[#667A62]" size={14} /> Our Impact
                 </h3>
                 <div className="grid grid-cols-3 gap-3">
                   <div className="text-center">
@@ -413,18 +427,19 @@ const areasList = [
             </div>
 
             {/* RIGHT SIDE - Application Form */}
-            <div data-aos="fade-left">
-              <div className="bg-white rounded-2xl p-6 shadow-xl">
+            <div id="application-form" data-aos="fade-left">
+              <div className="bg-white p-6 shadow-lg border border-[#EAF6E3]">
                 <div className="text-center mb-5">
-                  <span className="inline-block px-4 py-1 mb-2 text-xs font-bold tracking-wider text-[#667A62] uppercase bg-[#EAF6E3] rounded-full">
+                  <span className="inline-block px-4 py-1 mb-2 text-[9px] font-bold tracking-[0.2em] text-[#667A62] uppercase bg-[#EAF6E3] rounded-full">
                     Start Your Journey
                   </span>
-                  <h3 className="section-title text-2xl font-bold text-[#2C3E2B]">Apply Now</h3>
+                  <h3 className="font-serif text-2xl font-bold text-[#2C3E2B]">Apply Now</h3>
                   <p className="text-[#4A5C46] text-xs mt-1">Fill out the form to begin your journey</p>
+                  <div className="w-12 h-0.5 bg-[#667A62] mx-auto mt-3"></div>
                 </div>
 
                 {submitSuccess && (
-                  <div className="success-message mb-4 p-3 bg-green-50 border border-green-200 rounded-xl flex items-center gap-2">
+                  <div className="success-message mb-4 p-3 bg-green-50 border-l-4 border-green-500 flex items-center gap-2">
                     <FiCheckCircle className="text-green-500 text-base" />
                     <div>
                       <p className="text-green-800 font-semibold text-xs">Application Submitted!</p>
@@ -436,38 +451,38 @@ const areasList = [
                 <form onSubmit={handleSubmit}>
                   {/* Personal Information */}
                   <div className="mb-4">
-                    <h4 className="text-sm font-bold text-[#2C3E2B] mb-3 pb-1 border-b border-[#667A62] flex items-center gap-2">
-                      <FiUser size={14} className="text-[#667A62]" /> Personal Info
+                    <h4 className="text-xs font-bold text-[#2C3E2B] mb-3 pb-1 border-b border-[#667A62] flex items-center gap-2">
+                      <FiUser size={12} className="text-[#667A62]" /> Personal Info
                     </h4>
                     <div className="space-y-3">
-                      <input type="text" name="fullName" placeholder="Full Name *" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.fullName} />
+                      <input type="text" name="fullName" placeholder="Full Name *" required className="form-input w-full px-3 py-2 bg-gray-50 text-sm" onChange={handleChange} value={formData.fullName} />
                       <div className="grid grid-cols-2 gap-3">
-                        <input type="date" name="dateOfBirth" required className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.dateOfBirth} />
-                        <select name="gender" className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.gender}>
+                        <input type="date" name="dateOfBirth" required className="form-input px-3 py-2 bg-gray-50 text-sm" onChange={handleChange} value={formData.dateOfBirth} />
+                        <select name="gender" className="form-input px-3 py-2 bg-gray-50 text-sm" onChange={handleChange} value={formData.gender}>
                           <option value="">Gender *</option>
                           <option>Male</option>
                           <option>Female</option>
                           <option>Other</option>
                         </select>
                       </div>
-                      <input type="tel" name="phone" placeholder="Phone Number *" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.phone} />
-                      <input type="email" name="email" placeholder="Email Address *" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.email} />
-                      <input type="text" name="address" placeholder="Address *" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.address} />
+                      <input type="tel" name="phone" placeholder="Phone Number *" required className="form-input w-full px-3 py-2 bg-gray-50 text-sm" onChange={handleChange} value={formData.phone} />
+                      <input type="email" name="email" placeholder="Email Address *" required className="form-input w-full px-3 py-2 bg-gray-50 text-sm" onChange={handleChange} value={formData.email} />
+                      <input type="text" name="address" placeholder="Address *" required className="form-input w-full px-3 py-2 bg-gray-50 text-sm" onChange={handleChange} value={formData.address} />
                     </div>
                   </div>
 
                   {/* Application Type */}
                   <div className="mb-4">
-                    <h4 className="text-sm font-bold text-[#2C3E2B] mb-3 pb-1 border-b border-[#667A62] flex items-center gap-2">
-                      <FiBriefcase size={14} className="text-[#667A62]" /> Application Type
+                    <h4 className="text-xs font-bold text-[#2C3E2B] mb-3 pb-1 border-b border-[#667A62] flex items-center gap-2">
+                      <FiBriefcase size={12} className="text-[#667A62]" /> Application Type
                     </h4>
                     <div className="grid grid-cols-2 gap-3">
-                      <select name="applicationType" className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.applicationType}>
+                      <select name="applicationType" className="form-input px-3 py-2 bg-gray-50 text-sm" onChange={handleChange} value={formData.applicationType}>
                         <option value="">Apply As *</option>
                         <option>Volunteer</option>
                         <option>Intern</option>
                       </select>
-                      <select name="preferredMode" className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.preferredMode}>
+                      <select name="preferredMode" className="form-input px-3 py-2 bg-gray-50 text-sm" onChange={handleChange} value={formData.preferredMode}>
                         <option value="">Mode *</option>
                         <option>On-site</option>
                         <option>Remote</option>
@@ -476,27 +491,26 @@ const areasList = [
                     </div>
                   </div>
 
-                  {/* Areas of Interest - Updated with Custom Field */}
+                  {/* Areas of Interest */}
                   <div className="mb-4">
-                    <h4 className="text-sm font-bold text-[#2C3E2B] mb-3 pb-1 border-b border-[#667A62] flex items-center gap-2">
-                      <FiTarget size={14} className="text-[#667A62]" /> Areas of Interest
+                    <h4 className="text-xs font-bold text-[#2C3E2B] mb-3 pb-1 border-b border-[#667A62] flex items-center gap-2">
+                      <FiTarget size={12} className="text-[#667A62]" /> Areas of Interest
                     </h4>
                     
-                    {/* Selected Areas Display */}
                     {formData.areasOfInterest.length > 0 && (
                       <div className="mb-3 flex flex-wrap gap-2">
                         {formData.areasOfInterest.map((area, idx) => (
-                          <span key={idx} className="interest-tag inline-flex items-center gap-1 px-2 py-1 bg-[#EAF6E3] text-[#667A62] rounded-full text-xs">
+                          <span key={idx} className="interest-tag inline-flex items-center gap-1 px-2 py-1 bg-[#EAF6E3] text-[#667A62] rounded text-xs">
                             {area}
                             <button type="button" onClick={() => handleRemoveArea(area)} className="hover:text-red-500">
-                              <FiX size={12} />
+                              <FiX size={10} />
                             </button>
                           </span>
                         ))}
                       </div>
                     )}
                     
-                    <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto p-2 border border-gray-200 rounded-lg mb-2">
+                    <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto p-2 border border-gray-200 mb-2">
                       {areasList.map((area, idx) => (
                         <label key={idx} className="flex items-center gap-2 cursor-pointer">
                           <input type="checkbox" name="areasOfInterest" value={area} onChange={handleChange} className="w-3 h-3 text-[#667A62] rounded" />
@@ -505,14 +519,13 @@ const areasList = [
                       ))}
                     </div>
                     
-                    {/* Custom Area Input */}
                     {!showCustomAreaInput ? (
                       <button
                         type="button"
                         onClick={() => setShowCustomAreaInput(true)}
-                        className="w-full mt-2 py-1.5 border border-dashed border-[#667A62] text-[#667A62] rounded-lg text-xs font-semibold hover:bg-[#EAF6E3] transition-all flex items-center justify-center gap-1"
+                        className="w-full mt-2 py-1.5 border border-dashed border-[#667A62] text-[#667A62] text-xs font-semibold hover:bg-[#EAF6E3] transition-all flex items-center justify-center gap-1"
                       >
-                        <FiPlus size={12} /> Add Custom Area of Interest
+                        <FiPlus size={10} /> Add Custom Area
                       </button>
                     ) : (
                       <div className="mt-2 flex gap-2">
@@ -521,13 +534,13 @@ const areasList = [
                           value={customAreaValue}
                           onChange={(e) => setCustomAreaValue(e.target.value)}
                           placeholder="Enter your custom area..."
-                          className="flex-1 form-input px-3 py-1.5 rounded-lg bg-gray-50 text-sm"
+                          className="flex-1 form-input px-3 py-1.5 bg-gray-50 text-sm"
                           autoFocus
                         />
                         <button
                           type="button"
                           onClick={handleCustomAreaAdd}
-                          className="px-3 py-1.5 bg-[#667A62] text-white rounded-lg text-xs font-semibold hover:bg-[#4A5C46] transition-all"
+                          className="px-3 py-1.5 bg-[#667A62] text-white text-xs font-semibold hover:bg-[#4A5C46] transition-all"
                         >
                           Add
                         </button>
@@ -537,7 +550,7 @@ const areasList = [
                             setShowCustomAreaInput(false);
                             setCustomAreaValue('');
                           }}
-                          className="px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-semibold hover:bg-gray-100 transition-all"
+                          className="px-3 py-1.5 border border-gray-300 text-xs font-semibold hover:bg-gray-100 transition-all"
                         >
                           Cancel
                         </button>
@@ -545,30 +558,30 @@ const areasList = [
                     )}
                   </div>
 
-                  {/* Skills & Qualification - Updated with Comprehensive Education Options */}
+                  {/* Skills & Qualification */}
                   <div className="mb-4">
-                    <h4 className="text-sm font-bold text-[#2C3E2B] mb-3 pb-1 border-b border-[#667A62] flex items-center gap-2">
-                      <FiBookOpen size={14} className="text-[#667A62]" /> Skills & Qualification
+                    <h4 className="text-xs font-bold text-[#2C3E2B] mb-3 pb-1 border-b border-[#667A62] flex items-center gap-2">
+                      <FiBookOpen size={12} className="text-[#667A62]" /> Skills & Qualification
                     </h4>
                     <div className="space-y-3">
-                      <select name="qualification" className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.qualification}>
+                      <select name="qualification" className="form-input w-full px-3 py-2 bg-gray-50 text-sm" onChange={handleChange} value={formData.qualification}>
                         <option value="">Educational Qualification *</option>
                         {educationQualifications.map((qual, idx) => (
                           <option key={idx} value={qual.value}>{qual.label}</option>
                         ))}
                       </select>
-                      <textarea name="skills" placeholder="Relevant Skills * (e.g., Communication, Leadership, Teaching, etc.)" rows="2" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.skills}></textarea>
+                      <textarea name="skills" placeholder="Relevant Skills * (e.g., Communication, Leadership, Teaching, etc.)" rows="2" required className="form-input w-full px-3 py-2 bg-gray-50 text-sm" onChange={handleChange} value={formData.skills}></textarea>
                     </div>
                   </div>
 
                   {/* Availability */}
                   <div className="mb-4">
-                    <h4 className="text-sm font-bold text-[#2C3E2B] mb-3 pb-1 border-b border-[#667A62] flex items-center gap-2">
-                      <FiCalendar size={14} className="text-[#667A62]" /> Availability
+                    <h4 className="text-xs font-bold text-[#2C3E2B] mb-3 pb-1 border-b border-[#667A62] flex items-center gap-2">
+                      <FiCalendar size={12} className="text-[#667A62]" /> Availability
                     </h4>
                     <div className="grid grid-cols-2 gap-3">
-                      <input type="date" name="startDate" required className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.startDate} />
-                      <select name="duration" className="form-input px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.duration}>
+                      <input type="date" name="startDate" required className="form-input px-3 py-2 bg-gray-50 text-sm" onChange={handleChange} value={formData.startDate} />
+                      <select name="duration" className="form-input px-3 py-2 bg-gray-50 text-sm" onChange={handleChange} value={formData.duration}>
                         <option value="">Duration *</option>
                         <option>1 Month</option>
                         <option>3 Months</option>
@@ -582,24 +595,24 @@ const areasList = [
 
                   {/* Motivation */}
                   <div className="mb-4">
-                    <h4 className="text-sm font-bold text-[#2C3E2B] mb-3 pb-1 border-b border-[#667A62] flex items-center gap-2">
-                      <FiHeart size={14} className="text-[#667A62]" /> Motivation
+                    <h4 className="text-xs font-bold text-[#2C3E2B] mb-3 pb-1 border-b border-[#667A62] flex items-center gap-2">
+                      <FiHeart size={12} className="text-[#667A62]" /> Motivation
                     </h4>
-                    <textarea name="motivation" placeholder="Why do you want to join us? *" rows="2" required className="form-input w-full px-3 py-2 rounded-lg bg-gray-50 text-sm" onChange={handleChange} value={formData.motivation}></textarea>
+                    <textarea name="motivation" placeholder="Why do you want to join us? *" rows="2" required className="form-input w-full px-3 py-2 bg-gray-50 text-sm" onChange={handleChange} value={formData.motivation}></textarea>
                   </div>
 
                   {/* Declaration */}
-                  <div className="mb-5 space-y-2 p-3 bg-[#EAF6E3] rounded-lg">
+                  <div className="mb-5 p-3 bg-[#EAF6E3]">
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input type="checkbox" name="declaration" onChange={handleChange} className="w-3 h-3 rounded text-[#667A62]" />
-                      <span className="text-xs text-[#4A5C46]">I hereby declare that the information provided is true and correct and I agree to abide by the rules and values of the Foundation.</span>
+                      <span className="text-[10px] text-[#4A5C46]">I hereby declare that the information provided is true and correct and I agree to abide by the rules and values of the Foundation.</span>
                     </label>
                   </div>
 
                   <button 
                     type="submit" 
                     disabled={isSubmitting}
-                    className="btn-submit w-full py-2.5 bg-[#667A62] text-white font-semibold rounded-lg hover:bg-[#4A5C46] transition-all disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
+                    className="btn-submit w-full py-2.5 bg-[#667A62] text-white font-semibold text-sm hover:bg-[#4A5C46] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     {isSubmitting ? (
                       <>Submitting... <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div></>
@@ -614,20 +627,28 @@ const areasList = [
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-12 bg-[#2C3E2B]">
-        <div className="container mx-auto px-4 max-w-5xl text-center">
-          <div data-aos="zoom-in">
-            <FaHandsHelping className="text-4xl text-[#667A62] mx-auto mb-3 floating-element" />
-            <h2 className="section-title text-2xl md:text-3xl font-bold text-white mb-2">
-              Ready to Make a Difference?
-            </h2>
-            <p className="text-[#EAF6E3] text-sm mb-4">
-              Join our team of dedicated volunteers and be part of something meaningful.
-            </p>
-            <a href="#" className="inline-flex items-center gap-2 px-5 py-2 bg-[#667A62] text-white font-semibold rounded-full hover:bg-white hover:text-[#2C3E2B] transition-all text-sm">
-              Apply Now <FiArrowRight size={12} />
-            </a>
+      {/* --- CTA SECTION --- */}
+      <section className="py-20">
+        <div className="container mx-auto px-6">
+          <div className="bg-[#6F8770] px-8 md:px-12 py-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+            <div className="text-center lg:text-left">
+              <h2 className="font-serif text-white text-2xl md:text-3xl leading-snug mb-3">
+                Ready to Make a Difference?
+              </h2>
+              <p className="text-white/80 text-sm md:text-base">
+                Join our team of dedicated volunteers and be part of something meaningful.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap justify-center lg:justify-end gap-3">
+              <a 
+                href="#application-form"
+                className="group flex items-center gap-2 px-5 py-2.5 bg-white text-[#2C3E2B] font-semibold text-sm rounded-md hover:bg-[#667A62] hover:text-white transition-all duration-300 shadow-md"
+              >
+                Apply Now 
+                <FiArrowRight className="group-hover:translate-x-1 transition-transform" size={14} />
+              </a>
+            </div>
           </div>
         </div>
       </section>

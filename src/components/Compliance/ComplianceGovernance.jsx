@@ -17,10 +17,10 @@ import 'aos/dist/aos.css';
 const ComplianceGovernance = () => {
   useEffect(() => {
     AOS.init({
-      duration: 1000,
-      once: false,
-      offset: 120,
-      easing: 'ease-in-out',
+      duration: 1200,
+      once: true,
+      offset: 100,
+      easing: 'ease-out-back',
     });
   }, []);
 
@@ -33,18 +33,7 @@ const ComplianceGovernance = () => {
     { title: "12A Registration Certificate", description: "Income Tax Department", date: "2020", size: "156 KB", category: "Tax", imageUrl: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=800&q=80" },
     { title: "80G Registration Certificate", description: "Income Tax Department", date: "2020", size: "178 KB", category: "Tax", imageUrl: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&q=80" },
     { title: "NITI Aayog Registration", description: "Government of India", date: "2020", size: "134 KB", category: "Government", imageUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&q=80" },
-    { title: "PAN Card", description: "Permanent Account Number", date: "2020", size: "98 KB", category: "Legal", imageUrl: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&q=80" },
-    { title: "TAN Registration", description: "Tax Deduction Account Number", date: "2020", size: "112 KB", category: "Tax", imageUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&q=80" },
-    { title: "GST Registration", description: "Goods and Services Tax", date: "2020", size: "145 KB", category: "Legal", imageUrl: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&q=80" },
-    { title: "MSME Registration", description: "Micro, Small & Medium Enterprises", date: "2021", size: "167 KB", category: "Government", imageUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&q=80" },
-    { title: "DARPAN Registration", description: "NGO Darpan Portal", date: "2020", size: "123 KB", category: "Government", imageUrl: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&q=80" }
-  ];
-
-  const governanceStats = [
-    { number: "100%", label: "Compliance Rate", icon: <FiCheckCircle />, delay: 100 },
-    { number: "10+", label: "Certifications", icon: <FaCertificate />, delay: 200 },
-    { number: "6+", label: "Govt Approvals", icon: <FiShield />, delay: 300 },
-    { number: "₹5Cr+", label: "Funds Utilized", icon: <FiDollarSign />, delay: 400 }
+    { title: "PAN Card", description: "Permanent Account Number", date: "2020", size: "98 KB", category: "Legal", imageUrl: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&q=80" }
   ];
 
   const governanceStructure = [
@@ -95,10 +84,10 @@ const ComplianceGovernance = () => {
   ];
 
   const fundAllocation = [
-    { category: "Program Implementation", percentage: 75, amount: "₹3.75 Cr", color: "bg-[#667A62]" },
-    { category: "Administrative Costs", percentage: 15, amount: "₹75 Lakhs", color: "bg-[#4A5C46]" },
-    { category: "Fundraising & Communications", percentage: 5, amount: "₹25 Lakhs", color: "bg-[#2C3E2B]" },
-    { category: "Reserve & Contingency", percentage: 5, amount: "₹25 Lakhs", color: "bg-[#8A9C86]" }
+    { category: "Program Implementation", percentage: 75, color: "bg-[#667A62]" },
+    { category: "Administrative Costs", percentage: 15, color: "bg-[#4A5C46]" },
+    { category: "Fundraising & Communications", percentage: 5, color: "bg-[#2C3E2B]" },
+    { category: "Reserve & Contingency", percentage: 5, color: "bg-[#8A9C86]" }
   ];
 
   const complianceHighlights = [
@@ -134,13 +123,6 @@ const ComplianceGovernance = () => {
     }
   ];
 
-  const annualReports = [
-    { year: "2023-24", title: "Annual Report 2023-24", size: "2.5 MB" },
-    { year: "2022-23", title: "Annual Report 2022-23", size: "2.3 MB" },
-    { year: "2021-22", title: "Annual Report 2021-22", size: "2.1 MB" },
-    { year: "2020-21", title: "Annual Report 2020-21", size: "1.9 MB" }
-  ];
-
   const handlePreview = (cert) => {
     setSelectedCert(cert);
     setShowModal(true);
@@ -152,110 +134,112 @@ const ComplianceGovernance = () => {
   };
 
   return (
-    <div className="pt-24 overflow-x-hidden">
+    <div className="bg-[#FCFDFB] overflow-x-hidden selection:bg-[#667A62] selection:text-white">
       <style>
         {`
-          @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap');
           
-          * { font-family: 'Mulish', sans-serif; }
-          
-          h1, h2, h3, h4, .heading-font { font-family: 'Cormorant Garamond', serif; }
-          
-          .banner-title { font-family: 'Cormorant Garamond', serif; font-weight: 700; letter-spacing: -0.02em; }
-          .section-title { font-family: 'Cormorant Garamond', serif; font-weight: 700; letter-spacing: -0.01em; }
-          
-          .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(44, 62, 43, 0.9) 0%, rgba(44, 62, 43, 0.7) 50%, rgba(44, 62, 43, 0.9) 100%);
+          .font-serif { font-family: 'Cormorant Garamond', serif; }
+          .font-sans { font-family: 'Mulish', sans-serif; }
+
+          .premium-gradient-text {
+            background: linear-gradient(to right, #2C3E2B, #667A62, #8A9A87);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
           }
-          
-          .hero-bg {
-            position: absolute;
-            inset: 0;
-            background-image: url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            animation: zoomIn 20s ease-out infinite alternate;
-          }
-          
-          @keyframes zoomIn {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
-          }
-          
-          .banner-content { animation: fadeInUp 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards; }
-          
-          @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-          
+
           .card-hover {
             transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border: 1px solid #EAF6E3;
           }
           
           .card-hover:hover {
-            transform: translateY(-8px);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(44, 62, 43, 0.12);
           }
           
           .stat-card {
-            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: all 0.4s ease;
           }
           
           .stat-card:hover {
             transform: translateY(-5px);
           }
           
-          /* Fixed Governance Card Hover Styles */
-          .governance-card {
+          .stat-card .stat-icon {
             transition: all 0.4s ease;
+          }
+          
+          .stat-card:hover .stat-icon {
+            transform: scale(1.1) rotate(5deg);
+          }
+          
+          .governance-card {
+            transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             background: white;
+            border: 1px solid #EAF6E3;
           }
           
           .governance-card:hover {
-            transform: translateY(-8px);
-            background: linear-gradient(135deg, #667A62 0%, #2C3E2B 100%);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-6px);
+            background: #2C3E2B;
+            box-shadow: 0 20px 40px rgba(44, 62, 43, 0.15);
           }
           
-          .governance-card:hover .governance-icon {
-            color: white !important;
-          }
-          
-          .governance-card:hover .governance-title {
-            color: white !important;
-          }
-          
-          .governance-card:hover .governance-desc {
-            color: rgba(255, 255, 255, 0.9) !important;
-          }
-          
-          .governance-card:hover .governance-list li {
-            color: rgba(255, 255, 255, 0.85) !important;
-          }
-          
-          .governance-card:hover .governance-list svg {
-            color: white !important;
-          }
-          
-          /* Ensure all text elements have proper contrast on hover */
-          .governance-card:hover * {
+          .governance-card:hover .governance-icon svg {
             color: white;
           }
           
-          .governance-card:hover .text-gray-500,
-          .governance-card:hover .text-gray-600,
-          .governance-card:hover .text-xs,
-          .governance-card:hover .text-sm {
-            color: rgba(255, 255, 255, 0.9) !important;
+          .governance-card:hover .governance-title {
+            color: white;
           }
           
-          .floating-element { animation: float 6s ease-in-out infinite; }
+          .governance-card:hover .governance-desc {
+            color: rgba(255, 255, 255, 0.8);
+          }
+          
+          .governance-card:hover .governance-list li {
+            color: rgba(255, 255, 255, 0.85);
+          }
+          
+          .governance-card:hover .governance-list svg {
+            color: white;
+          }
+          
+          .stagger-border {
+            position: relative;
+          }
+          .stagger-border::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: -20px;
+            bottom: -20px;
+            border: 2px solid #667A62;
+            z-index: -1;
+            transition: all 0.5s ease;
+          }
+          .stagger-border:hover::after {
+            top: 10px;
+            left: 10px;
+            right: -10px;
+            bottom: -10px;
+          }
+
+          @keyframes subtle-zoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+          }
+          .animate-zoom { animation: subtle-zoom 20s infinite alternate linear; }
+          
+          .floating-element {
+            animation: float 6s ease-in-out infinite;
+          }
           
           @keyframes float {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-15px); }
           }
           
           .btn-glow:hover {
@@ -281,42 +265,41 @@ const ComplianceGovernance = () => {
           
           .modal-content {
             animation: scaleUp 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
           }
           
           @keyframes scaleUp {
-            from { transform: scale(0.9); opacity: 0; }
+            from { transform: scale(0.95); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
-          }
-          
-          @media (max-width: 768px) {
-            .banner-title { font-size: 2.5rem !important; }
           }
         `}
       </style>
 
-      {/* Hero Banner Section */}
-      <section className="relative h-[50vh] min-h-[450px] w-full overflow-hidden">
-        <div className="hero-bg" />
-        <div className="hero-overlay" />
-        
-        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
-          <div className="max-w-5xl banner-content">
-            <span className="inline-block px-6 py-2 mb-5 text-sm font-bold tracking-wider text-white uppercase bg-[#667A62] rounded-full shadow-lg">
-              Built on Trust. Backed by Transparency.
+      {/* --- HERO SECTION --- */}
+      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2070" 
+            className="w-full h-full object-cover animate-zoom" 
+            alt="Compliance Governance Hero"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1a2619]/90 via-[#2C3E2B]/70 to-[#FCFDFB]" />
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10 text-center">
+          <div data-aos="fade-down">
+            <span className="inline-block px-6 py-1.5 mb-5 text-[10px] font-bold tracking-[0.3em] text-white uppercase border border-white/30 rounded-full backdrop-blur-sm">
+              BUILT ON TRUST. BACKED BY TRANSPARENCY.
             </span>
-            <h1 className="banner-title text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
-              Compliance & Governance
-            </h1>
-            <div className="flex justify-center gap-2 mb-5">
-              <div className="w-12 h-0.5 bg-[#667A62]"></div>
-              <div className="w-6 h-0.5 bg-[#667A62]"></div>
-              <div className="w-3 h-0.5 bg-[#667A62]"></div>
-            </div>
-            <p className="text-white/95 text-lg md:text-xl max-w-3xl mx-auto">
-              MSRS Foundation strictly adheres to all statutory and regulatory compliances as mandated by the Government of India, 
-              ensuring transparency and accountability in all operations.
-            </p>
           </div>
+          <h1 className="text-white text-3xl md:text-4xl lg:text-5xl mb-4 font-serif" data-aos="fade-up" data-aos-delay="200">
+            Compliance & Governance
+          </h1>
+          <p className="text-white/80 font-sans text-base max-w-2xl mx-auto mb-6 font-light tracking-wide" data-aos="fade-up" data-aos-delay="400">
+            MSRS Foundation strictly adheres to all statutory and regulatory compliances as mandated by the Government of India, 
+            ensuring transparency and accountability in all operations.
+          </p>
         </div>
         
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
@@ -326,39 +309,18 @@ const ComplianceGovernance = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {governanceStats.map((stat, index) => (
-              <div key={index} className="stat-card text-center" data-aos="zoom-in" data-aos-delay={stat.delay}>
-                <div className="text-4xl text-[#667A62] mb-3 flex justify-center">
-                  {stat.icon}
-                </div>
-                <div className="text-3xl md:text-4xl font-bold text-[#2C3E2B] mb-1">
-                  {stat.number}
-                </div>
-                <div className="text-sm text-gray-600 font-semibold">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Governance Structure Section */}
-      <section className="py-20 bg-[#EAF6E3]">
-        <div className="container mx-auto px-4 max-w-7xl">
+      {/* --- GOVERNANCE STRUCTURE SECTION --- */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-12" data-aos="fade-up">
-            <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-wider text-[#667A62] uppercase bg-white rounded-full">
-              Our Framework
+            <span className="text-xs tracking-[5px] text-[#667A62] font-semibold mb-3 inline-block">
+              OUR FRAMEWORK
             </span>
-            <h2 className="section-title text-3xl md:text-4xl font-bold text-[#2C3E2B] mb-3">
+            <div className="w-16 h-0.5 bg-[#667A62] mx-auto"></div>
+            <h2 className="font-serif text-3xl md:text-4xl text-[#2C3E2B] mt-4 mb-3">
               Governance Structure
             </h2>
-            <div className="w-16 h-0.5 bg-[#667A62] mx-auto mb-4"></div>
-            <p className="text-[#4A5C46] max-w-2xl mx-auto text-sm">
+            <p className="text-[#4A5C46] text-sm max-w-2xl mx-auto">
               A robust governance framework ensuring accountability, transparency, and ethical operations
             </p>
           </div>
@@ -367,19 +329,19 @@ const ComplianceGovernance = () => {
             {governanceStructure.map((item, index) => (
               <div 
                 key={index}
-                className="governance-card bg-white rounded-2xl p-6 shadow-lg"
+                className="governance-card p-5"
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
               >
-                <div className="governance-icon text-4xl text-[#667A62] mb-4 flex justify-center">
+                <div className="governance-icon text-3xl text-[#667A62] mb-3 flex justify-center transition-colors duration-300">
                   {item.icon}
                 </div>
-                <h3 className="governance-title text-lg font-bold text-[#2C3E2B] mb-2 text-center">{item.title}</h3>
-                <p className="governance-desc text-xs text-gray-500 mb-3 text-center">{item.description}</p>
+                <h3 className="governance-title font-serif font-bold text-[#2C3E2B] text-base mb-2 text-center transition-colors duration-300">{item.title}</h3>
+                <p className="governance-desc text-xs text-gray-500 mb-3 text-center transition-colors duration-300">{item.description}</p>
                 <ul className="governance-list space-y-2">
                   {item.responsibilities.map((resp, idx) => (
-                    <li key={idx} className="text-xs text-gray-600 flex items-start gap-2">
-                      <FiCheckCircle className="text-[#667A62] text-xs mt-0.5 flex-shrink-0" />
+                    <li key={idx} className="text-xs text-gray-600 flex items-start gap-2 transition-colors duration-300">
+                      <FiCheckCircle className="text-[#667A62] text-xs mt-0.5 flex-shrink-0 transition-colors duration-300" />
                       <span>{resp}</span>
                     </li>
                   ))}
@@ -390,27 +352,27 @@ const ComplianceGovernance = () => {
         </div>
       </section>
 
-      {/* How We Work Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 max-w-7xl">
+      {/* --- HOW WE WORK SECTION --- */}
+      <section className="py-24 bg-[#F7F9F5]">
+        <div className="container mx-auto px-6 max-w-7xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div data-aos="fade-right">
-              <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-wider text-[#667A62] uppercase bg-[#EAF6E3] rounded-full">
-                Our Process
+              <span className="text-xs tracking-[5px] text-[#667A62] font-semibold mb-3 inline-block">
+                OUR PROCESS
               </span>
-              <h2 className="section-title text-3xl md:text-4xl font-bold text-[#2C3E2B] mb-4">
+              <div className="w-16 h-0.5 bg-[#667A62] mb-5"></div>
+              <h2 className="font-serif text-3xl md:text-4xl text-[#2C3E2B] mb-4">
                 How We Work
               </h2>
-              <div className="w-16 h-0.5 bg-[#667A62] mb-6"></div>
-              <p className="text-gray-600 leading-relaxed mb-6">
+              <p className="text-[#4A5C46] text-sm leading-relaxed mb-6">
                 Our foundation operates with complete transparency and accountability. Every decision, 
                 every rupee spent, and every project implemented follows a rigorous process.
               </p>
               
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-[#EAF6E3] rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-[#667A62] font-bold text-sm">1</span>
+                  <div className="w-7 h-7 bg-[#EAF6E3] flex items-center justify-center flex-shrink-0">
+                    <span className="text-[#667A62] font-bold text-xs">1</span>
                   </div>
                   <div>
                     <h4 className="font-semibold text-[#2C3E2B] text-sm">Needs Assessment & Planning</h4>
@@ -418,8 +380,8 @@ const ComplianceGovernance = () => {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-[#EAF6E3] rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-[#667A62] font-bold text-sm">2</span>
+                  <div className="w-7 h-7 bg-[#EAF6E3] flex items-center justify-center flex-shrink-0">
+                    <span className="text-[#667A62] font-bold text-xs">2</span>
                   </div>
                   <div>
                     <h4 className="font-semibold text-[#2C3E2B] text-sm">Board Approval & Budget Allocation</h4>
@@ -427,8 +389,8 @@ const ComplianceGovernance = () => {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-[#EAF6E3] rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-[#667A62] font-bold text-sm">3</span>
+                  <div className="w-7 h-7 bg-[#EAF6E3] flex items-center justify-center flex-shrink-0">
+                    <span className="text-[#667A62] font-bold text-xs">3</span>
                   </div>
                   <div>
                     <h4 className="font-semibold text-[#2C3E2B] text-sm">Project Implementation & Monitoring</h4>
@@ -436,8 +398,8 @@ const ComplianceGovernance = () => {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-[#EAF6E3] rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-[#667A62] font-bold text-sm">4</span>
+                  <div className="w-7 h-7 bg-[#EAF6E3] flex items-center justify-center flex-shrink-0">
+                    <span className="text-[#667A62] font-bold text-xs">4</span>
                   </div>
                   <div>
                     <h4 className="font-semibold text-[#2C3E2B] text-sm">Impact Assessment & Reporting</h4>
@@ -448,49 +410,50 @@ const ComplianceGovernance = () => {
             </div>
             
             <div className="relative" data-aos="fade-left">
-              <div className="absolute -top-5 -right-5 w-full h-full bg-[#EAF6E3] rounded-2xl"></div>
-              <img 
-                src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80"
-                alt="How We Work"
-                className="rounded-2xl shadow-2xl w-full h-[400px] object-cover relative z-10"
-              />
+              <div className="stagger-border">
+                <img 
+                  src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80"
+                  alt="How We Work"
+                  className="w-full h-[400px] object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Fund Allocation Section */}
-      <section className="py-20 bg-[#EAF6E3]">
-        <div className="container mx-auto px-4 max-w-7xl">
+      {/* --- FUND ALLOCATION SECTION - Percentage Only --- */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-12" data-aos="fade-up">
-            <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-wider text-[#667A62] uppercase bg-white rounded-full">
-              Financial Transparency
+            <span className="text-xs tracking-[5px] text-[#667A62] font-semibold mb-3 inline-block">
+              FINANCIAL TRANSPARENCY
             </span>
-            <h2 className="section-title text-3xl md:text-4xl font-bold text-[#2C3E2B] mb-3">
+            <div className="w-16 h-0.5 bg-[#667A62] mx-auto"></div>
+            <h2 className="font-serif text-3xl md:text-4xl text-[#2C3E2B] mt-4 mb-3">
               How Your Donations Are Used
             </h2>
-            <div className="w-16 h-0.5 bg-[#667A62] mx-auto mb-4"></div>
-            <p className="text-[#4A5C46] max-w-2xl mx-auto text-sm">
+            <p className="text-[#4A5C46] text-sm max-w-2xl mx-auto">
               Every rupee is accounted for and directed towards maximum social impact
             </p>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div data-aos="fade-right">
-              <div className="bg-white rounded-2xl p-6 shadow-lg">
-                <h3 className="text-xl font-bold text-[#2C3E2B] mb-4 flex items-center gap-2">
+              <div className="bg-white p-6 border border-[#EAF6E3]">
+                <h3 className="font-serif text-xl font-bold text-[#2C3E2B] mb-5 flex items-center gap-2">
                   <FiPieChart className="text-[#667A62]" /> Fund Allocation (2023-24)
                 </h3>
                 <div className="space-y-4">
                   {fundAllocation.map((item, index) => (
                     <div key={index}>
-                      <div className="flex justify-between text-sm mb-1">
+                      <div className="flex justify-between text-sm mb-1.5">
                         <span className="font-semibold text-[#2C3E2B]">{item.category}</span>
-                        <span className="text-gray-600">{item.percentage}% ({item.amount})</span>
+                        <span className="text-[#667A62] font-semibold">{item.percentage}%</span>
                       </div>
-                      <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="w-full h-2 bg-gray-100 overflow-hidden">
                         <div 
-                          className={`h-full ${item.color} rounded-full transition-all duration-1000`}
+                          className={`h-full ${item.color} transition-all duration-1000`}
                           style={{ width: `${item.percentage}%` }}
                         ></div>
                       </div>
@@ -498,12 +461,12 @@ const ComplianceGovernance = () => {
                   ))}
                 </div>
                 
-                <div className="mt-6 p-4 bg-[#EAF6E3] rounded-xl">
+                <div className="mt-6 p-4 bg-[#F7F9F5] border border-[#EAF6E3]">
                   <div className="flex items-center gap-2 mb-2">
-                    <FiHeart className="text-[#667A62]" />
+                    <FiHeart className="text-[#667A62] text-base" />
                     <span className="text-sm font-semibold text-[#2C3E2B]">Our Commitment</span>
                   </div>
-                  <p className="text-xs text-gray-600">
+                  <p className="text-xs text-gray-500">
                     75% of funds go directly to programs, ensuring maximum impact. We maintain 
                     minimal administrative costs through efficient operations and volunteer support.
                   </p>
@@ -512,26 +475,26 @@ const ComplianceGovernance = () => {
             </div>
             
             <div data-aos="fade-left">
-              <div className="bg-white rounded-2xl p-6 shadow-lg">
-                <h3 className="text-xl font-bold text-[#2C3E2B] mb-4 flex items-center gap-2">
+              <div className="bg-white p-6 border border-[#EAF6E3]">
+                <h3 className="font-serif text-xl font-bold text-[#2C3E2B] mb-5 flex items-center gap-2">
                   <FiBarChart2 className="text-[#667A62]" /> Impact Metrics (2023-24)
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-3 bg-[#EAF6E3] rounded-xl">
+                  <div className="text-center p-4 bg-[#F7F9F5] border border-[#EAF6E3]">
                     <div className="text-2xl font-bold text-[#667A62]">10,000+</div>
-                    <div className="text-xs text-gray-600">Lives Impacted</div>
+                    <div className="text-xs text-gray-500 mt-1">Lives Impacted</div>
                   </div>
-                  <div className="text-center p-3 bg-[#EAF6E3] rounded-xl">
+                  <div className="text-center p-4 bg-[#F7F9F5] border border-[#EAF6E3]">
                     <div className="text-2xl font-bold text-[#667A62]">50+</div>
-                    <div className="text-xs text-gray-600">Projects Completed</div>
+                    <div className="text-xs text-gray-500 mt-1">Projects Completed</div>
                   </div>
-                  <div className="text-center p-3 bg-[#EAF6E3] rounded-xl">
+                  <div className="text-center p-4 bg-[#F7F9F5] border border-[#EAF6E3]">
                     <div className="text-2xl font-bold text-[#667A62]">25+</div>
-                    <div className="text-xs text-gray-600">Partner Organizations</div>
+                    <div className="text-xs text-gray-500 mt-1">Partner Organizations</div>
                   </div>
-                  <div className="text-center p-3 bg-[#EAF6E3] rounded-xl">
+                  <div className="text-center p-4 bg-[#F7F9F5] border border-[#EAF6E3]">
                     <div className="text-2xl font-bold text-[#667A62]">500+</div>
-                    <div className="text-xs text-gray-600">Active Volunteers</div>
+                    <div className="text-xs text-gray-500 mt-1">Active Volunteers</div>
                   </div>
                 </div>
               </div>
@@ -540,18 +503,18 @@ const ComplianceGovernance = () => {
         </div>
       </section>
 
-      {/* Compliance Highlights Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 max-w-7xl">
+      {/* --- COMPLIANCE HIGHLIGHTS SECTION --- */}
+      <section className="py-24 bg-[#F7F9F5]">
+        <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-12" data-aos="fade-up">
-            <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-wider text-[#667A62] uppercase bg-[#EAF6E3] rounded-full">
-              Our Standards
+            <span className="text-xs tracking-[5px] text-[#667A62] font-semibold mb-3 inline-block">
+              OUR STANDARDS
             </span>
-            <h2 className="section-title text-3xl md:text-4xl font-bold text-[#2C3E2B] mb-3">
+            <div className="w-16 h-0.5 bg-[#667A62] mx-auto"></div>
+            <h2 className="font-serif text-3xl md:text-4xl text-[#2C3E2B] mt-4 mb-3">
               Compliance Highlights
             </h2>
-            <div className="w-16 h-0.5 bg-[#667A62] mx-auto mb-4"></div>
-            <p className="text-[#4A5C46] max-w-2xl mx-auto text-sm">
+            <p className="text-[#4A5C46] text-sm max-w-2xl mx-auto">
               We maintain the highest standards of legal and regulatory compliance
             </p>
           </div>
@@ -560,16 +523,16 @@ const ComplianceGovernance = () => {
             {complianceHighlights.map((item, index) => (
               <div 
                 key={index}
-                className="bg-[#EAF6E3] rounded-2xl p-6 shadow-lg card-hover"
+                className="bg-white p-5 border border-[#EAF6E3] card-hover"
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
               >
-                <h3 className="font-bold text-[#2C3E2B] text-lg mb-4 flex items-center gap-2">
-                  <FiShield className="text-[#667A62]" /> {item.title}
+                <h3 className="font-serif font-bold text-[#2C3E2B] text-base mb-3 flex items-center gap-2">
+                  <FiShield className="text-[#667A62]" size={14} /> {item.title}
                 </h3>
                 <ul className="space-y-2">
                   {item.items.map((listItem, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-sm text-gray-600">
+                    <li key={idx} className="flex items-start gap-2 text-xs text-gray-600">
                       <FiCheckCircle className="text-[#667A62] text-xs mt-0.5 flex-shrink-0" />
                       <span>{listItem}</span>
                     </li>
@@ -581,165 +544,76 @@ const ComplianceGovernance = () => {
         </div>
       </section>
 
-      {/* Certificates Section - View Only */}
-      <section className="py-20 bg-[#EAF6E3]">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="text-center mb-12" data-aos="fade-up">
-            <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-wider text-[#667A62] uppercase bg-white rounded-full">
-              Legal Documents
-            </span>
-            <h2 className="section-title text-3xl md:text-4xl font-bold text-[#2C3E2B] mb-3">
-              Statutory Certificates
-            </h2>
-            <div className="w-16 h-0.5 bg-[#667A62] mx-auto mb-4"></div>
-            <p className="text-[#4A5C46] max-w-2xl mx-auto text-sm">
-              View our official certificates and registration documents
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {certificatesData.slice(0, 6).map((cert, index) => (
-              <div 
-                key={index}
-                className="bg-white rounded-xl p-6 shadow-lg card-hover"
-                data-aos="zoom-in"
-                data-aos-delay={index * 100}
+      {/* --- CTA SECTION --- */}
+      <section className="py-20">
+        <div className="container mx-auto px-6">
+          <div className="bg-[#6F8770] px-8 md:px-12 py-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+            <div className="text-center lg:text-left">
+              <h2 className="font-serif text-white text-2xl md:text-3xl leading-snug mb-3">
+                Need More Information?
+              </h2>
+              <p className="text-white/80 text-sm md:text-base">
+                For any queries regarding our compliance or governance framework, please contact our compliance officer.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap justify-center lg:justify-end gap-3">
+              <Link 
+                to="/contact"
+                className="group flex items-center gap-2 px-5 py-2.5 bg-white text-[#2C3E2B] font-semibold text-sm rounded-md hover:bg-[#667A62] hover:text-white transition-all duration-300 shadow-md"
               >
-                <div className="flex items-start gap-4">
-                  <div className="text-[#667A62] text-3xl">
-                    <FaRegFilePdf />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-[#2C3E2B] mb-2">{cert.title}</h3>
-                    <p className="text-gray-600 text-sm mb-3">{cert.description}</p>
-                    <button 
-                      onClick={() => handlePreview(cert)}
-                      className="bg-[#667A62] text-white px-4 py-2 rounded-lg hover:bg-[#4A5C46] transition-all flex items-center gap-2 text-sm font-semibold"
-                    >
-                      <FiEye size={16} /> View Certificate
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          <div className="text-center mt-8">
-            <Link to="/certificates">
-              <button className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#667A62] text-white font-semibold rounded-full hover:bg-[#4A5C46] transition-all">
-                View All Certificates <FiArrowRight />
-              </button>
-            </Link>
+                Contact Compliance Officer 
+                <FiArrowRight className="group-hover:translate-x-1 transition-transform" size={14} />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Annual Reports Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="text-center mb-12" data-aos="fade-up">
-            <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-wider text-[#667A62] uppercase bg-[#EAF6E3] rounded-full">
-              Annual Disclosures
-            </span>
-            <h2 className="section-title text-3xl md:text-4xl font-bold text-[#2C3E2B] mb-3">
-              Annual Reports
-            </h2>
-            <div className="w-16 h-0.5 bg-[#667A62] mx-auto mb-4"></div>
-            <p className="text-[#4A5C46] max-w-2xl mx-auto text-sm">
-              Download our annual reports for detailed insights into our work and finances
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {annualReports.map((report, index) => (
-              <div 
-                key={index}
-                className="bg-[#EAF6E3] rounded-xl p-6 text-center card-hover"
-                data-aos="fade-up"
-                data-aos-delay={index * 100}
-              >
-                <FaFileInvoice className="text-4xl text-[#667A62] mx-auto mb-3" />
-                <h3 className="font-semibold text-[#2C3E2B] text-sm mb-1">{report.title}</h3>
-                <p className="text-xs text-gray-500 mb-3">{report.size}</p>
-                <button className="bg-[#667A62] text-white px-4 py-2 rounded-lg hover:bg-[#4A5C46] transition-all text-sm font-semibold w-full">
-                  <FiEye className="inline mr-1" size={14} /> View Report
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-[#2C3E2B] to-[#3A4E39] relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1920&q=80')] bg-cover bg-center mix-blend-overlay opacity-20"></div>
-        <div className="container mx-auto px-4 max-w-5xl text-center relative z-10">
-          <div data-aos="zoom-in">
-            <FaShieldAlt className="text-5xl text-[#667A62] mx-auto mb-4 floating-element" />
-            <h2 className="section-title text-3xl md:text-4xl font-bold text-white mb-3">
-              Need More Information?
-            </h2>
-            <div className="w-16 h-0.5 bg-[#667A62] mx-auto mb-4"></div>
-            <p className="text-[#EAF6E3] text-base mb-6 max-w-2xl mx-auto">
-              For any queries regarding our compliance or governance framework, please contact our compliance officer.
-            </p>
-            <Link to="/contact">
-              <button className="inline-flex items-center gap-2 px-8 py-3 bg-[#667A62] text-white font-semibold rounded-full hover:bg-white hover:text-[#2C3E2B] transition-all btn-glow">
-                Contact Compliance Officer <FiArrowRight />
-              </button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Certificate Preview Modal */}
+      {/* --- CERTIFICATE PREVIEW MODAL --- */}
       {showModal && selectedCert && (
         <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content bg-white rounded-2xl max-w-md w-full mx-4 overflow-hidden" onClick={(e) => e.stopPropagation()}>
-            <div className="bg-gradient-to-r from-[#667A62] to-[#4A5C46] p-5 text-white">
-              <div className="flex items-center gap-3">
-                <FaRegFilePdf className="text-2xl" />
+          <div className="modal-content bg-white max-w-md w-full mx-4 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-[#2C3E2B] p-4 text-white">
+              <div className="flex items-center gap-2">
+                <FaRegFilePdf className="text-lg" />
                 <div>
-                  <h3 className="text-lg font-bold">{selectedCert.title}</h3>
-                  <p className="text-xs opacity-90">{selectedCert.description}</p>
+                  <h3 className="font-serif text-sm font-bold">{selectedCert.title}</h3>
+                  <p className="text-[9px] text-white/70">{selectedCert.description}</p>
                 </div>
               </div>
-              <button onClick={closeModal} className="absolute top-4 right-4 w-7 h-7 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition">
-                <FiX size={16} />
+              <button onClick={closeModal} className="absolute top-3 right-3 w-6 h-6 bg-white/10 flex items-center justify-center hover:bg-white/20 transition">
+                <FiX size={12} />
               </button>
             </div>
             <div className="p-5">
-              <div className="space-y-3 mb-5">
-                <div className="flex justify-between text-sm">
+              <div className="space-y-2 mb-4">
+                <div className="flex justify-between text-xs">
                   <span className="text-gray-500">Document Type:</span>
-                  <span className="text-[#2C3E2B] font-semibold">{selectedCert.category}</span>
+                  <span className="text-[#2C3E2B] font-semibold text-[10px]">{selectedCert.category}</span>
                 </div>
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-xs">
                   <span className="text-gray-500">Date of Issue:</span>
-                  <span className="text-[#2C3E2B] font-semibold">{selectedCert.date}</span>
+                  <span className="text-[#2C3E2B] font-semibold text-[10px]">{selectedCert.date}</span>
                 </div>
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-xs">
                   <span className="text-gray-500">File Size:</span>
-                  <span className="text-[#2C3E2B] font-semibold">{selectedCert.size}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Format:</span>
-                  <span className="text-[#2C3E2B] font-semibold">PDF Document</span>
+                  <span className="text-[#2C3E2B] font-semibold text-[10px]">{selectedCert.size}</span>
                 </div>
               </div>
-              <div className="bg-[#EAF6E3] p-4 rounded-xl mb-5">
+              <div className="bg-[#F7F9F5] p-3 mb-4 border border-[#EAF6E3]">
                 <img 
                   src={selectedCert.imageUrl}
                   alt={selectedCert.title}
-                  className="w-full h-auto rounded-lg mb-3"
+                  className="w-full h-auto mb-2"
                 />
-                <p className="text-xs text-[#4A5C46] text-center">
+                <p className="text-[8px] text-[#4A5C46] text-center">
                   This is an official document issued by the competent authority.
                 </p>
               </div>
               <button 
                 onClick={closeModal}
-                className="w-full py-2.5 bg-[#667A62] text-white font-semibold rounded-lg hover:bg-[#4A5C46] transition"
+                className="w-full py-2 bg-[#667A62] text-white text-xs font-semibold hover:bg-[#4A5C46] transition"
               >
                 Close
               </button>

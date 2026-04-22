@@ -12,10 +12,10 @@ import 'aos/dist/aos.css';
 const KnowledgeHub = () => {
   useEffect(() => {
     AOS.init({
-      duration: 1000,
-      once: false,
-      offset: 120,
-      easing: 'ease-in-out',
+      duration: 1200,
+      once: true,
+      offset: 100,
+      easing: 'ease-out-back',
     });
   }, []);
 
@@ -162,12 +162,7 @@ const KnowledgeHub = () => {
     ]
   };
 
-  const stats = [
-    { number: "50+", label: "Reports Published", icon: <FiFileText />, delay: 100 },
-    { number: "10K+", label: "Downloads", icon: <FiDownload />, delay: 200 },
-    { number: "100%", label: "Transparency", icon: <FiCheckCircle />, delay: 300 },
-    { number: "25+", label: "Research Papers", icon: <FiBookOpen />, delay: 400 },
-  ];
+
 
   const currentData = knowledgeHubData[activeTab] || [];
   const filteredData = currentData.filter(item => 
@@ -187,94 +182,34 @@ const KnowledgeHub = () => {
   };
 
   return (
-    <div className="pt-24 overflow-x-hidden">
+    <div className="bg-[#FCFDFB] overflow-x-hidden selection:bg-[#667A62] selection:text-white">
       <style>
         {`
-          @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap');
           
-          * { font-family: 'Mulish', sans-serif; }
-          
-          h1, h2, h3, h4, .heading-font { font-family: 'Cormorant Garamond', serif; }
-          
-          .banner-title { font-family: 'Cormorant Garamond', serif; font-weight: 700; letter-spacing: -0.02em; }
-          .section-title { font-family: 'Cormorant Garamond', serif; font-weight: 700; letter-spacing: -0.01em; }
-          
-          .knowledge-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(44, 62, 43, 0.85) 0%, rgba(44, 62, 43, 0.7) 50%, rgba(44, 62, 43, 0.85) 100%);
+          .font-serif { font-family: 'Cormorant Garamond', serif; }
+          .font-sans { font-family: 'Mulish', sans-serif; }
+
+          .premium-gradient-text {
+            background: linear-gradient(to right, #2C3E2B, #667A62, #8A9A87);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
           }
-          
-          .knowledge-bg {
-            position: absolute;
-            inset: 0;
-            background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            animation: zoomIn 20s ease-out infinite alternate;
-          }
-          
-          @keyframes zoomIn {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
-          }
-          
-          .banner-content { animation: fadeInUp 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards; }
-          
-          @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-          
-          .tab-button {
-            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            position: relative;
-            overflow: hidden;
-          }
-          
-          .tab-button::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0%;
-            height: 2px;
-            background: #667A62;
-            transition: width 0.3s ease;
-          }
-          
-          .tab-button.active::before {
-            width: 100%;
-          }
-          
+
           .knowledge-card {
             transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             position: relative;
             overflow: hidden;
-          }
-          
-          .knowledge-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(102, 122, 98, 0.05), transparent);
-            transition: left 0.6s ease;
-          }
-          
-          .knowledge-card:hover::before {
-            left: 100%;
+            border: 1px solid #EAF6E3;
           }
           
           .knowledge-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-6px);
             box-shadow: 0 20px 40px rgba(44, 62, 43, 0.12);
           }
           
           .stat-card {
-            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: all 0.4s ease;
           }
           
           .stat-card:hover {
@@ -289,37 +224,60 @@ const KnowledgeHub = () => {
             transform: scale(1.1) rotate(5deg);
           }
           
-          .btn-premium {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s ease;
+          .tab-button {
+            transition: all 0.3s ease;
           }
           
-          .btn-premium::before {
+          .tab-button.active {
+            background: #667A62;
+            color: white;
+          }
+          
+          .tab-button:hover:not(.active) {
+            background: #EAF6E3;
+          }
+          
+          .stagger-border {
+            position: relative;
+          }
+          .stagger-border::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
+            top: 20px;
+            left: 20px;
+            right: -20px;
+            bottom: -20px;
+            border: 2px solid #667A62;
+            z-index: -1;
+            transition: all 0.5s ease;
           }
+          .stagger-border:hover::after {
+            top: 10px;
+            left: 10px;
+            right: -10px;
+            bottom: -10px;
+          }
+
+          @keyframes subtle-zoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+          }
+          .animate-zoom { animation: subtle-zoom 20s infinite alternate linear; }
           
-          .btn-premium:hover::before { left: 100%; }
-          
-          .floating-element { animation: float 6s ease-in-out infinite; }
+          .floating-element {
+            animation: float 6s ease-in-out infinite;
+          }
           
           @keyframes float {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-15px); }
           }
           
           .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(8px);
             z-index: 1000;
             display: flex;
             align-items: center;
@@ -333,12 +291,14 @@ const KnowledgeHub = () => {
           }
           
           .modal-content {
-            animation: slideUp 0.3s ease;
+            animation: scaleUp 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
           }
           
-          @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+          @keyframes scaleUp {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
           }
           
           .search-input {
@@ -352,34 +312,46 @@ const KnowledgeHub = () => {
             box-shadow: 0 0 0 3px rgba(102, 122, 98, 0.1);
           }
           
-          @media (max-width: 768px) {
-            .banner-title { font-size: 2.5rem !important; }
+          .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+          
+          .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
           }
         `}
       </style>
 
-      {/* Premium Banner Section */}
-      <section className="relative h-[50vh] min-h-[450px] w-full overflow-hidden">
-        <div className="knowledge-bg" />
-        <div className="knowledge-overlay" />
-        
-        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
-          <div className="max-w-5xl banner-content">
-            <span className="inline-block px-6 py-2 mb-5 text-sm font-bold tracking-wider text-white uppercase bg-[#667A62] rounded-full shadow-lg">
-              Knowledge Hub
+      {/* --- HERO SECTION --- */}
+      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2070" 
+            className="w-full h-full object-cover animate-zoom" 
+            alt="Knowledge Hub Hero"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1a2619]/90 via-[#2C3E2B]/70 to-[#FCFDFB]" />
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10 text-center">
+          <div data-aos="fade-down">
+            <span className="inline-block px-6 py-1.5 mb-5 text-[10px] font-bold tracking-[0.3em] text-white uppercase border border-white/30 rounded-full backdrop-blur-sm">
+              KNOWLEDGE HUB
             </span>
-            <h1 className="banner-title text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
-              Insights & Resources
-            </h1>
-            <div className="flex justify-center gap-2 mb-5">
-              <div className="w-12 h-0.5 bg-[#667A62]"></div>
-              <div className="w-6 h-0.5 bg-[#667A62]"></div>
-              <div className="w-3 h-0.5 bg-[#667A62]"></div>
-            </div>
-            <p className="text-white/95 text-lg md:text-xl max-w-3xl mx-auto">
-              Explore articles, reports, and resources focused on social impact, CSR trends, and community development.
-            </p>
           </div>
+          <h1 className="text-white text-3xl md:text-4xl lg:text-5xl mb-4 font-serif" data-aos="fade-up" data-aos-delay="200">
+            Insights & Resources
+          </h1>
+          <p className="text-white/80 font-sans text-base max-w-2xl mx-auto mb-6 font-light tracking-wide" data-aos="fade-up" data-aos-delay="400">
+            Explore articles, reports, and resources focused on social impact, CSR trends, and community development.
+            Access our latest research and impact documentation.
+          </p>
         </div>
         
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
@@ -389,59 +361,54 @@ const KnowledgeHub = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-[#2C3E2B]">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stats.map((stat, index) => (
-              <div key={index} className="stat-card text-center" data-aos="zoom-in" data-aos-delay={stat.delay}>
-                <div className="stat-icon text-4xl text-[#667A62] mb-3 flex justify-center">
-                  {stat.icon}
-                </div>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-1">
-                  {stat.number}
-                </div>
-                <div className="text-sm text-[#EAF6E3] font-semibold">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+    
 
-      {/* Main Content */}
-      <section className="py-20 bg-gradient-to-b from-white to-[#EAF6E3]">
-        <div className="container mx-auto px-4 max-w-7xl">
+      {/* --- MAIN CONTENT SECTION --- */}
+      <section className="py-24 bg-[#F7F9F5]">
+        <div className="container mx-auto px-6 max-w-7xl">
+          {/* Section Header */}
+          <div className="text-center mb-12" data-aos="fade-up">
+            <span className="text-xs tracking-[5px] text-[#667A62] font-semibold mb-3 inline-block">
+              RESOURCE LIBRARY
+            </span>
+            <div className="w-16 h-0.5 bg-[#667A62] mx-auto"></div>
+            <h2 className="font-serif text-3xl md:text-4xl text-[#2C3E2B] mt-4 mb-3">
+              Explore Our Resources
+            </h2>
+            <p className="text-[#4A5C46] text-sm max-w-2xl mx-auto">
+              Access reports, research papers, case studies, and impact stories
+            </p>
+          </div>
+
           {/* Search Bar */}
-          <div className="max-w-md mx-auto mb-12" data-aos="fade-up">
+          <div className="max-w-md mx-auto mb-10" data-aos="fade-up">
             <div className="relative">
-              <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#667A62]" />
+              <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#667A62] text-sm" />
               <input
                 type="text"
                 placeholder="Search resources..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="search-input w-full pl-11 pr-4 py-3 rounded-xl bg-white shadow-md focus:shadow-lg transition-all"
+                className="search-input w-full pl-9 pr-3 py-2 bg-white text-sm"
               />
             </div>
           </div>
 
           {/* Tabs */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12" data-aos="fade-up">
+          <div className="flex flex-wrap justify-center gap-2 mb-12" data-aos="fade-up">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`tab-button flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-all duration-300 ${
+                className={`tab-button flex items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${
                   activeTab === tab.id
-                    ? 'bg-[#667A62] text-white shadow-lg'
-                    : 'bg-white text-[#2C3E2B] hover:bg-[#EAF6E3] shadow-sm'
+                    ? 'active bg-[#667A62] text-white'
+                    : 'bg-white text-[#4A5C46] hover:bg-[#EAF6E3]'
                 }`}
               >
-                <span className="text-lg">{tab.icon}</span>
+                <span className="text-sm">{tab.icon}</span>
                 {tab.label}
-                <span className={`text-xs px-2 py-0.5 rounded-full ${
+                <span className={`text-[9px] px-1.5 py-0.5 rounded-full ${
                   activeTab === tab.id ? 'bg-white/20 text-white' : 'bg-[#EAF6E3] text-[#667A62]'
                 }`}>
                   {tab.count}
@@ -452,102 +419,98 @@ const KnowledgeHub = () => {
 
           {/* Content Grid */}
           {filteredData.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredData.map((item, index) => (
                 <div 
                   key={index} 
-                  className="knowledge-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                  className="knowledge-card bg-white p-5"
                   data-aos="fade-up"
-                  data-aos-delay={index * 100}
+                  data-aos-delay={(index % 6) * 100}
                 >
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-12 h-12 rounded-xl bg-[#EAF6E3] flex items-center justify-center">
-                        <div className="text-2xl text-[#667A62]">{item.icon}</div>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-xs font-semibold text-[#667A62] bg-[#EAF6E3] px-2 py-1 rounded-full">
-                          {item.category}
-                        </span>
-                      </div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="w-10 h-10 bg-[#EAF6E3] flex items-center justify-center">
+                      <div className="text-xl text-[#667A62]">{item.icon}</div>
                     </div>
-                    
-                    <h3 className="text-xl font-bold text-[#2C3E2B] mb-2 line-clamp-2">
-                      {item.title}
-                    </h3>
-                    
-                    <p className="text-[#4A5C46] text-sm leading-relaxed mb-4 line-clamp-3">
-                      {item.description}
-                    </p>
-                    
-                    <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-                      <div className="flex items-center gap-2">
-                        <FiCalendar size={12} />
-                        <span>{item.date}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <FiFileText size={12} />
-                        <span>{item.pages} pages</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <FiDownload size={12} />
-                        <span>{item.downloads}+</span>
-                      </div>
+                    <span className="text-[9px] font-semibold text-[#667A62] bg-[#EAF6E3] px-2 py-0.5 uppercase tracking-wider">
+                      {item.category}
+                    </span>
+                  </div>
+                  
+                  <h3 className="font-serif font-bold text-[#2C3E2B] text-base mb-2 line-clamp-2">
+                    {item.title}
+                  </h3>
+                  
+                  <p className="text-[#4A5C46] text-xs leading-relaxed mb-3 line-clamp-3">
+                    {item.description}
+                  </p>
+                  
+                  <div className="flex items-center justify-between text-[10px] text-gray-400 mb-4">
+                    <div className="flex items-center gap-2">
+                      <FiCalendar size={10} />
+                      <span>{item.date}</span>
                     </div>
-                    
-                    <div className="flex justify-between items-center pt-4 border-t border-[#EAF6E3]">
-                      <button 
-                        onClick={() => handlePreview(item)}
-                        className="flex items-center gap-2 text-[#667A62] font-semibold text-sm hover:gap-3 transition-all group"
-                      >
-                        <FiEye size={14} /> Preview
-                      </button>
-                      <button className="flex items-center gap-2 text-[#667A62] font-semibold text-sm hover:gap-3 transition-all group">
-                        <FiDownload size={14} /> Download ({item.size})
-                      </button>
+                    <div className="flex items-center gap-2">
+                      <FiFileText size={10} />
+                      <span>{item.pages} pages</span>
                     </div>
+                    <div className="flex items-center gap-2">
+                      <FiDownload size={10} />
+                      <span>{item.downloads}+</span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-between items-center pt-3 border-t border-[#EAF6E3]">
+                    <button 
+                      onClick={() => handlePreview(item)}
+                      className="flex items-center gap-1 text-[#667A62] font-semibold text-[10px] hover:gap-2 transition-all group"
+                    >
+                      <FiEye size={10} /> Preview
+                    </button>
+                    <button className="flex items-center gap-1 text-[#667A62] font-semibold text-[10px] hover:gap-2 transition-all group">
+                      <FiDownload size={10} /> Download ({item.size})
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
             <div className="text-center py-12" data-aos="fade-up">
-              <div className="text-6xl text-[#667A62] mb-4">📚</div>
-              <h3 className="text-xl font-bold text-[#2C3E2B] mb-2">No Resources Found</h3>
-              <p className="text-[#4A5C46]">Try adjusting your search term</p>
+              <div className="text-5xl text-[#667A62] mb-3">📚</div>
+              <h3 className="font-serif text-xl text-[#2C3E2B] mb-1">No Resources Found</h3>
+              <p className="text-[#4A5C46] text-xs">Try adjusting your search term</p>
             </div>
           )}
         </div>
       </section>
 
-      {/* Featured Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="bg-gradient-to-r from-[#EAF6E3] to-white rounded-2xl p-8 shadow-lg" data-aos="fade-up">
+      {/* --- FEATURED SECTION --- */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="bg-[#F7F9F5] p-8 border border-[#EAF6E3]" data-aos="fade-up">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
-                <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-wider text-[#667A62] uppercase bg-white rounded-full">
+                <span className="inline-block px-3 py-1 mb-4 text-[9px] font-bold tracking-[0.2em] text-[#667A62] uppercase bg-white">
                   Featured Resource
                 </span>
-                <h3 className="section-title text-2xl md:text-3xl font-bold text-[#2C3E2B] mb-3">
+                <h3 className="font-serif text-2xl md:text-3xl font-bold text-[#2C3E2B] mb-3">
                   Annual CSR Impact Report 2024
                 </h3>
-                <p className="text-[#4A5C46] text-sm mb-4">
+                <p className="text-[#4A5C46] text-sm mb-4 leading-relaxed">
                   Our most comprehensive report yet, featuring detailed impact metrics, success stories, 
                   and future roadmap for sustainable development.
                 </p>
-                <div className="flex items-center gap-4 text-sm text-[#4A5C46] mb-6">
+                <div className="flex items-center gap-4 text-xs text-[#4A5C46] mb-5">
                   <span>📄 45 pages</span>
                   <span>📥 1,250+ downloads</span>
                   <span>⭐ 4.8/5 rating</span>
                 </div>
-                <button className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#667A62] text-white font-semibold rounded-full hover:bg-[#4A5C46] transition-all">
-                  Download Now <FiDownload size={14} />
+                <button className="inline-flex items-center gap-2 px-5 py-2 bg-[#667A62] text-white font-semibold text-sm hover:bg-[#4A5C46] transition-all">
+                  Download Now <FiDownload size={12} />
                 </button>
               </div>
               <div className="text-center">
-                <div className="w-32 h-32 mx-auto bg-[#667A62]/10 rounded-full flex items-center justify-center floating-element">
-                  <FaFilePdf className="text-5xl text-[#667A62]" />
+                <div className="w-28 h-28 mx-auto bg-[#667A62]/10 flex items-center justify-center floating-element">
+                  <FaFilePdf className="text-4xl text-[#667A62]" />
                 </div>
               </div>
             </div>
@@ -555,77 +518,80 @@ const KnowledgeHub = () => {
         </div>
       </section>
 
-      {/* Preview Modal */}
-      {showModal && selectedItem && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content bg-white rounded-2xl max-w-lg w-full mx-4 overflow-hidden" onClick={(e) => e.stopPropagation()}>
-            <div className="bg-gradient-to-r from-[#667A62] to-[#4A5C46] p-6 text-white">
-              <div className="flex items-center gap-3">
-                <div className="text-3xl">{selectedItem.icon}</div>
-                <div>
-                  <h3 className="text-xl font-bold">{selectedItem.title}</h3>
-                  <p className="text-sm opacity-90">{selectedItem.category}</p>
-                </div>
-              </div>
-              <button onClick={closeModal} className="absolute top-4 right-4 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition">
-                ✕
-              </button>
+      {/* --- CTA SECTION --- */}
+      <section className="py-20">
+        <div className="container mx-auto px-6">
+          <div className="bg-[#6F8770] px-8 md:px-12 py-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+            <div className="text-center lg:text-left">
+              <h2 className="font-serif text-white text-2xl md:text-3xl leading-snug mb-3">
+                Subscribe to Our Newsletter
+              </h2>
+              <p className="text-white/80 text-sm md:text-base">
+                Get the latest reports, research papers, and impact stories delivered to your inbox.
+              </p>
             </div>
-            <div className="p-6">
-              <div className="space-y-4">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Published:</span>
-                  <span className="text-[#2C3E2B] font-semibold">{selectedItem.date}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Pages:</span>
-                  <span className="text-[#2C3E2B] font-semibold">{selectedItem.pages}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">File Size:</span>
-                  <span className="text-[#2C3E2B] font-semibold">{selectedItem.size}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Downloads:</span>
-                  <span className="text-[#2C3E2B] font-semibold">{selectedItem.downloads}+</span>
-                </div>
-                <div className="pt-4">
-                  <p className="text-[#4A5C46] text-sm leading-relaxed">{selectedItem.description}</p>
-                </div>
-              </div>
-              <button className="w-full mt-6 py-3 bg-[#667A62] text-white font-semibold rounded-full hover:bg-[#4A5C46] transition-all flex items-center justify-center gap-2">
-                <FiDownload /> Download Full Report ({selectedItem.size})
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
-      {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-[#2C3E2B] to-[#3A4E39] relative overflow-hidden">
-        <div className="container mx-auto px-4 max-w-5xl text-center relative z-10">
-          <div data-aos="zoom-in" data-aos-duration="1000">
-            <FiBookOpen className="text-5xl text-[#667A62] mx-auto mb-4 floating-element" />
-            <h2 className="section-title text-3xl md:text-4xl font-bold text-white mb-3">
-              Subscribe to Our Newsletter
-            </h2>
-            <div className="w-16 h-0.5 bg-[#667A62] mx-auto mb-4"></div>
-            <p className="text-[#EAF6E3] text-base mb-6 max-w-2xl mx-auto">
-              Get the latest reports, research papers, and impact stories delivered to your inbox.
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <button className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#667A62] text-white font-semibold rounded-full hover:bg-white hover:text-[#2C3E2B] transition-all">
-                Subscribe Now <FiArrowRight />
+            <div className="flex flex-wrap justify-center lg:justify-end gap-3">
+              <button className="group flex items-center gap-2 px-5 py-2.5 bg-white text-[#2C3E2B] font-semibold text-sm rounded-md hover:bg-[#667A62] hover:text-white transition-all duration-300 shadow-md">
+                Subscribe Now 
+                <FiArrowRight className="group-hover:translate-x-1 transition-transform" size={14} />
               </button>
-              <Link to="/contact">
-                <button className="inline-flex items-center gap-2 px-6 py-2.5 border-2 border-[#667A62] text-white font-semibold rounded-full hover:bg-[#667A62] transition-all">
-                  Contact Us <FiArrowRight />
-                </button>
+              <Link 
+                to="/contact"
+                className="px-5 py-2.5 border border-white text-white font-semibold text-sm rounded-md hover:bg-white hover:text-[#2C3E2B] transition-all duration-300"
+              >
+                Contact Us
               </Link>
             </div>
           </div>
         </div>
       </section>
+
+      {/* --- PREVIEW MODAL --- */}
+      {showModal && selectedItem && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content bg-white max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-[#2C3E2B] p-5 text-white">
+              <div className="flex items-center gap-3">
+                <div className="text-2xl">{selectedItem.icon}</div>
+                <div>
+                  <h3 className="font-serif text-lg font-bold">{selectedItem.title}</h3>
+                  <p className="text-[10px] text-white/70">{selectedItem.category}</p>
+                </div>
+              </div>
+              <button onClick={closeModal} className="absolute top-4 right-4 w-7 h-7 bg-white/10 flex items-center justify-center hover:bg-white/20 transition">
+                ✕
+              </button>
+            </div>
+            <div className="p-5">
+              <div className="space-y-3">
+                <div className="flex justify-between text-xs">
+                  <span className="text-gray-500">Published:</span>
+                  <span className="text-[#2C3E2B] font-semibold">{selectedItem.date}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-gray-500">Pages:</span>
+                  <span className="text-[#2C3E2B] font-semibold">{selectedItem.pages}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-gray-500">File Size:</span>
+                  <span className="text-[#2C3E2B] font-semibold">{selectedItem.size}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-gray-500">Downloads:</span>
+                  <span className="text-[#2C3E2B] font-semibold">{selectedItem.downloads}+</span>
+                </div>
+                <div className="pt-3">
+                  <p className="text-[#4A5C46] text-xs leading-relaxed">{selectedItem.description}</p>
+                </div>
+              </div>
+              <button className="w-full mt-5 py-2.5 bg-[#667A62] text-white font-semibold text-sm hover:bg-[#4A5C46] transition-all flex items-center justify-center gap-2">
+                <FiDownload size={12} /> Download Full Report ({selectedItem.size})
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

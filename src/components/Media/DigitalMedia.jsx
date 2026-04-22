@@ -6,57 +6,147 @@ import {
   FiShare2, FiCalendar, FiEye, FiThumbsUp, FiLinkedin,
   FiTrendingUp, FiAward, FiGlobe, FiClock, FiCamera,
   FiFilm, FiGrid, FiDownload, FiExternalLink, FiBell,
-  FiStar, FiCheckCircle, FiBarChart2, FiSmile,FiUsers
+  FiStar, FiCheckCircle, FiBarChart2, FiSmile, FiUsers,
+  FiChevronLeft, FiChevronRight
 } from 'react-icons/fi';
-import { FaFacebookF, FaTwitter, FaLinkedinIn, FaYoutube, FaInstagram, FaTiktok } from 'react-icons/fa';
+import { FaFacebookF, FaTwitter, FaLinkedinIn, FaYoutube, FaInstagram } from 'react-icons/fa';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 const DigitalMedia = () => {
   useEffect(() => {
     AOS.init({
-      duration: 1000,
-      once: false,
-      offset: 120,
-      easing: 'ease-in-out',
+      duration: 1200,
+      once: true,
+      offset: 100,
+      easing: 'ease-out-back',
     });
   }, []);
 
   const [activeMedia, setActiveMedia] = useState('videos');
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [visibleItems, setVisibleItems] = useState(6);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  const videos = [
+  // Video Categories
+  const videoCategories = ['all', 'Impact Story', 'Education', 'Empowerment', 'Healthcare', 'Sustainability', 'Volunteer'];
+  
+  // Extended Videos Data with multiple items per category
+  const allVideos = [
+    // Impact Stories (5 videos)
     { id: 1, title: "MSRS Foundation - Transforming Lives", videoId: "dQw4w9WgXcQ", duration: "3:45", views: "15.2K", date: "March 2024", category: "Impact Story" },
-    { id: 2, title: "Education for All Initiative", videoId: "dQw4w9WgXcQ", duration: "2:30", views: "8.5K", date: "February 2024", category: "Education" },
-    { id: 3, title: "Women Empowerment Success Stories", videoId: "dQw4w9WgXcQ", duration: "4:15", views: "12.8K", date: "January 2024", category: "Empowerment" },
-    { id: 4, title: "Rural Healthcare Camp Highlights", videoId: "dQw4w9WgXcQ", duration: "3:20", views: "6.2K", date: "December 2023", category: "Healthcare" },
-    { id: 5, title: "Sustainable Agriculture Project", videoId: "dQw4w9WgXcQ", duration: "5:00", views: "4.8K", date: "November 2023", category: "Sustainability" },
-    { id: 6, title: "Volunteer Appreciation Day", videoId: "dQw4w9WgXcQ", duration: "2:45", views: "3.5K", date: "October 2023", category: "Volunteer" }
+    { id: 2, title: "Success Stories from Rural India", videoId: "dQw4w9WgXcQ", duration: "4:20", views: "12.1K", date: "February 2024", category: "Impact Story" },
+    { id: 3, title: "Changing Lives Through Education", videoId: "dQw4w9WgXcQ", duration: "5:10", views: "18.5K", date: "January 2024", category: "Impact Story" },
+    { id: 4, title: "Community Development Success", videoId: "dQw4w9WgXcQ", duration: "3:55", views: "9.8K", date: "December 2023", category: "Impact Story" },
+    { id: 5, title: "Annual Impact Report 2023", videoId: "dQw4w9WgXcQ", duration: "6:30", views: "22.3K", date: "November 2023", category: "Impact Story" },
+    // Education (5 videos)
+    { id: 6, title: "Education for All Initiative", videoId: "dQw4w9WgXcQ", duration: "2:30", views: "8.5K", date: "February 2024", category: "Education" },
+    { id: 7, title: "Digital Classroom Project", videoId: "dQw4w9WgXcQ", duration: "3:15", views: "6.2K", date: "January 2024", category: "Education" },
+    { id: 8, title: "Scholarship Distribution Drive", videoId: "dQw4w9WgXcQ", duration: "2:45", views: "5.1K", date: "December 2023", category: "Education" },
+    { id: 9, title: "Teacher Training Program", videoId: "dQw4w9WgXcQ", duration: "4:00", views: "4.8K", date: "November 2023", category: "Education" },
+    { id: 10, title: "School Infrastructure Development", videoId: "dQw4w9WgXcQ", duration: "3:30", views: "7.2K", date: "October 2023", category: "Education" },
+    // Empowerment (5 videos)
+    { id: 11, title: "Women Empowerment Success Stories", videoId: "dQw4w9WgXcQ", duration: "4:15", views: "12.8K", date: "January 2024", category: "Empowerment" },
+    { id: 12, title: "Skill Development Workshop", videoId: "dQw4w9WgXcQ", duration: "3:45", views: "9.3K", date: "December 2023", category: "Empowerment" },
+    { id: 13, title: "Women Entrepreneurship Program", videoId: "dQw4w9WgXcQ", duration: "5:20", views: "11.2K", date: "November 2023", category: "Empowerment" },
+    { id: 14, title: "Financial Literacy Campaign", videoId: "dQw4w9WgXcQ", duration: "2:50", views: "7.5K", date: "October 2023", category: "Empowerment" },
+    { id: 15, title: "Self-Help Group Success", videoId: "dQw4w9WgXcQ", duration: "4:10", views: "8.9K", date: "September 2023", category: "Empowerment" },
+    // Healthcare (5 videos)
+    { id: 16, title: "Rural Healthcare Camp Highlights", videoId: "dQw4w9WgXcQ", duration: "3:20", views: "6.2K", date: "December 2023", category: "Healthcare" },
+    { id: 17, title: "Mobile Medical Unit Launch", videoId: "dQw4w9WgXcQ", duration: "2:55", views: "5.8K", date: "November 2023", category: "Healthcare" },
+    { id: 18, title: "Health Awareness Campaign", videoId: "dQw4w9WgXcQ", duration: "4:30", views: "7.1K", date: "October 2023", category: "Healthcare" },
+    { id: 19, title: "Free Eye Checkup Camp", videoId: "dQw4w9WgXcQ", duration: "3:10", views: "4.5K", date: "September 2023", category: "Healthcare" },
+    { id: 20, title: "Vaccination Drive Success", videoId: "dQw4w9WgXcQ", duration: "2:40", views: "6.9K", date: "August 2023", category: "Healthcare" },
+    // Sustainability (4 videos)
+    { id: 21, title: "Sustainable Agriculture Project", videoId: "dQw4w9WgXcQ", duration: "5:00", views: "4.8K", date: "November 2023", category: "Sustainability" },
+    { id: 22, title: "Tree Plantation Drive", videoId: "dQw4w9WgXcQ", duration: "2:30", views: "3.9K", date: "October 2023", category: "Sustainability" },
+    { id: 23, title: "Water Conservation Initiative", videoId: "dQw4w9WgXcQ", duration: "3:45", views: "4.2K", date: "September 2023", category: "Sustainability" },
+    { id: 24, title: "Solar Energy Project", videoId: "dQw4w9WgXcQ", duration: "4:15", views: "5.1K", date: "August 2023", category: "Sustainability" },
+    // Volunteer (4 videos)
+    { id: 25, title: "Volunteer Appreciation Day", videoId: "dQw4w9WgXcQ", duration: "2:45", views: "3.5K", date: "October 2023", category: "Volunteer" },
+    { id: 26, title: "Volunteer Training Program", videoId: "dQw4w9WgXcQ", duration: "3:20", views: "2.8K", date: "September 2023", category: "Volunteer" },
+    { id: 27, title: "Community Outreach by Volunteers", videoId: "dQw4w9WgXcQ", duration: "4:00", views: "3.2K", date: "August 2023", category: "Volunteer" },
+    { id: 28, title: "Volunteer Impact Stories", videoId: "dQw4w9WgXcQ", duration: "3:35", views: "2.5K", date: "July 2023", category: "Volunteer" }
   ];
 
-  const photos = [
+  // Get videos based on selected category
+  const getFilteredVideos = () => {
+    if (activeCategory === 'all') return allVideos;
+    return allVideos.filter(video => video.category === activeCategory);
+  };
+
+  const filteredVideos = getFilteredVideos();
+  const displayedVideos = filteredVideos.slice(0, visibleItems);
+  const hasMore = visibleItems < filteredVideos.length;
+
+  const loadMore = () => {
+    setVisibleItems(prev => prev + 6);
+  };
+
+  const loadLess = () => {
+    setVisibleItems(6);
+  };
+
+  // Extended Photos Data with multiple categories
+  const photoCategories = ['all', 'Healthcare', 'Environment', 'Education', 'Skills', 'Rural', 'Women'];
+  
+  const allPhotos = [
+    // Healthcare (6 photos)
     { id: 1, title: "Rural Health Camp", category: "Healthcare", location: "Maharashtra", date: "March 2024", image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80" },
-    { id: 2, title: "Green Initiative", category: "Environment", location: "Telangana", date: "February 2024", image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=600&q=80" },
-    { id: 3, title: "Digital Classroom", category: "Education", location: "Karnataka", date: "January 2024", image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80" },
-    { id: 4, title: "Skill Workshop", category: "Skills", location: "Tamil Nadu", date: "December 2023", image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80" },
-    { id: 5, title: "Community Meeting", category: "Rural", location: "Andhra Pradesh", date: "November 2023", image: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=600&q=80" },
-    { id: 6, title: "Women Entrepreneurs", category: "Women", location: "Gujarat", date: "October 2023", image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=600&q=80" }
+    { id: 2, title: "Free Medical Checkup", category: "Healthcare", location: "Telangana", date: "February 2024", image: "https://images.unsplash.com/photo-1584515933487-779824d29309?w=600&q=80" },
+    { id: 3, title: "Eye Care Camp", category: "Healthcare", location: "Karnataka", date: "January 2024", image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=600&q=80" },
+    { id: 4, title: "Dental Health Drive", category: "Healthcare", location: "Tamil Nadu", date: "December 2023", image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=600&q=80" },
+    { id: 5, title: "Immunization Camp", category: "Healthcare", location: "Andhra Pradesh", date: "November 2023", image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80" },
+    { id: 6, title: "Health Awareness Session", category: "Healthcare", location: "Gujarat", date: "October 2023", image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80" },
+    // Environment (5 photos)
+    { id: 7, title: "Green Initiative", category: "Environment", location: "Telangana", date: "February 2024", image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=600&q=80" },
+    { id: 8, title: "Tree Plantation Drive", category: "Environment", location: "Kerala", date: "January 2024", image: "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=600&q=80" },
+    { id: 9, title: "Clean Water Project", category: "Environment", location: "Rajasthan", date: "December 2023", image: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=600&q=80" },
+    { id: 10, title: "Solar Panel Installation", category: "Environment", location: "Gujarat", date: "November 2023", image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=600&q=80" },
+    { id: 11, title: "Waste Management Workshop", category: "Environment", location: "Maharashtra", date: "October 2023", image: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=600&q=80" },
+    // Education (5 photos)
+    { id: 12, title: "Digital Classroom", category: "Education", location: "Karnataka", date: "January 2024", image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80" },
+    { id: 13, title: "Smart Learning Session", category: "Education", location: "Telangana", date: "December 2023", image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80" },
+    { id: 14, title: "Computer Lab Inauguration", category: "Education", location: "Andhra", date: "November 2023", image: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=600&q=80" },
+    { id: 15, title: "Scholarship Distribution", category: "Education", location: "Tamil Nadu", date: "October 2023", image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&q=80" },
+    { id: 16, title: "Library Setup", category: "Education", location: "Kerala", date: "September 2023", image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&q=80" },
+    // Skills (4 photos)
+    { id: 17, title: "Skill Workshop", category: "Skills", location: "Tamil Nadu", date: "December 2023", image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80" },
+    { id: 18, title: "Vocational Training", category: "Skills", location: "Karnataka", date: "November 2023", image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80" },
+    { id: 19, title: "Computer Training", category: "Skills", location: "Telangana", date: "October 2023", image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=80" },
+    { id: 20, title: "Tailoring Workshop", category: "Skills", location: "Maharashtra", date: "September 2023", image: "https://images.unsplash.com/photo-1548624313-9f12a3b4f4e6?w=600&q=80" },
+    // Rural (4 photos)
+    { id: 21, title: "Community Meeting", category: "Rural", location: "Andhra Pradesh", date: "November 2023", image: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=600&q=80" },
+    { id: 22, title: "Village Development", category: "Rural", location: "Rajasthan", date: "October 2023", image: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=600&q=80" },
+    { id: 23, title: "Farmers Meeting", category: "Rural", location: "Punjab", date: "September 2023", image: "https://images.unsplash.com/photo-1622383563227-04401ab4e5ea?w=600&q=80" },
+    { id: 24, title: "Rural Infrastructure", category: "Rural", location: "Madhya Pradesh", date: "August 2023", image: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=600&q=80" },
+    // Women (4 photos)
+    { id: 25, title: "Women Entrepreneurs", category: "Women", location: "Gujarat", date: "October 2023", image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=600&q=80" },
+    { id: 26, title: "Self-Help Group Meeting", category: "Women", location: "Telangana", date: "September 2023", image: "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=600&q=80" },
+    { id: 27, title: "Women Leadership Program", category: "Women", location: "Karnataka", date: "August 2023", image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&q=80" },
+    { id: 28, title: "Skill Training for Women", category: "Women", location: "Maharashtra", date: "July 2023", image: "https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?w=600&q=80" }
   ];
 
-  const socialFeeds = [
-    { platform: "Instagram", icon: <FaInstagram />, color: "#E4405F", content: "Amazing response at our health camp! Over 500 patients treated. #MSRSCares", likes: 1245, comments: 89, shares: 34, image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80" },
-    { platform: "Facebook", icon: <FaFacebookF />, color: "#1877F2", content: "Proud moment as we inaugurate our new learning center. Education changes lives!", likes: 876, comments: 45, shares: 23, image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80" },
-    { platform: "Twitter", icon: <FaTwitter />, color: "#1DA1F2", content: "Celebrating 5 years of impactful service! Thank you to all our supporters.", likes: 543, comments: 28, shares: 67, image: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=600&q=80" },
-    { platform: "LinkedIn", icon: <FaLinkedinIn />, color: "#0A66C2", content: "Our CSR partnership with leading corporations is creating sustainable impact.", likes: 432, comments: 34, shares: 56, image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&q=80" }
-  ];
+  const [photoCategory, setPhotoCategory] = useState('all');
+  const [visiblePhotos, setVisiblePhotos] = useState(6);
 
-  const stats = [
-    { number: "50+", label: "Videos", icon: <FiFilm />, delay: 100 },
-    { number: "500+", label: "Photos", icon: <FiCamera />, delay: 200 },
-    { number: "100K+", label: "Views", icon: <FiEye />, delay: 300 },
-    { number: "25K+", label: "Followers", icon: <FiUsers />, delay: 400 }
-  ];
+  const getFilteredPhotos = () => {
+    if (photoCategory === 'all') return allPhotos;
+    return allPhotos.filter(photo => photo.category === photoCategory);
+  };
+
+  const filteredPhotos = getFilteredPhotos();
+  const displayedPhotos = filteredPhotos.slice(0, visiblePhotos);
+  const hasMorePhotos = visiblePhotos < filteredPhotos.length;
+
+  const loadMorePhotos = () => {
+    setVisiblePhotos(prev => prev + 6);
+  };
+
+  const loadLessPhotos = () => {
+    setVisiblePhotos(6);
+  };
 
   const openPhotoModal = (photo) => {
     setSelectedPhoto(photo);
@@ -68,56 +158,46 @@ const DigitalMedia = () => {
     setSelectedPhoto(null);
   };
 
+ 
+  const socialFeeds = [
+    { platform: "Instagram", icon: <FaInstagram />, color: "#E4405F", content: "Amazing response at our health camp! Over 500 patients treated. #MSRSCares", likes: 1245, comments: 89, shares: 34, image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80" },
+    { platform: "Facebook", icon: <FaFacebookF />, color: "#1877F2", content: "Proud moment as we inaugurate our new learning center. Education changes lives!", likes: 876, comments: 45, shares: 23, image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80" },
+    { platform: "Twitter", icon: <FaTwitter />, color: "#1DA1F2", content: "Celebrating 5 years of impactful service! Thank you to all our supporters.", likes: 543, comments: 28, shares: 67, image: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=600&q=80" },
+    { platform: "LinkedIn", icon: <FaLinkedinIn />, color: "#0A66C2", content: "Our CSR partnership with leading corporations is creating sustainable impact.", likes: 432, comments: 34, shares: 56, image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&q=80" }
+  ];
+
+  // Get category count for display
+  const getCategoryCount = (category) => {
+    if (category === 'all') return allVideos.length;
+    return allVideos.filter(v => v.category === category).length;
+  };
+
+  const getPhotoCategoryCount = (category) => {
+    if (category === 'all') return allPhotos.length;
+    return allPhotos.filter(p => p.category === category).length;
+  };
+
   return (
-    <div className="pt-24 overflow-x-hidden">
+    <div className="bg-[#FCFDFB] overflow-x-hidden selection:bg-[#667A62] selection:text-white">
       <style>
         {`
-          @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap');
           
-          * { font-family: 'Mulish', sans-serif; }
-          
-          h1, h2, h3, h4, .heading-font { font-family: 'Cormorant Garamond', serif; }
-          
-          .banner-title { font-family: 'Cormorant Garamond', serif; font-weight: 700; letter-spacing: -0.02em; }
-          .section-title { font-family: 'Cormorant Garamond', serif; font-weight: 700; letter-spacing: -0.01em; }
-          
-          .media-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(44, 62, 43, 0.85) 0%, rgba(44, 62, 43, 0.7) 50%, rgba(44, 62, 43, 0.85) 100%);
-          }
-          
-          .media-bg {
-            position: absolute;
-            inset: 0;
-            background-image: url('https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            animation: zoomIn 20s ease-out infinite alternate;
-          }
-          
-          @keyframes zoomIn {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
-          }
-          
-          .banner-content { animation: fadeInUp 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards; }
-          
-          @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-          
+          .font-serif { font-family: 'Cormorant Garamond', serif; }
+          .font-sans { font-family: 'Mulish', sans-serif; }
+
           .video-card, .photo-card, .feed-card {
             transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border: 1px solid #EAF6E3;
           }
           
           .video-card:hover, .photo-card:hover, .feed-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(44, 62, 43, 0.12);
           }
           
           .stat-card {
-            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: all 0.4s ease;
           }
           
           .stat-card:hover {
@@ -129,7 +209,7 @@ const DigitalMedia = () => {
           }
           
           .stat-card:hover .stat-icon {
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(5deg);
           }
           
           .social-icon {
@@ -141,14 +221,53 @@ const DigitalMedia = () => {
           }
           
           .tab-button {
-            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: all 0.3s ease;
+          }
+          
+          .tab-button.active {
+            background: #667A62;
+            color: white;
+          }
+          
+          .tab-button:hover:not(.active) {
+            background: #EAF6E3;
+          }
+          
+          .category-chip {
+            transition: all 0.3s ease;
+          }
+          
+          .category-chip.active {
+            background: #667A62;
+            color: white;
+            border-color: #667A62;
+          }
+          
+          .category-chip:hover:not(.active) {
+            background: #EAF6E3;
+            border-color: #667A62;
+          }
+          
+          @keyframes subtle-zoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+          }
+          .animate-zoom { animation: subtle-zoom 20s infinite alternate linear; }
+          
+          .floating-element {
+            animation: float 6s ease-in-out infinite;
+          }
+          
+          @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
           }
           
           .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(8px);
             z-index: 1000;
             display: flex;
             align-items: center;
@@ -163,48 +282,41 @@ const DigitalMedia = () => {
           
           .modal-content {
             animation: scaleUp 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
           }
           
           @keyframes scaleUp {
-            from { transform: scale(0.9); opacity: 0; }
+            from { transform: scale(0.95); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
-          }
-          
-          .floating-element { animation: float 6s ease-in-out infinite; }
-          
-          @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-          }
-          
-          @media (max-width: 768px) {
-            .banner-title { font-size: 2.5rem !important; }
           }
         `}
       </style>
 
-      {/* Premium Banner Section */}
-      <section className="relative h-[50vh] min-h-[450px] w-full overflow-hidden">
-        <div className="media-bg" />
-        <div className="media-overlay" />
-        
-        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
-          <div className="max-w-5xl banner-content">
-            <span className="inline-block px-6 py-2 mb-5 text-sm font-bold tracking-wider text-white uppercase bg-[#667A62] rounded-full shadow-lg">
-              Digital Presence
+      {/* --- HERO SECTION --- */}
+      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=2070" 
+            className="w-full h-full object-cover animate-zoom" 
+            alt="Digital Media Hero"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1a2619]/90 via-[#2C3E2B]/70 to-[#FCFDFB]" />
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10 text-center">
+          <div data-aos="fade-down">
+            <span className="inline-block px-6 py-1.5 mb-5 text-[10px] font-bold tracking-[0.3em] text-white uppercase border border-white/30 rounded-full backdrop-blur-sm">
+              DIGITAL PRESENCE
             </span>
-            <h1 className="banner-title text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
-              Digital Media
-            </h1>
-            <div className="flex justify-center gap-2 mb-5">
-              <div className="w-12 h-0.5 bg-[#667A62]"></div>
-              <div className="w-6 h-0.5 bg-[#667A62]"></div>
-              <div className="w-3 h-0.5 bg-[#667A62]"></div>
-            </div>
-            <p className="text-white/95 text-lg md:text-xl max-w-3xl mx-auto">
-              Stories that Inspire Action - Stay connected through our latest updates, videos, campaigns, and digital outreach initiatives.
-            </p>
           </div>
+          <h1 className="text-white text-3xl md:text-4xl lg:text-5xl mb-4 font-serif" data-aos="fade-up" data-aos-delay="200">
+            Digital Media
+          </h1>
+          <p className="text-white/80 font-sans text-base max-w-2xl mx-auto mb-6 font-light tracking-wide" data-aos="fade-up" data-aos-delay="400">
+            Stories that Inspire Action - Stay connected through our latest updates, videos, campaigns, and digital outreach initiatives.
+            Follow our journey of impact and transformation.
+          </p>
         </div>
         
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
@@ -214,208 +326,262 @@ const DigitalMedia = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-[#2C3E2B]">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stats.map((stat, index) => (
-              <div key={index} className="stat-card text-center" data-aos="zoom-in" data-aos-delay={stat.delay}>
-                <div className="stat-icon text-4xl text-[#667A62] mb-3 flex justify-center">
-                  {stat.icon}
-                </div>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-1">
-                  {stat.number}
-                </div>
-                <div className="text-sm text-[#EAF6E3] font-semibold">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+   
 
-      {/* Social Media Links Section */}
-      <section className="py-12 bg-gradient-to-r from-[#EAF6E3] to-white">
-        <div className="container mx-auto px-4 max-w-7xl">
+      {/* --- SOCIAL MEDIA LINKS SECTION --- */}
+      <section className="py-12 bg-white">
+        <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-8" data-aos="fade-up">
-            <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-wider text-[#667A62] uppercase bg-white rounded-full">
-              Connect With Us
+            <span className="text-xs tracking-[5px] text-[#667A62] font-semibold mb-3 inline-block">
+              CONNECT WITH US
             </span>
-            <h2 className="section-title text-2xl md:text-3xl font-bold text-[#2C3E2B]">
+            <div className="w-16 h-0.5 bg-[#667A62] mx-auto"></div>
+            <h2 className="font-serif text-2xl md:text-3xl text-[#2C3E2B] mt-4">
               Follow Us on Social Media
             </h2>
-            <div className="w-12 h-0.5 bg-[#667A62] mx-auto mt-3"></div>
           </div>
           
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="social-icon w-14 h-14 rounded-full flex items-center justify-center text-white shadow-lg" style={{ background: "#FF0000" }}>
-              <FaYoutube size={26} />
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="social-icon w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg" style={{ background: "#FF0000" }}>
+              <FaYoutube size={22} />
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-icon w-14 h-14 rounded-full flex items-center justify-center text-white shadow-lg" style={{ background: "linear-gradient(45deg, #f09433, #d62976, #962fbf)" }}>
-              <FaInstagram size={26} />
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-icon w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg" style={{ background: "linear-gradient(45deg, #f09433, #d62976, #962fbf)" }}>
+              <FaInstagram size={22} />
             </a>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="social-icon w-14 h-14 rounded-full flex items-center justify-center text-white shadow-lg" style={{ background: "#1877F2" }}>
-              <FaFacebookF size={26} />
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="social-icon w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg" style={{ background: "#1877F2" }}>
+              <FaFacebookF size={22} />
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-icon w-14 h-14 rounded-full flex items-center justify-center text-white shadow-lg" style={{ background: "#1DA1F2" }}>
-              <FaTwitter size={26} />
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-icon w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg" style={{ background: "#1DA1F2" }}>
+              <FaTwitter size={22} />
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-icon w-14 h-14 rounded-full flex items-center justify-center text-white shadow-lg" style={{ background: "#0A66C2" }}>
-              <FaLinkedinIn size={26} />
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-icon w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg" style={{ background: "#0A66C2" }}>
+              <FaLinkedinIn size={22} />
             </a>
           </div>
         </div>
       </section>
 
-      {/* Media Tabs */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="flex flex-wrap justify-center gap-4 mb-12" data-aos="fade-up">
+      {/* --- MEDIA TABS --- */}
+      <section className="py-20 bg-[#F7F9F5]">
+        <div className="container mx-auto px-6 max-w-7xl">
+          {/* Main Tabs */}
+          <div className="flex flex-wrap justify-center gap-3 mb-8" data-aos="fade-up">
             <button
               onClick={() => setActiveMedia('videos')}
-              className={`flex items-center gap-2 px-8 py-3 rounded-full font-semibold transition-all duration-300 ${
+              className={`tab-button flex items-center gap-2 px-5 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${
                 activeMedia === 'videos'
-                  ? 'bg-[#667A62] text-white shadow-lg'
-                  : 'bg-[#EAF6E3] text-[#2C3E2B] hover:bg-[#667A62]/20'
+                  ? 'active bg-[#667A62] text-white'
+                  : 'bg-white text-[#4A5C46] hover:bg-[#EAF6E3]'
               }`}
             >
-              <FiFilm size={18} /> Videos
+              <FiFilm size={14} /> Videos ({allVideos.length})
             </button>
             <button
               onClick={() => setActiveMedia('photos')}
-              className={`flex items-center gap-2 px-8 py-3 rounded-full font-semibold transition-all duration-300 ${
+              className={`tab-button flex items-center gap-2 px-5 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${
                 activeMedia === 'photos'
-                  ? 'bg-[#667A62] text-white shadow-lg'
-                  : 'bg-[#EAF6E3] text-[#2C3E2B] hover:bg-[#667A62]/20'
+                  ? 'active bg-[#667A62] text-white'
+                  : 'bg-white text-[#4A5C46] hover:bg-[#EAF6E3]'
               }`}
             >
-              <FiCamera size={18} /> Photos
+              <FiCamera size={14} /> Photos ({allPhotos.length})
             </button>
           </div>
 
           {/* Videos Section */}
           {activeMedia === 'videos' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {videos.map((video, index) => (
-                <div 
-                  key={video.id} 
-                  className="video-card bg-white rounded-2xl overflow-hidden shadow-lg group"
-                  data-aos="fade-up"
-                  data-aos-delay={index * 100}
-                >
-                  <div className="relative overflow-hidden">
-                    <div className="w-full h-48 bg-gradient-to-br from-[#2C3E2B] to-[#667A62] flex items-center justify-center">
-                      <FaYoutube className="text-white text-6xl" />
-                    </div>
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                      <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center">
-                        <FiPlay className="text-white text-3xl ml-1" />
+            <>
+              {/* Video Categories */}
+              <div className="flex flex-wrap justify-center gap-2 mb-10" data-aos="fade-up">
+                {videoCategories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => {
+                      setActiveCategory(category);
+                      setVisibleItems(6);
+                    }}
+                    className={`category-chip px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider border transition-all duration-300 ${
+                      activeCategory === category
+                        ? 'active bg-[#667A62] text-white border-[#667A62]'
+                        : 'bg-white text-[#4A5C46] border-gray-200 hover:border-[#667A62]'
+                    }`}
+                  >
+                    {category === 'all' ? 'All Videos' : category} ({getCategoryCount(category)})
+                  </button>
+                ))}
+              </div>
+
+              {/* Videos Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {displayedVideos.map((video, index) => (
+                  <div 
+                    key={video.id} 
+                    className="video-card bg-white overflow-hidden group"
+                    data-aos="fade-up"
+                    data-aos-delay={(index % 6) * 100}
+                  >
+                    <div className="relative overflow-hidden">
+                      <div className="w-full h-48 bg-gradient-to-br from-[#2C3E2B] to-[#667A62] flex items-center justify-center">
+                        <FaYoutube className="text-white text-5xl" />
+                      </div>
+                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                        <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
+                          <FiPlay className="text-white text-xl ml-0.5" />
+                        </div>
+                      </div>
+                      <div className="absolute top-3 left-3">
+                        <span className="inline-block px-2 py-0.5 bg-[#667A62] text-white text-[9px] font-bold uppercase tracking-wider">
+                          {video.category}
+                        </span>
+                      </div>
+                      <div className="absolute bottom-2 right-2 bg-black/70 text-white text-[9px] px-1.5 py-0.5">
+                        {video.duration}
                       </div>
                     </div>
-                    <div className="absolute top-3 left-3">
-                      <span className="inline-block px-2 py-1 bg-[#667A62] text-white text-xs rounded-full">
-                        {video.category}
-                      </span>
-                    </div>
-                    <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                      {video.duration}
-                    </div>
-                  </div>
-                  <div className="p-5">
-                    <h3 className="font-bold text-[#2C3E2B] mb-2 line-clamp-1">{video.title}</h3>
-                    <div className="flex justify-between text-xs text-gray-500">
-                      <span className="flex items-center gap-1"><FiEye size={12} /> {video.views} views</span>
-                      <span className="flex items-center gap-1"><FiCalendar size={12} /> {video.date}</span>
+                    <div className="p-4">
+                      <h3 className="font-serif font-bold text-[#2C3E2B] text-sm mb-2 line-clamp-1">{video.title}</h3>
+                      <div className="flex justify-between text-[10px] text-gray-400">
+                        <span className="flex items-center gap-1"><FiEye size={10} /> {video.views} views</span>
+                        <span className="flex items-center gap-1"><FiCalendar size={10} /> {video.date}</span>
+                      </div>
                     </div>
                   </div>
+                ))}
+              </div>
+
+              {/* Load More / Show Less Buttons */}
+              {filteredVideos.length > 6 && (
+                <div className="text-center mt-10" data-aos="fade-up">
+                  {hasMore ? (
+                    <button onClick={loadMore} className="inline-flex items-center gap-2 px-5 py-2 bg-[#667A62] text-white text-xs font-semibold hover:bg-[#4A5C46] transition-all">
+                      Load More ({visibleItems} of {filteredVideos.length}) <FiArrowRight size={12} />
+                    </button>
+                  ) : (
+                    <button onClick={loadLess} className="inline-flex items-center gap-2 px-5 py-2 border border-[#667A62] text-[#667A62] text-xs font-semibold hover:bg-[#667A62] hover:text-white transition-all">
+                      Show Less <FiChevronLeft size={12} />
+                    </button>
+                  )}
                 </div>
-              ))}
-            </div>
+              )}
+            </>
           )}
 
           {/* Photos Section */}
           {activeMedia === 'photos' && (
             <>
+              {/* Photo Categories */}
+              <div className="flex flex-wrap justify-center gap-2 mb-10" data-aos="fade-up">
+                {photoCategories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => {
+                      setPhotoCategory(category);
+                      setVisiblePhotos(6);
+                    }}
+                    className={`category-chip px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider border transition-all duration-300 ${
+                      photoCategory === category
+                        ? 'active bg-[#667A62] text-white border-[#667A62]'
+                        : 'bg-white text-[#4A5C46] border-gray-200 hover:border-[#667A62]'
+                    }`}
+                  >
+                    {category === 'all' ? 'All Photos' : category} ({getPhotoCategoryCount(category)})
+                  </button>
+                ))}
+              </div>
+
+              {/* Photos Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {photos.map((photo, index) => (
+                {displayedPhotos.map((photo, index) => (
                   <div 
                     key={photo.id} 
-                    className="photo-card bg-white rounded-2xl overflow-hidden shadow-lg group cursor-pointer"
+                    className="photo-card bg-white overflow-hidden group cursor-pointer"
                     data-aos="fade-up"
-                    data-aos-delay={index * 100}
+                    data-aos-delay={(index % 6) * 100}
                     onClick={() => openPhotoModal(photo)}
                   >
-                    <div className="relative overflow-hidden h-64">
+                    <div className="relative overflow-hidden h-56">
                       <img 
                         src={photo.image} 
                         alt={photo.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-                          <FiEye className="text-[#667A62] text-xl" />
+                        <div className="w-10 h-10 bg-white flex items-center justify-center">
+                          <FiEye className="text-[#667A62] text-base" />
                         </div>
                       </div>
                       <div className="absolute top-3 left-3">
-                        <span className="inline-block px-2 py-1 bg-[#667A62] text-white text-xs rounded-full">
+                        <span className="inline-block px-2 py-0.5 bg-[#667A62] text-white text-[9px] font-bold uppercase tracking-wider">
                           {photo.category}
                         </span>
                       </div>
                     </div>
-                    <div className="p-4">
-                      <h3 className="font-semibold text-[#2C3E2B] mb-1">{photo.title}</h3>
-                      <p className="text-xs text-gray-500">{photo.location} • {photo.date}</p>
+                    <div className="p-3">
+                      <h3 className="font-semibold text-[#2C3E2B] text-xs mb-1">{photo.title}</h3>
+                      <p className="text-[9px] text-gray-400">{photo.location} • {photo.date}</p>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="text-center mt-12" data-aos="fade-up">
-                <button className="inline-flex items-center gap-2 px-8 py-3 bg-[#667A62] text-white font-semibold rounded-full hover:bg-[#4A5C46] transition-all">
-                  <FiGrid /> View All Photos
-                </button>
-              </div>
+
+              {/* Load More / Show Less Buttons */}
+              {filteredPhotos.length > 6 && (
+                <div className="text-center mt-10" data-aos="fade-up">
+                  {hasMorePhotos ? (
+                    <button onClick={loadMorePhotos} className="inline-flex items-center gap-2 px-5 py-2 bg-[#667A62] text-white text-xs font-semibold hover:bg-[#4A5C46] transition-all">
+                      Load More ({visiblePhotos} of {filteredPhotos.length}) <FiArrowRight size={12} />
+                    </button>
+                  ) : (
+                    <button onClick={loadLessPhotos} className="inline-flex items-center gap-2 px-5 py-2 border border-[#667A62] text-[#667A62] text-xs font-semibold hover:bg-[#667A62] hover:text-white transition-all">
+                      Show Less <FiChevronLeft size={12} />
+                    </button>
+                  )}
+                </div>
+              )}
             </>
           )}
         </div>
       </section>
 
-      {/* Social Media Feeds Section */}
-      <section className="py-20 bg-[#EAF6E3]">
-        <div className="container mx-auto px-4 max-w-7xl">
+      {/* --- SOCIAL MEDIA FEEDS SECTION --- */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-12" data-aos="fade-up">
-            <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-wider text-[#667A62] uppercase bg-white rounded-full">
-              Latest Updates
+            <span className="text-xs tracking-[5px] text-[#667A62] font-semibold mb-3 inline-block">
+              LATEST UPDATES
             </span>
-            <h2 className="section-title text-3xl md:text-4xl font-bold text-[#2C3E2B] mb-3">
+            <div className="w-16 h-0.5 bg-[#667A62] mx-auto"></div>
+            <h2 className="font-serif text-3xl md:text-4xl text-[#2C3E2B] mt-4 mb-3">
               Social Media Feeds
             </h2>
-            <div className="w-16 h-0.5 bg-[#667A62] mx-auto"></div>
+            <p className="text-[#4A5C46] text-sm max-w-2xl mx-auto">
+              Stay updated with our latest posts and activities across social platforms
+            </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {socialFeeds.map((feed, index) => (
               <div 
                 key={index} 
-                className="feed-card bg-white rounded-2xl overflow-hidden shadow-lg"
+                className="feed-card bg-white border border-[#EAF6E3] overflow-hidden"
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
               >
-                <div className="flex items-center gap-3 p-4 border-b border-[#EAF6E3]">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-white" style={{ background: feed.color }}>
+                <div className="flex items-center gap-3 p-3 border-b border-[#EAF6E3]">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm" style={{ background: feed.color }}>
                     {feed.icon}
                   </div>
-                  <span className="font-bold text-[#2C3E2B]">{feed.platform}</span>
+                  <span className="font-bold text-[#2C3E2B] text-sm">{feed.platform}</span>
                 </div>
-                <div className="h-56 overflow-hidden">
+                <div className="h-48 overflow-hidden">
                   <img src={feed.image} alt={feed.platform} className="w-full h-full object-cover" />
                 </div>
-                <div className="p-5">
-                  <p className="text-[#4A5C46] text-sm leading-relaxed mb-4">{feed.content}</p>
-                  <div className="flex items-center gap-5 text-sm">
-                    <span className="flex items-center gap-1 text-gray-500"><FiHeart className="text-red-500" /> {feed.likes} likes</span>
-                    <span className="flex items-center gap-1 text-gray-500"><FiMessageCircle /> {feed.comments} comments</span>
-                    <span className="flex items-center gap-1 text-gray-500"><FiShare2 /> {feed.shares} shares</span>
+                <div className="p-4">
+                  <p className="text-[#4A5C46] text-xs leading-relaxed mb-3">{feed.content}</p>
+                  <div className="flex items-center gap-4 text-xs">
+                    <span className="flex items-center gap-1 text-gray-400 text-[10px]"><FiHeart className="text-red-400" size={10} /> {feed.likes} likes</span>
+                    <span className="flex items-center gap-1 text-gray-400 text-[10px]"><FiMessageCircle size={10} /> {feed.comments} comments</span>
+                    <span className="flex items-center gap-1 text-gray-400 text-[10px]"><FiShare2 size={10} /> {feed.shares} shares</span>
                   </div>
                 </div>
               </div>
@@ -423,64 +589,67 @@ const DigitalMedia = () => {
           </div>
           
           <div className="text-center mt-10" data-aos="fade-up">
-            <button className="inline-flex items-center gap-2 px-8 py-3 border-2 border-[#667A62] text-[#667A62] font-semibold rounded-full hover:bg-[#667A62] hover:text-white transition-all">
-              <FiBell /> Follow Us for More
+            <button className="inline-flex items-center gap-2 px-5 py-2 border border-[#667A62] text-[#667A62] text-xs font-semibold hover:bg-[#667A62] hover:text-white transition-all">
+              <FiBell size={12} /> Follow Us for More
             </button>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-[#2C3E2B] to-[#3A4E39] relative overflow-hidden">
-        <div className="container mx-auto px-4 max-w-5xl text-center relative z-10">
-          <div data-aos="zoom-in" data-aos-duration="1000">
-            <FaYoutube className="text-5xl mx-auto mb-4 floating-element" style={{ color: "#FF0000" }} />
-            <h2 className="section-title text-3xl md:text-4xl font-bold text-white mb-3">
-              Subscribe to Our Channel
-            </h2>
-            <div className="w-16 h-0.5 bg-[#667A62] mx-auto mb-4"></div>
-            <p className="text-[#EAF6E3] text-base mb-6 max-w-2xl mx-auto">
-              Get regular updates on our initiatives, success stories, and impact videos.
-            </p>
-            <a 
-              href="https://youtube.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-red-600 text-white font-semibold rounded-full hover:bg-red-700 transition-all"
-            >
-              <FaYoutube /> Subscribe Now
-            </a>
+      {/* --- CTA SECTION --- */}
+      <section className="py-20">
+        <div className="container mx-auto px-6">
+          <div className="bg-[#6F8770] px-8 md:px-12 py-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+            <div className="text-center lg:text-left">
+              <h2 className="font-serif text-white text-2xl md:text-3xl leading-snug mb-3">
+                Subscribe to Our Channel
+              </h2>
+              <p className="text-white/80 text-sm md:text-base">
+                Get regular updates on our initiatives, success stories, and impact videos.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap justify-center lg:justify-end gap-3">
+              <a 
+                href="https://youtube.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group flex items-center gap-2 px-5 py-2.5 bg-white text-[#2C3E2B] font-semibold text-sm rounded-md hover:bg-[#667A62] hover:text-white transition-all duration-300 shadow-md"
+              >
+                <FaYoutube size={14} /> Subscribe Now
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Photo Modal */}
+      {/* --- PHOTO MODAL --- */}
       {showModal && selectedPhoto && (
         <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content bg-white rounded-2xl max-w-3xl w-full mx-4 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-content bg-white max-w-3xl w-full mx-4 overflow-hidden" onClick={(e) => e.stopPropagation()}>
             <div className="relative">
-              <img src={selectedPhoto.image} alt={selectedPhoto.title} className="w-full h-96 object-cover" />
-              <button onClick={closeModal} className="absolute top-4 right-4 w-8 h-8 bg-black/50 rounded-full flex items-center justify-center text-white hover:bg-black/70 transition">
+              <img src={selectedPhoto.image} alt={selectedPhoto.title} className="w-full h-80 object-cover" />
+              <button onClick={closeModal} className="absolute top-4 right-4 w-8 h-8 bg-black/50 flex items-center justify-center text-white hover:bg-black/70 transition">
                 ✕
               </button>
             </div>
             <div className="p-6">
-              <h3 className="text-2xl font-bold text-[#2C3E2B] mb-2">{selectedPhoto.title}</h3>
-              <div className="flex flex-wrap gap-4 mb-4 text-sm text-gray-500">
-                <span><FiCamera className="inline mr-1" /> {selectedPhoto.category}</span>
-                <span><FiGlobe className="inline mr-1" /> {selectedPhoto.location}</span>
-                <span><FiCalendar className="inline mr-1" /> {selectedPhoto.date}</span>
+              <h3 className="font-serif text-xl font-bold text-[#2C3E2B] mb-2">{selectedPhoto.title}</h3>
+              <div className="flex flex-wrap gap-4 mb-4 text-xs text-gray-500">
+                <span><FiCamera className="inline mr-1" size={12} /> {selectedPhoto.category}</span>
+                <span><FiGlobe className="inline mr-1" size={12} /> {selectedPhoto.location}</span>
+                <span><FiCalendar className="inline mr-1" size={12} /> {selectedPhoto.date}</span>
               </div>
-              <p className="text-[#4A5C46] leading-relaxed">
+              <p className="text-[#4A5C46] text-sm leading-relaxed">
                 This photo captures a moment from our {selectedPhoto.title.toLowerCase()} initiative, 
                 where we worked with the community to create lasting impact.
               </p>
               <div className="mt-6 flex gap-3">
-                <button className="flex-1 py-2 bg-[#667A62] text-white rounded-lg hover:bg-[#4A5C46] transition flex items-center justify-center gap-2">
-                  <FiDownload /> Download
+                <button className="flex-1 py-2 bg-[#667A62] text-white text-xs font-semibold hover:bg-[#4A5C46] transition flex items-center justify-center gap-2">
+                  <FiDownload size={12} /> Download
                 </button>
-                <button className="flex-1 py-2 border border-[#667A62] text-[#667A62] rounded-lg hover:bg-[#667A62] hover:text-white transition flex items-center justify-center gap-2">
-                  <FiExternalLink /> Share
+                <button className="flex-1 py-2 border border-[#667A62] text-[#667A62] text-xs font-semibold hover:bg-[#667A62] hover:text-white transition flex items-center justify-center gap-2">
+                  <FiExternalLink size={12} /> Share
                 </button>
               </div>
             </div>

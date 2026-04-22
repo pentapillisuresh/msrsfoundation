@@ -85,9 +85,6 @@ const CorporatePartnership = () => {
     { icon: <FaUserTie />, title: "Women Empowerment", description: "Skill development, entrepreneurship, financial literacy" }
   ];
 
-
-
-
   const process = [
     { step: "01", title: "Initial Meeting", description: "Discuss goals & expectations", icon: <FiMessageCircle /> },
     { step: "02", title: "Proposal", description: "Customized project proposal", icon: <FiTarget /> },
@@ -131,11 +128,61 @@ const CorporatePartnership = () => {
             transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             position: relative;
             overflow: hidden;
+            cursor: pointer;
           }
           
+          /* Hover effect - Background changes to dark green like About Us page */
           .benefit-card:hover, .model-card:hover, .focus-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 20px 40px rgba(44, 62, 43, 0.12);
+            box-shadow: 0 20px 40px rgba(44, 62, 43, 0.15);
+            background-color: #2C3E2B;
+          }
+          
+          /* Icon background and color change on hover */
+          .benefit-card:hover .icon-wrapper,
+          .model-card:hover .icon-wrapper,
+          .focus-card:hover .icon-wrapper {
+            background-color: white;
+          }
+          
+          .benefit-card:hover .icon-wrapper svg,
+          .model-card:hover .icon-wrapper svg,
+          .focus-card:hover .icon-wrapper svg {
+            color: #2C3E2B;
+          }
+          
+          /* Text color change on hover */
+          .benefit-card:hover h3,
+          .model-card:hover h3,
+          .focus-card:hover h3 {
+            color: white;
+          }
+          
+          .benefit-card:hover p,
+          .model-card:hover p,
+          .focus-card:hover p {
+            color: #EAF6E3;
+          }
+          
+          .benefit-card:hover .detail-text,
+          .model-card:hover .detail-text {
+            color: #8A9A87;
+          }
+          
+          .benefit-card:hover .feature-text,
+          .model-card:hover .feature-text {
+            color: #EAF6E3;
+          }
+          
+          /* Check icon color change on hover */
+          .benefit-card:hover .check-icon,
+          .model-card:hover .check-icon {
+            color: white;
+          }
+          
+          /* Border color change on hover */
+          .benefit-card:hover, .model-card:hover, .focus-card:hover {
+            border-color: #2C3E2B;
           }
           
           .stat-card {
@@ -241,8 +288,6 @@ const CorporatePartnership = () => {
         </div>
       </section>
 
-    
-
       {/* --- WHY PARTNER WITH US SECTION --- */}
       <section className="py-24 bg-white">
         <div className="container mx-auto px-6 max-w-7xl">
@@ -267,13 +312,14 @@ const CorporatePartnership = () => {
                 data-aos="fade-up"
                 data-aos-delay={idx * 100}
               >
-                <div className="w-12 h-12 bg-[#EAF6E3] flex items-center justify-center mb-4">
-                  <div className="text-xl text-[#667A62]">{benefit.icon}</div>
+                <div className="icon-wrapper w-12 h-12 bg-[#EAF6E3] flex items-center justify-center mb-4 transition-colors duration-300">
+                  <div className="text-xl text-[#667A62] transition-colors duration-300">{benefit.icon}</div>
                 </div>
-                <h3 className="font-bold text-[#2C3E2B] text-base mb-2">{benefit.title}</h3>
-                <p className="text-[#4A5C46] text-sm leading-relaxed mb-3">{benefit.description}</p>
+                <h3 className="font-bold text-[#2C3E2B] text-base mb-2 transition-colors duration-300">{benefit.title}</h3>
+                <p className="text-[#4A5C46] text-sm leading-relaxed mb-3 transition-colors duration-300">{benefit.description}</p>
                 <div className="flex items-center gap-1 text-[#667A62] text-[10px] font-semibold">
-                  <FiCheckCircle size={10} /> {benefit.detail}
+                  <FiCheckCircle className="check-icon transition-colors duration-300" size={10} /> 
+                  <span className="detail-text transition-colors duration-300">{benefit.detail}</span>
                 </div>
               </div>
             ))}
@@ -305,11 +351,11 @@ const CorporatePartnership = () => {
                 data-aos="fade-up"
                 data-aos-delay={idx * 100}
               >
-                <div className="w-14 h-14 bg-[#EAF6E3] flex items-center justify-center mx-auto mb-4">
-                  <div className="text-xl text-[#667A62]">{area.icon}</div>
+                <div className="icon-wrapper w-14 h-14 bg-[#EAF6E3] flex items-center justify-center mx-auto mb-4 transition-colors duration-300">
+                  <div className="text-xl text-[#667A62] transition-colors duration-300">{area.icon}</div>
                 </div>
-                <h3 className="font-bold text-[#2C3E2B] text-base mb-2">{area.title}</h3>
-                <p className="text-[#4A5C46] text-xs leading-relaxed">{area.description}</p>
+                <h3 className="font-bold text-[#2C3E2B] text-base mb-2 transition-colors duration-300">{area.title}</h3>
+                <p className="text-[#4A5C46] text-xs leading-relaxed transition-colors duration-300">{area.description}</p>
               </div>
             ))}
           </div>
@@ -341,22 +387,22 @@ const CorporatePartnership = () => {
                 data-aos-delay={idx * 100}
               >
                 {model.popular && (
-                  <div className="absolute top-4 right-4 bg-[#667A62] px-2 py-0.5">
+                  <div className="absolute top-4 right-4 bg-[#667A62] px-2 py-0.5 transition-colors duration-300">
                     <span className="text-white text-[9px] font-semibold uppercase">Popular</span>
                   </div>
                 )}
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-[#EAF6E3] flex items-center justify-center">
-                    <div className="text-lg text-[#667A62]">{model.icon}</div>
+                  <div className="icon-wrapper w-10 h-10 bg-[#EAF6E3] flex items-center justify-center transition-colors duration-300">
+                    <div className="text-lg text-[#667A62] transition-colors duration-300">{model.icon}</div>
                   </div>
-                  <h3 className="font-bold text-[#2C3E2B] text-lg">{model.title}</h3>
+                  <h3 className="font-bold text-[#2C3E2B] text-lg transition-colors duration-300">{model.title}</h3>
                 </div>
-                <p className="text-[#4A5C46] text-sm mb-4 leading-relaxed">{model.description}</p>
+                <p className="text-[#4A5C46] text-sm mb-4 leading-relaxed transition-colors duration-300">{model.description}</p>
                 <div className="space-y-2">
                   {model.features.map((feature, fIdx) => (
                     <div key={fIdx} className="flex items-center gap-2">
-                      <FiCheckCircle className="text-[#667A62] text-[10px]" />
-                      <span className="text-[#4A5C46] text-xs">{feature}</span>
+                      <FiCheckCircle className="check-icon text-[#667A62] text-[10px] transition-colors duration-300" />
+                      <span className="feature-text text-[#4A5C46] text-xs transition-colors duration-300">{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -439,26 +485,26 @@ const CorporatePartnership = () => {
             {testimonials.map((testimonial, idx) => (
               <div 
                 key={idx} 
-                className="testimonial-card bg-[#F7F9F5] p-6 border border-[#EAF6E3]"
+                className="testimonial-card bg-[#F7F9F5] p-6 border border-[#EAF6E3] hover:bg-[#2C3E2B] transition-all duration-300"
                 data-aos="fade-up"
                 data-aos-delay={idx * 100}
               >
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="text-[#667A62] text-3xl font-serif">"</div>
+                  <div className="text-[#667A62] text-3xl font-serif transition-colors duration-300">"</div>
                   <div className="flex text-yellow-500 text-xs">
                     <FiStar /><FiStar /><FiStar /><FiStar /><FiStar />
                   </div>
                 </div>
-                <p className="text-[#4A5C46] text-sm leading-relaxed mb-5 italic">
+                <p className="text-[#4A5C46] text-sm leading-relaxed mb-5 italic transition-colors duration-300 hover:text-white">
                   "{testimonial.quote}"
                 </p>
-                <div className="border-t border-[#EAF6E3] pt-4">
-                  <h4 className="font-bold text-[#2C3E2B] text-base">{testimonial.company}</h4>
-                  <p className="text-[#667A62] text-xs mb-2">{testimonial.name}</p>
+                <div className="border-t border-[#EAF6E3] pt-4 transition-colors duration-300 hover:border-white/20">
+                  <h4 className="font-bold text-[#2C3E2B] text-base transition-colors duration-300 hover:text-white">{testimonial.company}</h4>
+                  <p className="text-[#667A62] text-xs mb-2 transition-colors duration-300 hover:text-[#8A9A87]">{testimonial.name}</p>
                   <div className="flex flex-wrap gap-3 text-xs">
-                    <span className="text-[#2C3E2B] font-semibold">Contribution: {testimonial.contribution}</span>
-                    <span className="text-[#667A62]">|</span>
-                    <span className="text-[#2C3E2B] font-semibold">Impact: {testimonial.impact}</span>
+                    <span className="text-[#2C3E2B] font-semibold transition-colors duration-300 hover:text-white">Contribution: {testimonial.contribution}</span>
+                    <span className="text-[#667A62] transition-colors duration-300 hover:text-white/60">|</span>
+                    <span className="text-[#2C3E2B] font-semibold transition-colors duration-300 hover:text-white">Impact: {testimonial.impact}</span>
                   </div>
                 </div>
               </div>
