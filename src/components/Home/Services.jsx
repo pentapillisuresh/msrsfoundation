@@ -1,7 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectCoverflow, Navigation } from "swiper/modules";
+import { X, ChevronLeft, ChevronRight, ArrowRight, Check } from "lucide-react";
+
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/navigation";
 
 const services = [
   {
@@ -139,227 +144,287 @@ const services = [
   },
 ];
 
-const ServiceCard = ({ service, onSupport, index }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const getAnimationDelay = () => {
-    const delays = [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550];
-    return delays[index % delays.length];
-  };
-
-  const getAnimationDirection = () => {
-    const directions = ['fade-up', 'fade-right', 'fade-left', 'zoom-in'];
-    return directions[index % directions.length];
-  };
-
-  return (
-    <div 
-      data-aos={getAnimationDirection()}
-      data-aos-delay={getAnimationDelay()}
-      data-aos-duration="800"
-      data-aos-easing="ease-out-cubic"
-      className="relative group/card"
-    >
-      <div 
-        className="book-wrapper" 
-        style={{ perspective: '2000px' }}
-        onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
-      >
-        <div 
-          className="book relative w-full h-[380px]"
-          style={{ 
-            transformStyle: 'preserve-3d',
-            transition: 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)'
-          }}
-        >
-          {/* Cover (Front) */}
-          <div 
-            className="cover absolute inset-0 rounded-2xl overflow-hidden shadow-2xl transition-all duration-[1100ms] ease-[cubic-bezier(0.4, 0, 0.2, 1)] cursor-pointer"
-            style={{
-              transformOrigin: 'left center',
-              transform: isOpen ? 'rotateY(-150deg)' : 'rotateY(0deg)',
-              backfaceVisibility: 'hidden',
-              zIndex: 10,
-            }}
-          >
-            <div 
-              className="w-full h-full bg-cover bg-center"
-              style={{ backgroundImage: `url(${service.frontImage})` }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-              <div className="absolute inset-0 flex flex-col justify-between p-6">
-                <div className="flex justify-end">
-                  <span className="text-[#5C6F5C] text-[10px] font-bold bg-[#EAF3E6] px-3 py-1 rounded-full tracking-[2px]">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                </div>
-                <div className="text-center transform transition-all duration-700 group-hover/card:translate-y-[-10px]">
-                  <h3 className="text-xl font-bold text-white mb-2 tracking-tight">
-                    {service.title}
-                  </h3>
-                  <div className="w-10 h-[2px] bg-white/60 mx-auto" />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Back Pages (Content) */}
-          <div 
-            className="pages absolute inset-0 rounded-2xl shadow-inner overflow-hidden border border-gray-100"
-            style={{
-              backgroundColor: '#F9FBF9',
-              zIndex: 5,
-            }}
-          >
-            <div className={`w-full h-full p-6 flex flex-col transition-opacity duration-700 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
-              <div className="text-center mb-5">
-                <h4 className="text-md font-bold text-gray-800 uppercase tracking-wider">{service.title}</h4>
-                <div className="w-8 h-0.5 bg-[#5C6F5C] mx-auto mt-2 opacity-40" />
-              </div>
-
-              <ul className="space-y-4 flex-grow overflow-y-auto pr-2 custom-scrollbar">
-                {service.subpoints.map((point, idx) => (
-                  <li key={idx} className="text-[13px] text-gray-600 flex items-start gap-3">
-                    <div className="mt-1 flex-shrink-0">
-                      <div className="w-4 h-4 rounded-full bg-[#5C6F5C]/10 flex items-center justify-center">
-                         <div className="w-1.5 h-1.5 rounded-full bg-[#5C6F5C]" />
-                      </div>
-                    </div>
-                    <span className="leading-tight">{point}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <button 
-                onClick={() => onSupport(service)}
-                className="mt-4 w-full py-3 rounded-xl bg-[#5C6F5C] text-white text-xs font-bold tracking-widest uppercase hover:bg-[#5C6F5C] transition-all duration-500 shadow-lg"
-              >
-                Support Cause
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const Services = () => {
   const navigate = useNavigate();
+  const [selectedService, setSelectedService] = useState(null);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  useEffect(() => {
-    AOS.init({
-      once: true,
-      mirror: false,
-      duration: 800,
-      easing: 'ease-out-cubic',
-      offset: 120,
-    });
-  }, []);
-
-  const handleSupport = (service) => {
-    navigate('/donate', { 
-      state: { service: service.title, cause: service.title } 
-    });
+  const openModal = (service, index) => {
+    setIsAnimating(true);
+    setSelectedService({ ...service, index });
+    document.body.style.overflow = "hidden";
+    setTimeout(() => setIsAnimating(false), 300);
   };
 
-  // Sort alphabetically by title
-  const sortedServices = [...services].sort((a, b) => a.title.localeCompare(b.title));
+  const closeModal = () => {
+    setIsAnimating(true);
+    document.body.style.overflow = "auto";
+    setTimeout(() => {
+      setSelectedService(null);
+      setIsAnimating(false);
+    }, 300);
+  };
+
+  // Handle escape key
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape" && selectedService) {
+        closeModal();
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [selectedService]);
 
   return (
-    <section className="py-24 bg-[#FAFAFA] overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
-        
-        {/* Section Header */}
-        <div 
-          data-aos="fade-down"
-          data-aos-duration="1000"
-          data-aos-easing="ease-out-cubic"
-          className="mb-20 text-center"
-        >
-          <span className="text-[10px] tracking-[0.5em] text-[#5C6F5C] font-bold mb-4 inline-block uppercase opacity-70">
-            Our Services
-          </span>
-          <div className="w-12 h-[1px] bg-gray-300 mx-auto" />
-          <p className="text-gray-500 max-w-xl mx-auto mt-8 text-sm leading-relaxed">
-            Every contribution creates a ripple of change. Explore our dedicated programs 
-            aimed at community upliftment and sustainable welfare.
-          </p>
-        </div>
-
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12">
-          {sortedServices.map((service, idx) => (
-            <ServiceCard key={service.id} service={service} onSupport={handleSupport} index={idx} />
-          ))}
-        </div>
+    <section className="min-h-screen bg-[#F5F0E8] py-20 flex flex-col justify-center relative overflow-hidden">
+      
+      {/* Decorative Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#5C6F5C] rounded-full mix-blend-multiply filter blur-3xl opacity-5"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#8B7355] rounded-full mix-blend-multiply filter blur-3xl opacity-5"></div>
       </div>
 
+      {/* Title Section */}
+      <div className="text-center mb-16 relative z-10 px-4">
+        <span className="text-xs tracking-[5px] text-secondary font-semibold mb-3 inline-block">
+            OUR SERVICES
+          </span>
+       
+        <div className="w-20 h-[2px] bg-[#5C6F5C] mx-auto" />
+        <p className="text-[#5C6F5C]/70 mt-4 max-w-md mx-auto text-sm">
+          Transforming lives through dedicated service and compassion
+        </p>
+      </div>
+
+      {/* Slider */}
+      <div className="relative z-10 px-4">
+        <Swiper
+          modules={[EffectCoverflow, Navigation]}
+          effect="coverflow"
+          centeredSlides={true}
+          slidesPerView="auto"
+          loop={true}
+          grabCursor={true}
+          navigation={{
+            nextEl: ".custom-next",
+            prevEl: ".custom-prev",
+          }}
+          slideToClickedSlide={true}
+          speed={800}
+          coverflowEffect={{
+            rotate: 0,
+            stretch: 0,
+            depth: 200,
+            modifier: 2.5,
+            slideShadows: false,
+          }}
+          className="w-full max-w-7xl"
+        >
+          {services.map((service, idx) => (
+            <SwiperSlide
+              key={service.id}
+              className="!w-[280px] md:!w-[360px] cursor-pointer"
+              onClick={() => openModal(service, idx)}
+            >
+              <div className="card group">
+                {/* Image Container - No Icons */}
+                <div
+                  className="h-[460px] bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                  style={{ backgroundImage: `url(${service.frontImage})` }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#2C1810] via-[#2C1810]/40 to-transparent" />
+                </div>
+
+                {/* Content */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform transition-transform duration-500 group-hover:translate-y-[-8px]">
+                  <h3 className="text-xl font-semibold tracking-wide">{service.title}</h3>
+                  <p className="text-sm text-white/70 mt-2 leading-relaxed line-clamp-2">
+                    {service.subpoints.slice(0, 2).join(" • ")}
+                  </p>
+
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openModal(service, idx);
+                    }}
+                    className="mt-4 text-xs tracking-widest border border-[#5C6F5C] px-5 py-2.5 hover:bg-[#5C6F5C] hover:shadow-lg transition-all duration-300 flex items-center gap-2 group/btn bg-[#2C1810]/50 backdrop-blur-sm"
+                  >
+                    LEARN MORE <ArrowRight className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+
+        {/* Custom Navigation Buttons */}
+        <button className="custom-prev absolute left-2 md:left-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#2C1810]/80 backdrop-blur-md border border-[#5C6F5C]/30 flex items-center justify-center transition-all duration-300 hover:bg-[#5C6F5C] hover:scale-110">
+          <ChevronLeft className="w-4 h-4 md:w-5 md:h-5 text-white" />
+        </button>
+        <button className="custom-next absolute right-2 md:right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#2C1810]/80 backdrop-blur-md border border-[#5C6F5C]/30 flex items-center justify-center transition-all duration-300 hover:bg-[#5C6F5C] hover:scale-110">
+          <ChevronRight className="w-4 h-4 md:w-5 md:h-5 text-white" />
+        </button>
+      </div>
+
+      {/* Premium Modal Overlay */}
+      {selectedService && (
+        <div 
+          className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-500 ${
+            isAnimating ? "opacity-0" : "opacity-100"
+          }`}
+          style={{ backgroundColor: "rgba(44, 24, 16, 0.95)" }}
+          onClick={closeModal}
+        >
+          <div 
+            className={`relative max-w-4xl w-full bg-[#F5F0E8] rounded-2xl overflow-hidden transform transition-all duration-500 ${
+              isAnimating ? "scale-95 opacity-0" : "scale-100 opacity-100"
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button 
+              onClick={closeModal}
+              className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-[#2C1810]/80 backdrop-blur-md border border-[#5C6F5C]/30 flex items-center justify-center hover:bg-[#5C6F5C] transition-all duration-300"
+            >
+              <X className="w-5 h-5 text-white" />
+            </button>
+
+            <div className="flex flex-col md:flex-row">
+              {/* Image Section */}
+              <div className="md:w-2/5 relative h-56 md:h-auto">
+                <div 
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{ backgroundImage: `url(${selectedService.frontImage})` }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#2C1810] via-[#2C1810]/40 to-transparent" />
+                </div>
+              </div>
+
+              {/* Content Section */}
+              <div className="md:w-3/5 p-6 md:p-8">
+                <div className="mb-5">
+                  <span className="text-[#5C6F5C] text-xs tracking-[3px] uppercase font-semibold">Service Detail</span>
+                  <h2 className="text-2xl md:text-3xl font-bold text-[#2C1810] mt-2">
+                    {selectedService.title}
+                  </h2>
+                  <div className="w-12 h-[2px] bg-[#5C6F5C] mt-3" />
+                </div>
+
+                {/* Subpoints List */}
+                <div className="mb-6">
+                  <h3 className="text-sm font-semibold text-[#2C1810] mb-3 tracking-wide">KEY INITIATIVES</h3>
+                  <div className="space-y-2.5">
+                    {selectedService.subpoints.map((point, idx) => (
+                      <div key={idx} className="flex items-start gap-2.5">
+                        <Check className="w-4 h-4 text-[#5C6F5C] mt-0.5 flex-shrink-0" />
+                        <span className="text-sm text-[#2C1810]/80 leading-relaxed">{point}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Impact Note */}
+                <div className="bg-[#EAF3E6]  p-4 mb-6 border-l-4 border-[#5C6F5C]">
+                  <p className="text-xs text-[#2C1810]/70 leading-relaxed">
+                    Your contribution helps us expand these initiatives and reach more people in need. 
+                    Join us in making a meaningful difference in the lives of thousands.
+                  </p>
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      closeModal();
+                      navigate("/donate");
+                    }}
+                    className="flex-1 bg-[#5C6F5C] text-white px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-[#4a5a4a] transition-all duration-300 transform hover:scale-105 shadow-md"
+                  >
+                    Support This Cause
+                  </button>
+                  <button
+                    onClick={closeModal}
+                    className="px-5 py-2.5 rounded-lg border border-[#5C6F5C]/30 text-[#2C1810] hover:bg-[#2C1810]/5 transition-all text-sm font-medium"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Global Styles */}
       <style jsx global>{`
-        .book-wrapper { perspective: 2000px; }
-        .book { transform-style: preserve-3d; }
-        
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 3px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: #f1f1f1;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #5C6F5C;
-          border-radius: 10px;
+        .card {
+          position: relative;
+          border-radius: 20px;
+          overflow: hidden;
+          background: #2C1810;
+          transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+          transform: scale(0.85);
+          opacity: 0.6;
+          cursor: pointer;
+          box-shadow: 0 10px 30px rgba(44, 24, 16, 0.2);
         }
 
-        /* Premium AOS Animations */
-        [data-aos="fade-up"] {
-          transform: translateY(50px);
-          opacity: 0;
-          transition-property: transform, opacity;
-        }
-        [data-aos="fade-up"].aos-animate {
-          transform: translateY(0);
+        /* Center slide animation */
+        .swiper-slide-active .card {
+          transform: scale(1.05);
           opacity: 1;
+          box-shadow: 0 25px 50px rgba(92, 111, 92, 0.25);
         }
 
-        [data-aos="fade-down"] {
-          transform: translateY(-50px);
-          opacity: 0;
-          transition-property: transform, opacity;
-        }
-        [data-aos="fade-down"].aos-animate {
-          transform: translateY(0);
-          opacity: 1;
+        /* Adjacent slides */
+        .swiper-slide-prev .card,
+        .swiper-slide-next .card {
+          transform: scale(0.92);
+          opacity: 0.75;
         }
 
-        [data-aos="fade-right"] {
-          transform: translateX(-50px);
-          opacity: 0;
-          transition-property: transform, opacity;
-        }
-        [data-aos="fade-right"].aos-animate {
-          transform: translateX(0);
-          opacity: 1;
+        /* Hover effect on center slide */
+        .swiper-slide-active .card:hover {
+          transform: scale(1.08);
+          box-shadow: 0 30px 60px rgba(92, 111, 92, 0.35);
         }
 
-        [data-aos="fade-left"] {
-          transform: translateX(50px);
-          opacity: 0;
-          transition-property: transform, opacity;
-        }
-        [data-aos="fade-left"].aos-animate {
-          transform: translateX(0);
-          opacity: 1;
+        /* Navigation button states */
+        .custom-prev,
+        .custom-next {
+          transition: all 0.3s ease;
         }
 
-        [data-aos="zoom-in"] {
-          transform: scale(0.95);
-          opacity: 0;
-          transition-property: transform, opacity;
+        .custom-prev.swiper-button-disabled,
+        .custom-next.swiper-button-disabled {
+          opacity: 0.3;
+          cursor: not-allowed;
+          pointer-events: none;
         }
-        [data-aos="zoom-in"].aos-animate {
-          transform: scale(1);
-          opacity: 1;
+
+        /* Line clamp utility */
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+          .swiper-slide-active .card {
+            transform: scale(1);
+          }
+          
+          .custom-prev,
+          .custom-next {
+            display: flex !important;
+          }
+        }
+
+        /* Smooth transitions for all interactive elements */
+        button, .card {
+          -webkit-tap-highlight-color: transparent;
         }
       `}</style>
     </section>
