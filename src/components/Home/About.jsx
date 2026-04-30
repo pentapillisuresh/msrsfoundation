@@ -10,7 +10,8 @@ const About = () => {
 
   return (
     <section className="py-10 bg-[#f5f5f5]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Full width container - no padding on sides */}
+      <div className="w-full px-0">
         {/* Section Header - Centered like What We Do */}
         <div className="mb-16 text-center">
           <span className="text-xs tracking-[5px] text-secondary font-semibold mb-3 inline-block">
@@ -26,19 +27,23 @@ const About = () => {
           </p>
         </div>
 
-        {/* Two column layout */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* LEFT IMAGE */}
-          <div className="overflow-hidden  shadow-xl">
-            <img
-              src="./images/about.jpg"
+        {/* Two column layout - full width with no gaps */}
+        <div className="grid lg:grid-cols-2 gap-0 items-center">
+          {/* LEFT VIDEO - Full width left side */}
+          <div className="overflow-hidden shadow-xl h-full">
+            <video
+              src="./images/msrs.mp4"
               alt="About MAHA SHREE RUDRA SAMSTHANAM FOUNDATION"
               className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+              autoPlay
+              loop
+              muted
+              playsInline
             />
           </div>
 
-          {/* RIGHT CONTENT */}
-          <div>
+          {/* RIGHT CONTENT with padding */}
+          <div className="px-8 md:px-12 lg:px-16 py-12">
             {/* Since + Line */}
             <div className="flex items-center gap-4 mb-6">
               <span className="text-gray-500 text-lg">Since 2025</span>
@@ -51,7 +56,6 @@ const About = () => {
               Registered under the Ministry of Corporate Affairs, Government of India, the foundation operates with a strong focus on accountability, transparency, and measurable social impact.
               The organization works across multiple sectors, aligning its initiatives with national development goals and global sustainability frameworks.
             </p>
-
 
             <div className="text-left">
               <button
