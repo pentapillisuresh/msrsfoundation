@@ -49,6 +49,12 @@ const credentials = [
     subtitle: "Committed to ethical practices, financial clarity, and measurable impact.",
     image: "/images/governance.svg",
   },
+  {
+    id: 9,
+    title: "ISO 9001:2015 Certified",
+    subtitle: "Internationally recognized quality management standard, ensuring operational excellence and continuous improvement.",
+    image: "/images/iso.svg",
+  },
 ];
 
 const GovernmentRegistrations = () => {

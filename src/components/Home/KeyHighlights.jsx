@@ -13,11 +13,17 @@ const KeyHighlights = () => {
   }, []);
 
   // Function to capitalize first letter of each word
-  const capitalizeEachWord = (text) => {
-    return text.split(' ').map(word => 
-      word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-    ).join(' ');
-  };
+const capitalizeEachWord = (text) => {
+  return text
+    .split(' ')
+    .map((word) => {
+      // Keep words like CSR-1 unchanged
+      if (word === word.toUpperCase()) return word;
+
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(' ');
+};
 
   const highlights = [
     { title: 'CSR-1 Registered Organization', description: 'Officially Registered For Corporate Social Responsibility Funding' },

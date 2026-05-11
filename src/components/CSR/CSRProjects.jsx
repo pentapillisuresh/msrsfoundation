@@ -494,7 +494,7 @@ const CSRProjects = () => {
 
             <div className="flex flex-wrap justify-center lg:justify-end gap-3">
               <Link 
-                to="/contact" 
+                to="/schedule-meeting" 
                 className="group flex items-center gap-2 px-5 py-2.5 bg-white text-[#2C3E2B] font-semibold text-sm rounded-md hover:bg-[#667A62] hover:text-white transition-all duration-300 shadow-md"
               >
                 Become a Partner 

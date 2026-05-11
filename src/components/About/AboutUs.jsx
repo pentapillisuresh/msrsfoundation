@@ -25,12 +25,7 @@ const AboutUs = () => {
     { icon: <FiZap />, title: 'Dynamic Innovation', description: 'Utilizing cutting-edge AI and technology to solve age-old social disparities.', delay: 400 },
   ];
 
-  const stats = [
-    { number: '2016', label: 'Legacy Established', icon: <FiAward /> },
-    { number: '50K+', label: 'Global Impact', icon: <FiUsers /> },
-    { number: '15+', label: 'Strategic Programs', icon: <FiActivity /> },
-    { number: '8+', label: 'Territories Reached', icon: <FiMapPin /> },
-  ];
+
 
   return (
     <div className="bg-[#FCFDFB] overflow-x-hidden selection:bg-[#667A62] selection:text-white">
@@ -169,22 +164,7 @@ const AboutUs = () => {
         </div>
       </section>
 
-      {/* --- STATS BAR: PREMIUM MINIMALISM (Improved Number Font) --- */}
-      <section className="bg-[#2C3E2B] py-20">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
-            {stats.map((stat, idx) => (
-              <div key={idx} className="text-center group" data-aos="zoom-in" data-aos-delay={idx * 100}>
-                <div className="text-white/40 text-4xl mb-4 flex justify-center group-hover:text-white transition-colors duration-500">
-                  {stat.icon}
-                </div>
-                <div className="font-sans text-white text-4xl md:text-5xl font-bold tracking-tight mb-2">{stat.number}</div>
-                <div className="text-[#8A9A87] uppercase tracking-[0.2em] text-[10px] font-bold">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+  
 
       {/* --- CORE VALUES: THE GRID OF EXCELLENCE --- */}
       <section className="py-32 bg-[#F7F9F5]">

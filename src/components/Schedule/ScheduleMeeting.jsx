@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   FiCalendar, FiClock, FiMapPin, FiUsers, FiHeart, FiArrowRight, FiX, 
   FiCheckCircle, FiBriefcase, FiMail, FiPhone, FiUser, FiFileText, 
   FiGlobe, FiDollarSign, FiTarget, FiMessageSquare, FiSend, FiAward,
   FiShield, FiStar, FiTrendingUp, FiHome, FiBookOpen, FiRefreshCw, FiVideo,
-  FiPlus
+  FiPlus, FiCheck
 } from 'react-icons/fi';
 import { FaBuilding, FaHandsHelping, FaRegSmile, FaChartLine, FaRegCalendarAlt } from 'react-icons/fa';
 import AOS from 'aos';
@@ -24,6 +24,25 @@ const ScheduleMeeting = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showOtherInput, setShowOtherInput] = useState(false);
   const [otherInterest, setOtherInterest] = useState('');
+  
+  // Track completed sections for progress steps
+  const [completedSections, setCompletedSections] = useState({
+    companyDetails: false,
+    contactInfo: false,
+    csrInterests: false,
+    fundingIntent: false,
+    schedule: false,
+    confirm: false
+  });
+
+  // Refs for each section
+  const companyDetailsRef = useRef(null);
+  const contactInfoRef = useRef(null);
+  const csrInterestsRef = useRef(null);
+  const fundingIntentRef = useRef(null);
+  const scheduleRef = useRef(null);
+  const confirmRef = useRef(null);
+
   const [formData, setFormData] = useState({
     companyName: '',
     cinNumber: '',
@@ -91,7 +110,50 @@ const ScheduleMeeting = () => {
     { value: 'hybrid', label: 'Hybrid (Both Options)', icon: <FiRefreshCw /> }
   ];
 
+  // Function to check which section is currently visible
+  const checkVisibleSections = () => {
+    const sections = [
+      { ref: companyDetailsRef, key: 'companyDetails', required: ['companyName', 'industryType', 'csrNumber', 'panNumber'] },
+      { ref: contactInfoRef, key: 'contactInfo', required: ['contactName', 'designation', 'email', 'mobile', 'officeAddress'] },
+      { ref: csrInterestsRef, key: 'csrInterests', required: ['csrInterests'] },
+      { ref: fundingIntentRef, key: 'fundingIntent', required: ['proposedBudget', 'projectType', 'projectLocation', 'timeline'] },
+      { ref: scheduleRef, key: 'schedule', required: ['meetingMode', 'preferredDate', 'preferredTime', 'purpose'] },
+      { ref: confirmRef, key: 'confirm', required: ['declaration'] }
+    ];
 
+    const newCompletedSections = { ...completedSections };
+
+    sections.forEach(section => {
+      if (section.ref.current) {
+        const rect = section.ref.current.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight - 100 && rect.bottom > 100;
+        
+        if (isVisible || newCompletedSections[section.key]) {
+          // Check if all required fields in this section are filled
+          const isSectionComplete = section.required.every(field => {
+            if (field === 'csrInterests') {
+              return formData.csrInterests.length > 0;
+            }
+            if (field === 'declaration') {
+              return formData.declaration === true;
+            }
+            return formData[field] && formData[field].toString().trim() !== '';
+          });
+          
+          newCompletedSections[section.key] = isSectionComplete;
+        }
+      }
+    });
+
+    setCompletedSections(newCompletedSections);
+  };
+
+  // Check sections on scroll and form data changes
+  useEffect(() => {
+    checkVisibleSections();
+    window.addEventListener('scroll', checkVisibleSections);
+    return () => window.removeEventListener('scroll', checkVisibleSections);
+  }, [formData]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -176,6 +238,19 @@ const ScheduleMeeting = () => {
 
   const closePopup = () => {
     setShowSuccessPopup(false);
+  };
+
+  // Scroll to section function
+  const scrollToSection = (sectionRef) => {
+    if (sectionRef.current) {
+      const offset = 100;
+      const elementPosition = sectionRef.current.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
   };
 
   return (
@@ -275,6 +350,59 @@ const ScheduleMeeting = () => {
           .selected-interest-tag:hover {
             transform: translateX(3px);
           }
+          
+          /* Sticky Progress Styles */
+          .progress-sticky {
+            position: sticky;
+            top: 20px;
+            z-index: 40;
+            background: white;
+      
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          }
+          
+          .progress-step {
+            transition: all 0.3s ease;
+            cursor: pointer;
+          }
+          
+          .progress-step:hover {
+            transform: translateY(-2px);
+          }
+          
+          .step-number {
+            transition: all 0.3s ease;
+          }
+          
+          .step-number.completed {
+            background-color: #667A62;
+            border-color: #667A62;
+            color: white;
+          }
+          
+          .step-number.active {
+            border-color: #667A62;
+            background-color: #EAF6E3;
+            color: #667A62;
+            transform: scale(1.1);
+          }
+          
+          .step-line {
+            transition: all 0.5s ease;
+          }
+          
+          .step-line.completed {
+            background-color: #667A62;
+          }
+          
+          @keyframes checkPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+          }
+          
+          .check-animation {
+            animation: checkPulse 0.5s ease-in-out;
+          }
         `}
       </style>
 
@@ -317,26 +445,47 @@ const ScheduleMeeting = () => {
         </div>
       </section>
 
-    
-
       {/* --- FORM SECTION --- */}
       <section className="py-16 bg-[#F7F9F5]">
         <div className="container mx-auto px-6 max-w-5xl">
-          {/* Progress Steps */}
-          <div className="mb-10" data-aos="fade-down">
+          
+          {/* Sticky Progress Steps */}
+          <div className="progress-sticky mb-8 p-4 bg-white" data-aos="fade-down">
             <div className="flex items-center justify-between">
-              {['Company Details', 'Contact Info', 'CSR Interests', 'Funding Intent', 'Schedule', 'Confirm'].map((step, idx) => (
+              {[
+                { key: 'companyDetails', label: 'Company Details', ref: companyDetailsRef },
+                { key: 'contactInfo', label: 'Contact Info', ref: contactInfoRef },
+                { key: 'csrInterests', label: 'CSR Interests', ref: csrInterestsRef },
+                { key: 'fundingIntent', label: 'Funding Intent', ref: fundingIntentRef },
+                { key: 'schedule', label: 'Schedule', ref: scheduleRef },
+                { key: 'confirm', label: 'Confirm', ref: confirmRef }
+              ].map((step, idx) => (
                 <React.Fragment key={idx}>
-                  <div className="flex flex-col items-center relative z-10">
-                    <div className="w-9 h-9 bg-white border-2 border-[#667A62] flex items-center justify-center text-[#667A62] font-bold text-sm">
-                      {idx + 1}
+                  <div 
+                    className="progress-step flex flex-col items-center relative z-10 group"
+                    onClick={() => scrollToSection(step.ref)}
+                  >
+                    <div 
+                      className={`
+                        step-number w-9 h-9 rounded-full border-2 flex items-center justify-center text-sm font-bold transition-all duration-300
+                        ${completedSections[step.key] 
+                          ? 'completed bg-[#667A62] border-[#667A62] text-white' 
+                          : 'border-gray-300 bg-white text-gray-400 group-hover:border-[#667A62] group-hover:text-[#667A62]'
+                        }
+                      `}
+                    >
+                      {completedSections[step.key] ? (
+                        <FiCheck className="check-animation" size={16} />
+                      ) : (
+                        idx + 1
+                      )}
                     </div>
-                    <span className="text-[9px] text-gray-500 mt-1 hidden md:block text-center">
-                      {step}
+                    <span className="text-[9px] text-gray-500 mt-1 hidden md:block text-center group-hover:text-[#667A62] transition-colors">
+                      {step.label}
                     </span>
                   </div>
                   {idx !== 5 && (
-                    <div className="flex-1 h-px bg-gray-300 mx-1"></div>
+                    <div className={`flex-1 h-0.5 mx-2 transition-all duration-500 step-line ${completedSections[step.key] ? 'completed bg-[#667A62]' : 'bg-gray-200'}`}></div>
                   )}
                 </React.Fragment>
               ))}
@@ -345,7 +494,7 @@ const ScheduleMeeting = () => {
 
           <form onSubmit={handleSubmit} className="bg-white border border-[#EAF6E3] overflow-hidden">
             {/* Section 1: Company Details */}
-            <div className="section-card p-6" data-aos="fade-up">
+            <div ref={companyDetailsRef} className="section-card p-6" data-aos="fade-up">
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 bg-[#EAF6E3] flex items-center justify-center">
                   <FaBuilding className="text-[#667A62] text-lg" />
@@ -354,6 +503,11 @@ const ScheduleMeeting = () => {
                   <h3 className="font-serif text-xl font-bold text-[#2C3E2B]">Company Details</h3>
                   <p className="text-[10px] text-gray-500">Basic information about your organization</p>
                 </div>
+                {completedSections.companyDetails && (
+                  <div className="ml-auto">
+                    <FiCheckCircle className="text-[#667A62] text-lg" />
+                  </div>
+                )}
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -447,7 +601,7 @@ const ScheduleMeeting = () => {
             </div>
 
             {/* Section 2: Contact Person Details */}
-            <div className="section-card p-6 bg-[#FCFDFB]" data-aos="fade-up">
+            <div ref={contactInfoRef} className="section-card p-6 bg-[#FCFDFB]" data-aos="fade-up">
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 bg-[#EAF6E3] flex items-center justify-center">
                   <FiUser className="text-[#667A62] text-lg" />
@@ -456,6 +610,11 @@ const ScheduleMeeting = () => {
                   <h3 className="font-serif text-xl font-bold text-[#2C3E2B]">Contact Person Details</h3>
                   <p className="text-[10px] text-gray-500">Information about the primary contact person</p>
                 </div>
+                {completedSections.contactInfo && (
+                  <div className="ml-auto">
+                    <FiCheckCircle className="text-[#667A62] text-lg" />
+                  </div>
+                )}
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -537,7 +696,7 @@ const ScheduleMeeting = () => {
             </div>
 
             {/* Section 3: CSR Interest Details - WITH OTHER OPTION */}
-            <div className="section-card p-6" data-aos="fade-up">
+            <div ref={csrInterestsRef} className="section-card p-6" data-aos="fade-up">
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 bg-[#EAF6E3] flex items-center justify-center">
                   <FaHandsHelping className="text-[#667A62] text-lg" />
@@ -546,6 +705,11 @@ const ScheduleMeeting = () => {
                   <h3 className="font-serif text-xl font-bold text-[#2C3E2B]">CSR Interest Details</h3>
                   <p className="text-[10px] text-gray-500">Select the areas you wish to support</p>
                 </div>
+                {completedSections.csrInterests && (
+                  <div className="ml-auto">
+                    <FiCheckCircle className="text-[#667A62] text-lg" />
+                  </div>
+                )}
               </div>
               
               {/* Selected Interests Display */}
@@ -632,7 +796,7 @@ const ScheduleMeeting = () => {
             </div>
 
             {/* Section 4: Funding Intent */}
-            <div className="section-card p-6 bg-[#FCFDFB]" data-aos="fade-up">
+            <div ref={fundingIntentRef} className="section-card p-6 bg-[#FCFDFB]" data-aos="fade-up">
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 bg-[#EAF6E3] flex items-center justify-center">
                   <FiDollarSign className="text-[#667A62] text-lg" />
@@ -641,6 +805,11 @@ const ScheduleMeeting = () => {
                   <h3 className="font-serif text-xl font-bold text-[#2C3E2B]">Funding Intent</h3>
                   <p className="text-[10px] text-gray-500">Details about your funding and project preferences</p>
                 </div>
+                {completedSections.fundingIntent && (
+                  <div className="ml-auto">
+                    <FiCheckCircle className="text-[#667A62] text-lg" />
+                  </div>
+                )}
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -713,7 +882,7 @@ const ScheduleMeeting = () => {
             </div>
 
             {/* Section 5: Meeting Schedule */}
-            <div className="section-card p-6" data-aos="fade-up">
+            <div ref={scheduleRef} className="section-card p-6" data-aos="fade-up">
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 bg-[#EAF6E3] flex items-center justify-center">
                   <FiCalendar className="text-[#667A62] text-lg" />
@@ -722,6 +891,11 @@ const ScheduleMeeting = () => {
                   <h3 className="font-serif text-xl font-bold text-[#2C3E2B]">Meeting Schedule</h3>
                   <p className="text-[10px] text-gray-500">Select your preferred meeting date and time</p>
                 </div>
+                {completedSections.schedule && (
+                  <div className="ml-auto">
+                    <FiCheckCircle className="text-[#667A62] text-lg" />
+                  </div>
+                )}
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -794,7 +968,7 @@ const ScheduleMeeting = () => {
             </div>
 
             {/* Section 6: Additional Information */}
-            <div className="section-card p-6 bg-[#FCFDFB]" data-aos="fade-up">
+            <div ref={confirmRef} className="section-card p-6 bg-[#FCFDFB]" data-aos="fade-up">
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 bg-[#EAF6E3] flex items-center justify-center">
                   <FiMessageSquare className="text-[#667A62] text-lg" />
@@ -803,6 +977,11 @@ const ScheduleMeeting = () => {
                   <h3 className="font-serif text-xl font-bold text-[#2C3E2B]">Additional Information</h3>
                   <p className="text-[10px] text-gray-500">Share more details about your expectations</p>
                 </div>
+                {completedSections.confirm && (
+                  <div className="ml-auto">
+                    <FiCheckCircle className="text-[#667A62] text-lg" />
+                  </div>
+                )}
               </div>
               
               <div className="space-y-4">
