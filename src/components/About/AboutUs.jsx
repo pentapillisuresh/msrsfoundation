@@ -92,7 +92,7 @@ const AboutUs = () => {
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070" 
+            src="./images/about1.jpg" 
             className="w-full h-full object-cover animate-zoom" 
             alt="Hero"
           />

@@ -15,9 +15,9 @@ const credentials = [
   },
   {
     id: 3,
-    title: "Startup India Recognized",
-    subtitle: "Aligned with the flagship initiative of Startup India, promoting innovation-driven impact.",
-    image: "/images/startup-india.svg",
+    title: "CSR Registered Entity",
+    subtitle: "Eligible to receive Corporate Social Responsibility (CSR) funds from companies across India.",
+    image: "/images/csr.svg",
   },
   {
     id: 4,
@@ -27,33 +27,33 @@ const credentials = [
   },
   {
     id: 5,
-    title: "CSR Registered Entity",
-    subtitle: "Eligible to receive Corporate Social Responsibility (CSR) funds from companies across India.",
-    image: "/images/csr.svg",
+    title: "ISO 9001:2015 Certified",
+    subtitle: "Internationally recognized quality management standard, ensuring operational excellence and continuous improvement.",
+    image: "/images/iso.svg",
   },
   {
     id: 6,
-    title: "PAN & TAN Registered",
-    subtitle: "Fully compliant with financial and taxation regulations for smooth operations.",
-    image: "/images/pan-tan.svg",
-  },
-  {
-    id: 7,
     title: "MSME Registered",
     subtitle: "Recognized under Micro, Small & Medium Enterprises, enhancing operational benefits and support.",
     image: "/images/msme.svg",
   },
   {
+    id: 7,
+    title: "PAN & TAN Registered",
+    subtitle: "Fully compliant with financial and taxation regulations for smooth operations.",
+    image: "/images/pan-tan.svg",
+  },
+  {
     id: 8,
-    title: "Transparent Governance",
-    subtitle: "Committed to ethical practices, financial clarity, and measurable impact.",
-    image: "/images/governance.svg",
+    title: "Startup India Recognized",
+    subtitle: "Aligned with the flagship initiative of Startup India, promoting innovation-driven impact.",
+    image: "/images/startup-india.svg",
   },
   {
     id: 9,
-    title: "ISO 9001:2015 Certified",
-    subtitle: "Internationally recognized quality management standard, ensuring operational excellence and continuous improvement.",
-    image: "/images/iso.svg",
+    title: "Transparent Governance",
+    subtitle: "Committed to ethical practices, financial clarity, and measurable impact.",
+    image: "/images/governance.svg",
   },
 ];
 
@@ -88,7 +88,7 @@ const GovernmentRegistrations = () => {
         </div>
 
         {/* Grid - Updated with glass morphism effect matching Key Highlights */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {credentials.map((cred) => (
             <div
               key={cred.id}
